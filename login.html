@@ -1,13 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Login - RV Vehicle Reminder</title>
+  <title>RV Vehicle Reminder - Login</title>
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -33,38 +31,39 @@
       padding: 30px 24px;
       border-radius: 18px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.10);
-      text-align: center;
     }
 
     .logo {
       font-size: 48px;
-      margin-bottom: 10px;
+      text-align: center;
+      margin-bottom: 5px;
     }
 
     h1 {
+      text-align: center;
       margin: 5px 0;
-      font-size: 26px;
-      color: #1f2937;
+      color: #222;
+      font-size: 25px;
     }
 
     .subtitle {
-      color: #6b7280;
+      text-align: center;
+      color: #777;
       margin-bottom: 25px;
       font-size: 14px;
     }
 
     label {
       display: block;
-      text-align: left;
       margin-bottom: 8px;
       font-weight: bold;
-      color: #374151;
+      color: #333;
     }
 
     input {
       width: 100%;
       padding: 14px;
-      border: 1px solid #d1d5db;
+      border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
       margin-bottom: 15px;
@@ -88,7 +87,7 @@
     }
 
     button:disabled {
-      opacity: 0.6;
+      background: #999;
       cursor: not-allowed;
     }
 
@@ -102,29 +101,20 @@
     }
 
     .success {
-      display: block;
-      background: #ecfdf5;
-      color: #047857;
+      background: #e8f7ee;
+      color: #16703a;
     }
 
     .error {
-      display: block;
-      background: #fef2f2;
-      color: #b91c1c;
+      background: #fdecec;
+      color: #b42318;
     }
 
-    .back {
-      display: inline-block;
+    .info {
+      text-align: center;
       margin-top: 20px;
-      color: #2563eb;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .security {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #6b7280;
+      color: #777;
+      font-size: 13px;
     }
   </style>
 </head>
@@ -141,16 +131,185 @@
       Secure login with Email Magic Link
     </div>
 
-    <form id="loginForm">
+    <label for="email">Email Address</label>
 
-      <label for="email">Email Address</label>
+    <input
+      type="email"
+      id="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+    >
 
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter your email"
-        required
-        autocomplete="email"
-      >
+    <button id="loginBtn" onclick="sendMagicLink()">
+      Send Magic Link
+    </button>
 
-      <button type="submit" id="login
+    <div id="message" class="message"></div>
+
+    <div class="info">
+      We will send a secure login link to your email.
+      No password required.
+    </div>
+
+  </div>
+
+
+  <script>
+
+    // ==========================================
+    // SUPABASE CONFIGURATION
+    // ==========================================
+
+    const SUPABASE_URL = "https://ksgxxzssnolveakfbvgy.supabase.co/rest/v1/";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_4qX68fhDfCIXWVNRqvTsqQ_3inRIYiV";
+
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+    // ==========================================
+    // SHOW MESSAGE
+    // ==========================================
+
+    function showMessage(text, type) {
+
+      const message = document.getElementById("message");
+
+      message.innerText = text;
+
+      message.className = "message " + type;
+
+      message.style.display = "block";
+    }
+
+
+    // ==========================================
+    // SEND MAGIC LINK
+    // ==========================================
+
+    async function sendMagicLink() {
+
+      const emailInput = document.getElementById("email");
+
+      const loginBtn = document.getElementById("loginBtn");
+
+      const email = emailInput.value.trim();
+
+
+      if (!email) {
+
+        showMessage(
+          "Please enter your email address.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!email.includes("@")) {
+
+        showMessage(
+          "Please enter a valid email address.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      loginBtn.disabled = true;
+
+      loginBtn.innerText = "Sending...";
+
+
+      try {
+
+        const { error } =
+          await supabaseClient.auth.signInWithOtp({
+
+            email: email,
+
+            options: {
+
+              emailRedirectTo:
+                window.location.origin +
+                window.location.pathname.replace(
+                  "login.html",
+                  "index.html"
+                )
+
+            }
+
+          });
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        showMessage(
+          "Magic Link sent successfully! Please check your email and tap the login link.",
+          "success"
+        );
+
+
+        emailInput.value = "";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          "Login failed: " + error.message,
+          "error"
+        );
+
+
+      } finally {
+
+        loginBtn.disabled = false;
+
+        loginBtn.innerText = "Send Magic Link";
+
+      }
+
+    }
+
+
+    // ==========================================
+    // CHECK EXISTING LOGIN
+    // ==========================================
+
+    async function checkLogin() {
+
+      const {
+        data: { session }
+      } = await supabaseClient.auth.getSession();
+
+
+      if (session) {
+
+        window.location.href = "index.html";
+
+      }
+
+    }
+
+
+    checkLogin();
+
+  </script>
+
+</body>
+</html>
