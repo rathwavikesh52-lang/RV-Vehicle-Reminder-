@@ -1,1 +1,183 @@
 
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Vehicle - RV Vehicle Reminder</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  margin: 0;
+  color: #172033;
+}
+
+.header {
+  background: linear-gradient(135deg,#087cf5,#00b4ff);
+  color: white;
+  padding: 22px;
+  border-radius: 0 0 25px 25px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 15px #dce5f0;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin-top: 14px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  margin-top: 6px;
+  border: 1px solid #d5dce8;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  margin-top: 18px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #087cf5;
+  color: white;
+}
+
+.preview {
+  width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  margin-top: 15px;
+  border-radius: 12px;
+  display: none;
+}
+
+.back {
+  background: #64748b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>📸 Upload Vehicle Photo</h2>
+  <p>RV Vehicle Reminder</p>
+</div>
+
+<div class="container">
+
+  <div class="box">
+    <h2>Vehicle Photo</h2>
+
+    <input type="file" id="photo" accept="image/*" onchange="previewPhoto()">
+
+    <img id="preview" class="preview">
+  </div>
+
+  <div class="box">
+    <h2>🚘 Vehicle Details</h2>
+
+    <label>Vehicle Number</label>
+    <input type="text" id="vehicleNumber" placeholder="GJ01AB1234">
+
+    <label>Owner Name</label>
+    <input type="text" id="ownerName" placeholder="Owner Name">
+
+    <label>Fitness Valid Upto</label>
+    <input type="date" id="fitness">
+
+    <label>Insurance Valid Upto</label>
+    <input type="date" id="insurance">
+
+    <label>PUCC Valid Upto</label>
+    <input type="date" id="pucc">
+
+    <label>Permit Valid Upto</label>
+    <input type="date" id="permit">
+
+    <button onclick="saveVehicle()">💾 Save Vehicle</button>
+    <button class="back" onclick="history.back()">⬅️ Back</button>
+  </div>
+
+</div>
+
+<script>
+
+function previewPhoto() {
+  const file = document.getElementById("photo").files[0];
+
+  if (file) {
+    const preview = document.getElementById("preview");
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+  }
+}
+
+function saveVehicle() {
+
+  const vehicleNumber = document.getElementById("vehicleNumber").value.trim();
+
+  if (!vehicleNumber) {
+    alert("કૃપા કરીને Vehicle Number દાખલ કરો");
+    return;
+  }
+
+  let vehicles = JSON.parse(localStorage.getItem("vehicles")) || [];
+
+  const newVehicle = {
+    vehicleNumber: vehicleNumber.toUpperCase(),
+    ownerName: document.getElementById("ownerName").value,
+    fitness: document.getElementById("fitness").value,
+    insurance: document.getElementById("insurance").value,
+    pucc: document.getElementById("pucc").value,
+    permit: document.getElementById("permit").value,
+    updatedAt: new Date().toISOString()
+  };
+
+  const existingIndex = vehicles.findIndex(
+    v => v.vehicleNumber === newVehicle.vehicleNumber
+  );
+
+  if (existingIndex !== -1) {
+    vehicles[existingIndex] = newVehicle;
+    alert("🔄 જૂનો Vehicle Record Update થઈ ગયો!");
+  } else {
+    vehicles.push(newVehicle);
+    alert("✅ Vehicle Successfully Saved!");
+  }
+
+  localStorage.setItem("vehicles", JSON.stringify(vehicles));
+
+  document.getElementById("vehicleNumber").value = "";
+  document.getElementById("ownerName").value = "";
+}
+
+</script>
+
+</body>
+</html>
