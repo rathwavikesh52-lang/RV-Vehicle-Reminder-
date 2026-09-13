@@ -36,14 +36,13 @@
     .logo {
       font-size: 48px;
       text-align: center;
-      margin-bottom: 5px;
     }
 
     h1 {
       text-align: center;
-      margin: 5px 0;
       color: #222;
       font-size: 25px;
+      margin: 8px 0;
     }
 
     .subtitle {
@@ -67,11 +66,6 @@
       border-radius: 10px;
       font-size: 16px;
       margin-bottom: 15px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #2563eb;
     }
 
     button {
@@ -88,7 +82,6 @@
 
     button:disabled {
       background: #999;
-      cursor: not-allowed;
     }
 
     .message {
@@ -153,162 +146,92 @@
 
   </div>
 
-
   <script>
-
-    // ==========================================
     // SUPABASE CONFIGURATION
-    // ==========================================
+    // Important: Do NOT add /rest/v1/ at the end
 
-    const SUPABASE_URL = "https://ksgxxzssnolveakfbvgy.supabase.co/rest/v1/";
+    const SUPABASE_URL =
+      "https://ksgxxzssnolveakfbvgy.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_4qX68fhDfCIXWVNRqvTsqQ_3inRIYiV";
-
 
     const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
 
-
-    // ==========================================
-    // SHOW MESSAGE
-    // ==========================================
-
     function showMessage(text, type) {
-
       const message = document.getElementById("message");
 
       message.innerText = text;
-
       message.className = "message " + type;
-
       message.style.display = "block";
     }
 
-
-    // ==========================================
-    // SEND MAGIC LINK
-    // ==========================================
-
     async function sendMagicLink() {
-
       const emailInput = document.getElementById("email");
-
       const loginBtn = document.getElementById("loginBtn");
 
       const email = emailInput.value.trim();
 
-
       if (!email) {
-
-        showMessage(
-          "Please enter your email address.",
-          "error"
-        );
-
+        showMessage("Please enter your email address.", "error");
         return;
       }
-
 
       if (!email.includes("@")) {
-
-        showMessage(
-          "Please enter a valid email address.",
-          "error"
-        );
-
+        showMessage("Please enter a valid email address.", "error");
         return;
       }
 
-
       loginBtn.disabled = true;
-
       loginBtn.innerText = "Sending...";
 
-
       try {
-
         const { error } =
           await supabaseClient.auth.signInWithOtp({
-
             email: email,
-
             options: {
-
               emailRedirectTo:
-                window.location.origin +
-                window.location.pathname.replace(
-                  "login.html",
-                  "index.html"
-                )
-
+                "https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/index.html"
             }
-
           });
 
-
         if (error) {
-
           throw error;
-
         }
 
-
         showMessage(
-          "Magic Link sent successfully! Please check your email and tap the login link.",
+          "Magic Link sent successfully. Please check your email inbox.",
           "success"
         );
 
-
-        emailInput.value = "";
-
-
       } catch (error) {
-
-        console.error(error);
-
+        console.error("Supabase Login Error:", error);
 
         showMessage(
           "Login failed: " + error.message,
           "error"
         );
 
-
       } finally {
-
         loginBtn.disabled = false;
-
         loginBtn.innerText = "Send Magic Link";
-
       }
-
     }
 
-
-    // ==========================================
-    // CHECK EXISTING LOGIN
-    // ==========================================
-
     async function checkLogin() {
-
       const {
         data: { session }
       } = await supabaseClient.auth.getSession();
 
-
       if (session) {
-
         window.location.href = "index.html";
-
       }
-
     }
 
-
     checkLogin();
-
   </script>
 
 </body>
