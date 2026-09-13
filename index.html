@@ -216,11 +216,23 @@ function uploadPhoto() {
 }
 
 function showMessage(page) {
+
   if (page === "All Vehicles") {
     window.location.href = "vehicles.html";
-  } else {
-    alert(page + " Feature આગળના Stepમાં બનાવવામાં આવશે.");
   }
+
+  else if (page === "Expiring Soon") {
+    window.location.href = "expiring.html";
+  }
+
+  else if (page === "Dashboard") {
+    alert("📊 Dashboard આગળના Stepમાં બનાવવામાં આવશે.");
+  }
+
+  else if (page === "Search Vehicle") {
+    window.location.href = "vehicles.html";
+  }
+
 }
 
 function showMessage(page) {
