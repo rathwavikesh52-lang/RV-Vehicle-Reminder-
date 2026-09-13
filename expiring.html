@@ -1,1 +1,199 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expiring Soon - RV Vehicle Reminder</title>
 
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  margin: 0;
+  color: #172033;
+}
+
+.header {
+  background: linear-gradient(135deg,#dc2626,#f97316);
+  color: white;
+  padding: 22px;
+  border-radius: 0 0 25px 25px;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 15px #dce5f0;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #dc2626;
+  margin-bottom: 12px;
+}
+
+.alert {
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 8px;
+  background: #fff7ed;
+  color: #c2410c;
+  font-weight: bold;
+}
+
+.expired {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.valid {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 11px;
+  margin-top: 15px;
+  background: #64748b;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.empty {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  color: #687386;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>🔴 Expiring Soon</h2>
+  <p>આવતા 10 દિવસમાં Expiry થનારા Documents</p>
+</div>
+
+<div class="container">
+
+  <div id="list"></div>
+
+  <button onclick="history.back()">⬅️ Back</button>
+
+</div>
+
+<script>
+
+const fields = [
+  {key:"fitness", name:"Fitness Expiry"},
+  {key:"insurance", name:"Insurance Expiry"},
+  {key:"tax", name:"Tax Expiry"},
+  {key:"pucc", name:"PUCC Expiry"},
+  {key:"permit", name:"Permit Expiry"}
+];
+
+function formatDate(date) {
+  if (!date) return "Not Available";
+
+  return new Date(date + "T00:00:00").toLocaleDateString("en-IN", {
+    day:"2-digit",
+    month:"short",
+    year:"numeric"
+  });
+}
+
+function getDays(date) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const expiry = new Date(date + "T00:00:00");
+
+  return Math.ceil((expiry - today) / (1000*60*60*24));
+}
+
+function displayExpiring() {
+
+  const list = document.getElementById("list");
+  const vehicles = JSON.parse(localStorage.getItem("vehicles")) || [];
+
+  let html = "";
+  let found = false;
+
+  vehicles.forEach(v => {
+
+    let alerts = "";
+
+    fields.forEach(f => {
+
+      if (v[f.key]) {
+
+        const days = getDays(v[f.key]);
+
+        if (days <= 10) {
+
+          found = true;
+
+          if (days < 0) {
+            alerts += `
+              <div class="alert expired">
+                ❌ ${f.name}: Expired
+                <br>${formatDate(v[f.key])}
+              </div>
+            `;
+          } else {
+            alerts += `
+              <div class="alert">
+                🔔 ${f.name}: ${days} Days Left
+                <br>${formatDate(v[f.key])}
+              </div>
+            `;
+          }
+        }
+      }
+
+    });
+
+    if (alerts) {
+      html += `
+        <div class="card">
+          <div class="title">🚘 ${v.vehicleNumber}</div>
+          ${alerts}
+        </div>
+      `;
+    }
+
+  });
+
+  if (!found) {
+    html = `
+      <div class="empty">
+        🟢<br><br>
+        હાલમાં કોઈ Document આગામી 10 દિવસમાં Expire થતું નથી.
+      </div>
+    `;
+  }
+
+  list.innerHTML = html;
+}
+
+displayExpiring();
+
+</script>
+
+</body>
+</html>
