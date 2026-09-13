@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="gu">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RV Vehicle Reminder</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 * {
@@ -21,18 +23,35 @@ body {
 .header {
   background: linear-gradient(135deg, #087cf5, #00b4ff);
   color: white;
-  padding: 28px 20px;
+  padding: 25px 20px;
   border-radius: 0 0 28px 28px;
 }
 
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
 .header h1 {
-  font-size: 25px;
-  margin-bottom: 8px;
+  font-size: 23px;
 }
 
 .header p {
   opacity: 0.9;
   font-size: 14px;
+  margin-top: 8px;
+}
+
+.logout-btn {
+  background: white;
+  color: #087cf5;
+  border: none;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .container {
@@ -50,13 +69,14 @@ body {
 }
 
 .welcome h2 {
-  font-size: 20px;
+  font-size: 19px;
   margin-bottom: 8px;
 }
 
 .welcome p {
   color: #687386;
-  font-size: 14px;
+  font-size: 13px;
+  word-break: break-word;
 }
 
 .grid {
@@ -140,15 +160,18 @@ body {
 <body>
 
 <div class="header">
-  <h1>🚗 RV Vehicle Reminder</h1>
+  <div class="header-top">
+    <h1>🚗 RV Vehicle Reminder</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
   <p>Never Miss an Expiry</p>
 </div>
 
 <div class="container">
 
   <div class="welcome">
-    <h2>નમસ્તે! 👋</h2>
-    <p>તમારા વાહનોના Fitness, Insurance, PUCC અને Permitની વિગતો સરળતાથી મેનેજ કરો.</p>
+    <h2>Welcome! 👋</h2>
+    <p id="userEmail">Checking login...</p>
   </div>
 
   <div class="grid">
@@ -156,31 +179,31 @@ body {
     <div class="card upload" onclick="uploadPhoto()">
       <div class="icon">📸</div>
       <h3>Upload Vehicle Photo</h3>
-      <p>ફોટો અપલોડ કરીને વિગતો સેવ કરો</p>
+      <p>Upload photo and save vehicle details</p>
     </div>
 
-    <div class="card" onclick="showMessage('All Vehicles')">
+    <div class="card" onclick="goToPage('vehicles.html')">
       <div class="icon">🚘</div>
       <h3>All Vehicles</h3>
-      <p>બધા વાહનો જુઓ</p>
+      <p>View all vehicles</p>
     </div>
 
-    <div class="card" onclick="showMessage('Expiring Soon')">
+    <div class="card" onclick="goToPage('expiring.html')">
       <div class="icon">🔴</div>
       <h3>Expiring Soon</h3>
-      <p>10 દિવસમાં Expiry</p>
+      <p>Expiry within 10 days</p>
     </div>
 
-    <div class="card" onclick="showMessage('Dashboard')">
+    <div class="card" onclick="goToPage('dashboard.html')">
       <div class="icon">📊</div>
       <h3>Dashboard</h3>
-      <p>10 વાહનો એક સ્ક્રીન પર</p>
+      <p>View vehicle summary</p>
     </div>
 
-    <div class="card" onclick="showMessage('Search Vehicle')">
+    <div class="card" onclick="goToPage('vehicles.html')">
       <div class="icon">🔍</div>
       <h3>Search Vehicle</h3>
-      <p>નંબરથી શોધો</p>
+      <p>Search by vehicle number</p>
     </div>
 
   </div>
@@ -211,33 +234,51 @@ body {
 </div>
 
 <script>
+const SUPABASE_URL =
+  "https://ksgxxzssnolveakfbvgy.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_4qX68fhDfCIXWVNRqvTsqQ_3inRIYiV";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+async function checkLogin() {
+  const {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  document.getElementById("userEmail").innerText =
+    "Logged in as: " + session.user.email;
+}
+
+async function logout() {
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    alert("Logout failed: " + error.message);
+    return;
+  }
+
+  window.location.href = "login.html";
+}
+
 function uploadPhoto() {
   window.location.href = "upload.html";
 }
 
-function showMessage(page) {
-
-  if (page === "All Vehicles") {
-    window.location.href = "vehicles.html";
-  }
-
-  else if (page === "Expiring Soon") {
-    window.location.href = "expiring.html";
-  }
-
-  else if (page === "Dashboard") {
-  window.location.href = "dashboard.html";
-  }
-
-  else if (page === "Search Vehicle") {
-    window.location.href = "vehicles.html";
-  }
-
+function goToPage(page) {
+  window.location.href = page;
 }
 
-function showMessage(page) {
-  alert(page + " Page આગળના Stepમાં બનાવવામાં આવશે.");
-}
+checkLogin();
 </script>
 
 </body>
