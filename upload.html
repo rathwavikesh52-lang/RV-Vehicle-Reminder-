@@ -10,9 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -24,13 +22,13 @@ body{
 .header{
     background:#111827;
     color:white;
-    padding:18px;
+    padding:16px;
     text-align:center;
 }
 
 .header h1{
     margin:0;
-    font-size:24px;
+    font-size:23px;
 }
 
 .container{
@@ -51,13 +49,6 @@ h2{
     margin-top:0;
 }
 
-label{
-    display:block;
-    font-weight:bold;
-    margin-top:15px;
-    margin-bottom:6px;
-}
-
 input[type="text"],
 input[type="date"]{
     width:100%;
@@ -72,38 +63,10 @@ input[type="file"]{
     padding:10px;
 }
 
-button{
-    border:0;
-    padding:12px 18px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-    margin-top:15px;
-}
-
-.btn-primary{
-    background:#2563eb;
-    color:white;
-}
-
-.btn-success{
-    background:#16a34a;
-    color:white;
-}
-
-.btn-secondary{
-    background:#6b7280;
-    color:white;
-}
-
-.btn-danger{
-    background:#dc2626;
-    color:white;
-}
-
-button:disabled{
-    opacity:.6;
-    cursor:not-allowed;
+label{
+    display:block;
+    font-weight:bold;
+    margin:15px 0 6px;
 }
 
 #preview{
@@ -136,6 +99,7 @@ button:disabled{
 .status{
     margin-top:10px;
     font-weight:bold;
+    line-height:1.5;
 }
 
 .form-grid{
@@ -146,6 +110,35 @@ button:disabled{
 
 .full{
     grid-column:1 / -1;
+}
+
+button{
+    border:0;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:15px;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-success{
+    background:#16a34a;
+    color:white;
+}
+
+.btn-secondary{
+    background:#6b7280;
+    color:white;
 }
 
 .action-buttons{
@@ -181,6 +174,26 @@ button:disabled{
     margin-top:15px;
 }
 
+.ocr-box{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    padding:12px;
+    border-radius:8px;
+    margin-top:15px;
+}
+
+.ocr-box summary{
+    cursor:pointer;
+    font-weight:bold;
+}
+
+#rawText{
+    white-space:pre-wrap;
+    font-size:13px;
+    line-height:1.5;
+    margin-top:10px;
+}
+
 @media(max-width:650px){
     .form-grid{
         grid-template-columns:1fr;
@@ -200,117 +213,120 @@ button:disabled{
 <body>
 
 <div class="header">
-    <h1>RV Vehicle Reminder</h1>
+    <h1>🚘 RV Vehicle Reminder</h1>
 </div>
 
 <div class="container">
 
-    <div class="card">
+<div class="card">
 
-        <h2>Upload Vehicle Photo</h2>
+    <h2>Upload Vehicle Photo</h2>
 
-        <input
-            type="file"
-            id="photoInput"
-            accept="image/*"
-            onchange="previewPhoto()"
-        >
+    <input
+        type="file"
+        id="photoInput"
+        accept="image/*"
+        onchange="previewPhoto()"
+    >
 
-        <img id="preview" alt="Vehicle Photo Preview">
+    <img id="preview" alt="Vehicle Photo Preview">
 
-        <div class="progress" id="progress">
-            <div class="progress-bar" id="progressBar"></div>
+    <div class="progress" id="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="status" id="ocrStatus"></div>
+
+    <button
+        class="btn-primary"
+        id="readButton"
+        onclick="readPhoto()">
+        🔍 Read Vehicle Details
+    </button>
+
+    <div class="note">
+        Upload a clear VAHAN / vehicle details screenshot.
+        After OCR, check all details and correct anything before saving.
+    </div>
+
+    <details class="ocr-box">
+        <summary>Show OCR text</summary>
+        <div id="rawText"></div>
+    </details>
+
+</div>
+
+
+<div class="card">
+
+    <h2>Vehicle Details</h2>
+
+    <div class="form-grid">
+
+        <div class="full">
+            <label>Vehicle Number</label>
+            <input
+                type="text"
+                id="vehicleNumber"
+                placeholder="GJ04AB1234">
         </div>
 
-        <div class="status" id="ocrStatus"></div>
+        <div>
+            <label>Registration Date</label>
+            <input type="date" id="registrationDate">
+        </div>
+
+        <div>
+            <label>Fitness Expiry</label>
+            <input type="date" id="fitness">
+        </div>
+
+        <div>
+            <label>Insurance Expiry</label>
+            <input type="date" id="insurance">
+        </div>
+
+        <div>
+            <label>Tax</label>
+            <input
+                type="text"
+                id="tax"
+                placeholder="LTT / LTP">
+        </div>
+
+        <div>
+            <label>PUCC Expiry</label>
+            <input type="date" id="pucc">
+        </div>
+
+        <div>
+            <label>Permit Expiry</label>
+            <input type="date" id="permit">
+        </div>
+
+    </div>
+
+    <div id="successMessage" class="success"></div>
+    <div id="errorMessage" class="error"></div>
+
+    <div class="action-buttons">
 
         <button
-            class="btn-primary"
-            id="readButton"
-            onclick="readPhoto()"
-        >
-            Read Vehicle Details
+            class="btn-success"
+            id="saveButton"
+            onclick="saveVehicle()">
+            💾 Save Vehicle
         </button>
 
-        <div class="note">
-            Upload a clear VAHAN / vehicle details screenshot.
-            OCR will try to read Vehicle Number, Registration Date,
-            Fitness, Insurance, Tax, PUCC and Permit details.
-        </div>
+        <button
+            class="btn-secondary"
+            onclick="goDashboard()">
+            Dashboard
+        </button>
 
     </div>
 
-
-    <div class="card">
-
-        <h2>Vehicle Details</h2>
-
-        <div class="form-grid">
-
-            <div class="full">
-                <label>Vehicle Number</label>
-                <input type="text" id="vehicleNumber" placeholder="GJ04AB1234">
-            </div>
-
-            <div>
-                <label>Registration Date</label>
-                <input type="date" id="registrationDate">
-            </div>
-
-            <div>
-                <label>Fitness Expiry</label>
-                <input type="date" id="fitness">
-            </div>
-
-            <div>
-                <label>Insurance Expiry</label>
-                <input type="date" id="insurance">
-            </div>
-
-            <div>
-                <label>Tax</label>
-                <input
-                    type="text"
-                    id="tax"
-                    placeholder="LTT / LTP"
-                >
-            </div>
-
-            <div>
-                <label>PUCC Expiry</label>
-                <input type="date" id="pucc">
-            </div>
-
-            <div>
-                <label>Permit Expiry</label>
-                <input type="date" id="permit">
-            </div>
-
-        </div>
-
-        <div id="successMessage" class="success"></div>
-        <div id="errorMessage" class="error"></div>
-
-        <div class="action-buttons">
-
-            <button
-                class="btn-success"
-                id="saveButton"
-                onclick="saveVehicle()"
-            >
-                Save Vehicle
-            </button>
-
-            <button
-                class="btn-secondary"
-                onclick="goDashboard()"
-            >
-                Dashboard
-            </button>
-
-        </div>
-
-    </div>
+</div>
 
 </div>
 
@@ -318,7 +334,7 @@ button:disabled{
 <script>
 
 /* =========================================================
-   SUPABASE CONFIG
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -337,7 +353,7 @@ const STORAGE_BUCKET = "vehicle-photos";
 
 
 /* =========================================================
-   PHOTO PREVIEW
+   PREVIEW
 ========================================================= */
 
 function previewPhoto(){
@@ -353,12 +369,15 @@ function previewPhoto(){
         return;
     }
 
-    const file = input.files[0];
-
     preview.src =
-        URL.createObjectURL(file);
+        URL.createObjectURL(input.files[0]);
 
     preview.style.display = "block";
+
+    hideMessages();
+
+    document.getElementById("ocrStatus").innerText =
+        "Photo selected. Tap Read Vehicle Details.";
 }
 
 
@@ -371,38 +390,49 @@ async function readPhoto(){
     const input =
         document.getElementById("photoInput");
 
-    const status =
-        document.getElementById("ocrStatus");
-
     const button =
         document.getElementById("readButton");
 
+    const status =
+        document.getElementById("ocrStatus");
+
+    const progress =
+        document.getElementById("progress");
+
+    const progressBar =
+        document.getElementById("progressBar");
+
     if(!input.files || !input.files[0]){
 
-        alert("Please select a vehicle photo first.");
+        alert(
+            "Please select a vehicle photo first."
+        );
 
         return;
     }
 
     button.disabled = true;
 
+    progress.style.display = "block";
+
+    progressBar.style.width = "0%";
+
     status.innerText =
-        "Reading vehicle photo... Please wait.";
+        "Starting OCR...";
 
-    document.getElementById("progress").style.display =
-        "block";
-
-    document.getElementById("progressBar").style.width =
-        "0%";
+    hideMessages();
 
     try{
 
+        const file =
+            input.files[0];
+
         const result =
             await Tesseract.recognize(
-                input.files[0],
+                file,
                 "eng",
                 {
-                    logger: function(info){
+                    logger:function(info){
 
                         if(info.status === "recognizing text"){
 
@@ -411,60 +441,76 @@ async function readPhoto(){
                                     info.progress * 100
                                 );
 
-                            document.getElementById(
-                                "progressBar"
-                            ).style.width =
+                            progressBar.style.width =
                                 percent + "%";
 
                             status.innerText =
                                 "Reading photo... " +
-                                percent +
-                                "%";
+                                percent + "%";
                         }
+
                     }
                 }
             );
 
-        const text =
-            result.data.text;
 
-        console.log("OCR TEXT:");
-        console.log(text);
+        const ocrText =
+            result.data.text || "";
 
-        extractVehicleData(text);
 
-        status.innerText =
-            "Vehicle details extracted. Please check and edit before saving.";
-
-    }catch(error){
-
-        console.error(error);
-
-        status.innerText =
-            "OCR failed. Please try a clearer photo.";
-
-        showError(
-            "Could not read the photo."
+        console.log(
+            "OCR TEXT:",
+            ocrText
         );
 
-    }finally{
+
+        document.getElementById(
+            "rawText"
+        ).innerText =
+            ocrText || "No text detected.";
+
+
+        extractVehicleData(ocrText);
+
+
+        status.innerText =
+            "✅ Reading complete. Please check and edit the details before saving.";
+
+    }
+    catch(error){
+
+        console.error(
+            "OCR ERROR:",
+            error
+        );
+
+        status.innerText =
+            "❌ OCR failed.";
+
+        showError(
+            "Could not read the photo. Please upload a clearer screenshot."
+        );
+
+    }
+    finally{
 
         button.disabled = false;
 
     }
+
 }
 
 
 /* =========================================================
-   DATE PATTERN
+   DATE REGEX
 ========================================================= */
 
-const datePattern =
-    "(\\d{1,2}[\\/-](?:\\d{1,2}|Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)[\\/-]\\d{4})";
+const datePart =
+"(\\d{1,2}[\\/-](?:\\d{1,2}|Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)[\\/-]\\d{4})";
 
 
 /* =========================================================
-   FIND DATE
+   DATE FINDER
 ========================================================= */
 
 function findDate(text, patterns){
@@ -475,8 +521,11 @@ function findDate(text, patterns){
             text.match(pattern);
 
         if(match && match[1]){
+
             return match[1];
+
         }
+
     }
 
     return "";
@@ -484,63 +533,71 @@ function findDate(text, patterns){
 
 
 /* =========================================================
-   VEHICLE DATA EXTRACTION
+   EXTRACT VEHICLE DATA
 ========================================================= */
 
 function extractVehicleData(text){
 
-    const clean =
-        text.replace(/\r/g," ");
+    const normalized =
+        text
+            .replace(/\r/g,"\n")
+            .replace(/[|]/g," ")
+            .replace(/[ \t]+/g," ");
 
-    /* Clear old values */
 
-    document.getElementById("vehicleNumber").value = "";
-    document.getElementById("registrationDate").value = "";
-    document.getElementById("fitness").value = "";
-    document.getElementById("insurance").value = "";
-    document.getElementById("tax").value = "";
-    document.getElementById("pucc").value = "";
-    document.getElementById("permit").value = "";
-
+    /*
+     * Do NOT clear existing values if OCR finds nothing.
+     */
 
     /* =====================================================
        VEHICLE NUMBER
     ===================================================== */
 
-    const vehicleMatch =
-        clean.match(
-            /\b[A-Z]{2}\s?\d{1,2}\s?[A-Z]{1,3}\s?\d{3,4}\b/i
-        );
+    const vehicleCandidates =
+        normalized.match(
+            /\b[A-Z]{2}\s*[-]?\s*\d{1,2}\s*[-]?\s*[A-Z]{1,3}\s*[-]?\s*\d{3,4}\b/gi
+        ) || [];
 
-    if(vehicleMatch){
 
-        document.getElementById("vehicleNumber").value =
-            vehicleMatch[0]
-                .replace(/\s+/g,"")
-                .toUpperCase();
+    if(vehicleCandidates.length){
+
+        let vehicleNumber =
+            cleanVehicleNumber(
+                vehicleCandidates[0]
+            );
+
+        document.getElementById(
+            "vehicleNumber"
+        ).value =
+            vehicleNumber;
+
     }
 
 
     /* =====================================================
-       REGISTRATION DATE
+       REGISTRATION
     ===================================================== */
 
-    const registrationDate =
+    const registration =
         findDate(
-            clean,
+            normalized,
             [
                 new RegExp(
-                    "(?:Registration\\s*Date|Registered\\s*Date|Date\\s*of\\s*Registration)[\\s:\\-]*" +
-                    datePattern,
+                    "(?:Registration\\s*Date|Registered\\s*Date|Date\\s*of\\s*Registration|Reg(?:istration)?\\s*Date)[\\s:\\-]*" +
+                    datePart,
                     "i"
                 )
             ]
         );
 
-    if(registrationDate){
 
-        document.getElementById("registrationDate").value =
-            convertDate(registrationDate);
+    if(registration){
+
+        setDateValue(
+            "registrationDate",
+            registration
+        );
+
     }
 
 
@@ -548,22 +605,26 @@ function extractVehicleData(text){
        FITNESS
     ===================================================== */
 
-    const fitnessDate =
+    const fitness =
         findDate(
-            clean,
+            normalized,
             [
                 new RegExp(
-                    "(?:Fitness\\s*Valid\\s*Up\\s*To|Fitness\\s*Valid\\s*Upto|Fitness\\s*Expiry|Fitness)[\\s:\\-]*" +
-                    datePattern,
+                    "(?:Fitness\\s*Valid\\s*Up\\s*To|Fitness\\s*Valid\\s*Upto|Fitness\\s*Expiry|Fitness\\s*Up\\s*To|Fitness)[\\s:\\-]*" +
+                    datePart,
                     "i"
                 )
             ]
         );
 
-    if(fitnessDate){
 
-        document.getElementById("fitness").value =
-            convertDate(fitnessDate);
+    if(fitness){
+
+        setDateValue(
+            "fitness",
+            fitness
+        );
+
     }
 
 
@@ -571,116 +632,167 @@ function extractVehicleData(text){
        INSURANCE
     ===================================================== */
 
-    const insuranceDate =
+    const insurance =
         findDate(
-            clean,
+            normalized,
             [
                 new RegExp(
-                    "(?:Insurance\\s*Valid\\s*Up\\s*To|Insurance\\s*Valid\\s*Upto|Insurance\\s*Expiry|Insurance)[\\s:\\-]*" +
-                    datePattern,
+                    "(?:Insurance\\s*Valid\\s*Up\\s*To|Insurance\\s*Valid\\s*Upto|Insurance\\s*Expiry|Insurance\\s*Up\\s*To|Insurance)[\\s:\\-]*" +
+                    datePart,
                     "i"
                 )
             ]
         );
 
-    if(insuranceDate){
 
-        document.getElementById("insurance").value =
-            convertDate(insuranceDate);
+    if(insurance){
+
+        setDateValue(
+            "insurance",
+            insurance
+        );
+
     }
 
 
     /* =====================================================
-       PUCC
+       PUCC / PUC
     ===================================================== */
 
-    const puccDate =
+    const pucc =
         findDate(
-            clean,
+            normalized,
             [
                 new RegExp(
-                    "(?:PUCC\\s*Valid\\s*Up\\s*To|PUCC\\s*Valid\\s*Upto|PUC\\s*Valid\\s*Up\\s*To|PUC\\s*Valid\\s*Upto|PUCC\\s*Expiry|PUC\\s*Expiry)[\\s:\\-]*" +
-                    datePattern,
+                    "(?:PUCC\\s*Valid\\s*Up\\s*To|PUCC\\s*Valid\\s*Upto|PUCC\\s*Expiry|PUC\\s*Valid\\s*Up\\s*To|PUC\\s*Valid\\s*Upto|PUC\\s*Expiry|PUCC|PUC)[\\s:\\-]*" +
+                    datePart,
                     "i"
                 )
             ]
         );
 
-    if(puccDate){
 
-        document.getElementById("pucc").value =
-            convertDate(puccDate);
-    }
+    if(pucc){
 
-
-    /* =====================================================
-       TAX
-       ONLY LTT / LTP
-    ===================================================== */
-
-    const taxMatch =
-        clean.match(
-            /(?:MV\s*Tax|Tax\s*Valid\s*Up\s*To|Tax\s*Valid\s*Upto|Tax)[\s:\-]*(LTT|LTP)\b/i
+        setDateValue(
+            "pucc",
+            pucc
         );
-
-    if(taxMatch){
-
-        document.getElementById("tax").value =
-            taxMatch[1].toUpperCase();
-
-    }else{
-
-        document.getElementById("tax").value = "";
 
     }
 
 
     /* =====================================================
        PERMIT
-       ONLY READ WHEN PERMIT LABEL EXISTS
     ===================================================== */
 
-    const permitDate =
+    const permit =
         findDate(
-            clean,
+            normalized,
             [
                 new RegExp(
-                    "(?:Permit\\s*Valid\\s*Up\\s*To|Permit\\s*Valid\\s*Upto|Permit\\s*Expiry|Permit)[\\s:\\-]*" +
-                    datePattern,
+                    "(?:Permit\\s*Valid\\s*Up\\s*To|Permit\\s*Valid\\s*Upto|Permit\\s*Expiry|Permit\\s*Up\\s*To|Permit)[\\s:\\-]*" +
+                    datePart,
                     "i"
                 )
             ]
         );
 
-    if(permitDate){
 
-        document.getElementById("permit").value =
-            convertDate(permitDate);
+    if(permit){
+
+        setDateValue(
+            "permit",
+            permit
+        );
+
+    }
+
+
+    /* =====================================================
+       TAX
+    ===================================================== */
+
+    const tax =
+        normalized.match(
+            /(?:MV\s*Tax|Tax\s*Valid\s*Up\s*To|Tax\s*Valid\s*Upto|Tax)[\s:\-]*(LTT|LTP)\b/i
+        );
+
+
+    if(tax){
+
+        document.getElementById(
+            "tax"
+        ).value =
+            tax[1].toUpperCase();
+
     }
 
 }
 
 
 /* =========================================================
-   CONVERT OCR DATE TO YYYY-MM-DD
+   VEHICLE NUMBER CLEAN
+========================================================= */
+
+function cleanVehicleNumber(value){
+
+    return (value || "")
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g,"")
+        .trim();
+
+}
+
+
+/* =========================================================
+   SET DATE
+========================================================= */
+
+function setDateValue(id, value){
+
+    const converted =
+        convertDate(value);
+
+    if(converted){
+
+        document.getElementById(id).value =
+            converted;
+
+    }
+
+}
+
+
+/* =========================================================
+   DATE CONVERSION
 ========================================================= */
 
 function convertDate(value){
 
     if(!value){
+
         return "";
+
     }
 
+
     value =
-        value.trim()
-            .replace(/\//g,"-");
+        value
+            .trim()
+            .replace(/[\/]/g,"-");
+
 
     const parts =
         value.split("-");
 
+
     if(parts.length !== 3){
+
         return "";
+
     }
+
 
     let day =
         parts[0].trim();
@@ -729,20 +841,23 @@ function convertDate(value){
 
         dec:"12",
         december:"12"
+
     };
 
 
     if(isNaN(month)){
 
-        const key =
-            month.toLowerCase();
-
         month =
-            months[key] || "";
-    }else{
+            months[
+                month.toLowerCase()
+            ] || "";
+
+    }
+    else{
 
         month =
             month.padStart(2,"0");
+
     }
 
 
@@ -755,11 +870,20 @@ function convertDate(value){
         !month ||
         !day
     ){
+
         return "";
+
     }
 
 
-    return `${year}-${month}-${day}`;
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+
 }
 
 
@@ -778,19 +902,28 @@ function normalizeVehicleNumber(number){
 
 
 /* =========================================================
-   CREATE PHOTO PATH
+   PHOTO PATH
 ========================================================= */
 
 function createPhotoPath(vehicleNumber){
 
-    const safeNumber =
-        normalizeVehicleNumber(vehicleNumber)
-            .replace(/[^A-Z0-9]/g,"");
+    const safe =
+        normalizeVehicleNumber(
+            vehicleNumber
+        )
+        .replace(
+            /[^A-Z0-9]/g,
+            ""
+        );
 
-    return safeNumber +
+
+    return (
+        safe +
         "_" +
         Date.now() +
-        ".jpg";
+        ".jpg"
+    );
+
 }
 
 
@@ -805,28 +938,48 @@ async function saveVehicle(){
 
     const vehicleNumber =
         normalizeVehicleNumber(
-            document.getElementById("vehicleNumber").value
+            document.getElementById(
+                "vehicleNumber"
+            ).value
         );
 
+
     const registrationDate =
-        document.getElementById("registrationDate").value;
+        document.getElementById(
+            "registrationDate"
+        ).value;
+
 
     const fitness =
-        document.getElementById("fitness").value;
+        document.getElementById(
+            "fitness"
+        ).value;
+
 
     const insurance =
-        document.getElementById("insurance").value;
+        document.getElementById(
+            "insurance"
+        ).value;
+
 
     const tax =
-        document.getElementById("tax").value
-            .trim()
-            .toUpperCase();
+        document.getElementById(
+            "tax"
+        ).value
+        .trim()
+        .toUpperCase();
+
 
     const pucc =
-        document.getElementById("pucc").value;
+        document.getElementById(
+            "pucc"
+        ).value;
+
 
     const permit =
-        document.getElementById("permit").value;
+        document.getElementById(
+            "permit"
+        ).value;
 
 
     if(!vehicleNumber){
@@ -836,13 +989,19 @@ async function saveVehicle(){
         );
 
         return;
+
     }
 
 
     const saveButton =
-        document.getElementById("saveButton");
+        document.getElementById(
+            "saveButton"
+        );
 
-    saveButton.disabled = true;
+
+    saveButton.disabled =
+        true;
+
 
     saveButton.innerText =
         "Saving...";
@@ -851,14 +1010,20 @@ async function saveVehicle(){
     try{
 
         /* =================================================
-           CHECK EXISTING VEHICLE
+           FIND EXISTING VEHICLE
         ================================================= */
 
-        const { data: existingRows, error: findError } =
+        const {
+            data: existingRows,
+            error: findError
+        } =
             await supabaseClient
                 .from("vehicles")
                 .select("*")
-                .eq("vehicle_number", vehicleNumber)
+                .eq(
+                    "vehicle_number",
+                    vehicleNumber
+                )
                 .limit(1);
 
 
@@ -877,18 +1042,21 @@ async function saveVehicle(){
 
 
         /* =================================================
-           PHOTO UPLOAD
+           PHOTO
         ================================================= */
 
         let photoPath =
             existing?.photo_path || null;
+
 
         let photoUrl =
             existing?.photo_url || null;
 
 
         const photoInput =
-            document.getElementById("photoInput");
+            document.getElementById(
+                "photoInput"
+            );
 
 
         if(
@@ -900,273 +1068,28 @@ async function saveVehicle(){
                 photoInput.files[0];
 
 
-            /*
-             * First upload new photo
-             */
-
             const newPath =
-                createPhotoPath(vehicleNumber);
+                createPhotoPath(
+                    vehicleNumber
+                );
 
 
-            const { error: uploadError } =
+            /* Upload new photo */
+
+            const {
+                error: uploadError
+            } =
                 await supabaseClient
                     .storage
-                    .from(STORAGE_BUCKET)
+                    .from(
+                        STORAGE_BUCKET
+                    )
                     .upload(
                         newPath,
                         file,
                         {
                             cacheControl:"3600",
                             upsert:false,
-                            contentType:file.type || "image/jpeg"
-                        }
-                    );
-
-
-            if(uploadError){
-
-                throw uploadError;
-
-            }
-
-
-            /*
-             * Get public URL
-             */
-
-            const { data: publicData } =
-                supabaseClient
-                    .storage
-                    .from(STORAGE_BUCKET)
-                    .getPublicUrl(newPath);
-
-
-            photoPath =
-                newPath;
-
-            photoUrl =
-                publicData.publicUrl;
-
-
-            /*
-             * Delete old photo AFTER
-             * successful new upload
-             */
-
-            if(
-                existing &&
-                existing.photo_path &&
-                existing.photo_path !== newPath
-            ){
-
-                const { error: deleteOldError } =
-                    await supabaseClient
-                        .storage
-                        .from(STORAGE_BUCKET)
-                        .remove([
-                            existing.photo_path
-                        ]);
-
-
-                if(deleteOldError){
-
-                    console.warn(
-                        "Old photo delete warning:",
-                        deleteOldError
-                    );
-
-                }
-            }
-        }
-
-
-        /* =================================================
-           VEHICLE DATA
-        ================================================= */
-
-        const vehicleData = {
-
-            vehicle_number:
-                vehicleNumber,
-
-            registration_date:
-                registrationDate || null,
-
-            fitness_expiry:
-                fitness || null,
-
-            insurance_expiry:
-                insurance || null,
-
-            tax_expiry:
-                tax || null,
-
-            pucc_expiry:
-                pucc || null,
-
-            permit_expiry:
-                permit || null,
-
-            photo_path:
-                photoPath,
-
-            photo_url:
-                photoUrl
-        };
-
-
-        /* =================================================
-           INSERT OR UPDATE
-        ================================================= */
-
-        let saveResult;
-
-
-        if(existing){
-
-            saveResult =
-                await supabaseClient
-                    .from("vehicles")
-                    .update(vehicleData)
-                    .eq("id", existing.id);
-
-        }else{
-
-            saveResult =
-                await supabaseClient
-                    .from("vehicles")
-                    .insert([vehicleData]);
-
-        }
-
-
-        if(saveResult.error){
-
-            throw saveResult.error;
-
-        }
-
-
-        /* =================================================
-           SUCCESS
-        ================================================= */
-
-        if(existing){
-
-            showSuccess(
-                "Vehicle updated successfully. Old photo replaced."
-            );
-
-        }else{
-
-            showSuccess(
-                "Vehicle saved successfully."
-            );
-
-        }
-
-
-        /*
-         * Clear selected photo
-         */
-
-        document.getElementById("photoInput").value = "";
-
-        document.getElementById("preview").style.display =
-            "none";
-
-
-        /*
-         * Keep vehicle details visible
-         */
-
-    }catch(error){
-
-        console.error(
-            "SAVE ERROR:",
-            error
-        );
-
-        showError(
-            "Save failed: " +
-            (error.message || "Unknown error")
-        );
-
-    }finally{
-
-        saveButton.disabled = false;
-
-        saveButton.innerText =
-            "Save Vehicle";
-
-    }
-
-}
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-function goDashboard(){
-
-    window.location.href =
-        "index.html";
-
-}
-
-
-/* =========================================================
-   MESSAGES
-========================================================= */
-
-function showSuccess(message){
-
-    const box =
-        document.getElementById(
-            "successMessage"
-        );
-
-    box.innerText =
-        message;
-
-    box.style.display =
-        "block";
-
-}
-
-
-function showError(message){
-
-    const box =
-        document.getElementById(
-            "errorMessage"
-        );
-
-    box.innerText =
-        message;
-
-    box.style.display =
-        "block";
-
-}
-
-
-function hideMessages(){
-
-    document.getElementById(
-        "successMessage"
-    ).style.display =
-        "none";
-
-    document.getElementById(
-        "errorMessage"
-    ).style.display =
-        "none";
-
-}
-
-</script>
-
-</body>
-</html>
+                            contentType:
+                                file.type ||
+             
