@@ -1,59 +1,977 @@
-async function permanentDelete(id, vehicleNumber, photoPath){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RV Vehicle Reminder</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f4f6f9;
+  color:#1f2937;
+}
+
+header{
+  background:#111827;
+  color:white;
+  padding:15px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.logo{
+  font-size:21px;
+  font-weight:bold;
+}
+
+.language button{
+  border:0;
+  padding:8px 12px;
+  border-radius:7px;
+  cursor:pointer;
+  background:white;
+  color:#111827;
+  font-weight:bold;
+  margin-left:4px;
+}
+
+.container{
+  max-width:1450px;
+  margin:auto;
+  padding:18px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+h1{
+  font-size:25px;
+}
+
+.btn{
+  border:0;
+  padding:11px 17px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  background:#2563eb;
+  color:white;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.card{
+  background:white;
+  padding:18px;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+}
+
+.card-title{
+  color:#6b7280;
+  font-size:14px;
+  margin-bottom:8px;
+}
+
+.card-number{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.search-box{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:18px;
+}
+
+.search-box input{
+  width:100%;
+  padding:12px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  font-size:15px;
+}
+
+.table-box{
+  background:white;
+  border-radius:12px;
+  overflow:auto;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+}
+
+table{
+  width:100%;
+  min-width:1100px;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:left;
+  white-space:nowrap;
+}
+
+th{
+  background:#f9fafb;
+  font-size:13px;
+}
+
+td{
+  font-size:14px;
+}
+
+.action-btn{
+  border:0;
+  padding:7px 9px;
+  border-radius:6px;
+  cursor:pointer;
+  margin-right:4px;
+}
+
+.delete{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.empty{
+  text-align:center;
+  padding:35px;
+  color:#6b7280;
+}
+
+.pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  padding:18px;
+}
+
+.pagination button{
+  padding:8px 13px;
+  border:1px solid #d1d5db;
+  background:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#6b7280;
+  font-size:13px;
+}
+
+@media(max-width:700px){
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .container{
+    padding:12px;
+  }
+
+  h1{
+    font-size:21px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    🚘 RV Vehicle Reminder
+  </div>
+
+  <div class="language">
+    <button onclick="setLanguage('en')">
+      English
+    </button>
+
+    <button onclick="setLanguage('gu')">
+      ગુજરાતી
+    </button>
+  </div>
+
+</header>
+
+
+<div class="container">
+
+  <div class="topbar">
+
+    <h1 id="pageTitle">
+      Dashboard
+    </h1>
+
+    <button
+      class="btn"
+      onclick="goToUpload()"
+      id="uploadText">
+      📸 Upload Vehicle Photo
+    </button>
+
+  </div>
+
+
+  <div class="cards">
+
+    <div class="card">
+
+      <div
+        class="card-title"
+        id="totalTitle">
+        Total Vehicles
+      </div>
+
+      <div
+        class="card-number"
+        id="totalVehicles">
+        0 / 1000
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div
+        class="card-title"
+        id="soonTitle">
+        Expiring Soon
+      </div>
+
+      <div
+        class="card-number"
+        id="expiringSoon">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div
+        class="card-title"
+        id="expiredTitle">
+        Expired Vehicles
+      </div>
+
+      <div
+        class="card-number"
+        id="expiredVehicles">
+        0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍 Search Vehicle Number..."
+      oninput="searchVehicle()">
+
+  </div>
+
+
+  <div class="table-box">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Vehicle Number</th>
+
+          <th>Registration Date</th>
+
+          <th>Fitness Expiry</th>
+
+          <th>Insurance Expiry</th>
+
+          <th>Tax</th>
+
+          <th>PUCC Expiry</th>
+
+          <th>Permit Expiry</th>
+
+          <th>Action</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="vehicleTable"></tbody>
+
+    </table>
+
+  </div>
+
+
+  <div class="pagination">
+
+    <button onclick="previousPage()">
+      ◀
+    </button>
+
+    <span id="pageNumber">
+      Page 1
+    </span>
+
+    <button onclick="nextPage()">
+      ▶
+    </button>
+
+  </div>
+
+</div>
+
+
+<footer>
+  RV Vehicle Reminder • Maximum 1,000 Vehicles
+</footer>
+
+
+
+<script>
+
+/* =========================================
+   SUPABASE CONNECTION
+========================================= */
+
+const SUPABASE_URL =
+  "https://lqbhafspabtlqeubqxjg.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let allVehicles = [];
+
+let filteredVehicles = [];
+
+let currentPage = 1;
+
+const perPage = 10;
+
+let currentLanguage = "en";
+
+
+/* =========================================
+   LANGUAGE
+========================================= */
+
+const text = {
+
+  en:{
+
+    dashboard:"Dashboard",
+
+    upload:"📸 Upload Vehicle Photo",
+
+    total:"Total Vehicles",
+
+    soon:"Expiring Soon",
+
+    expired:"Expired Vehicles",
+
+    search:"🔍 Search Vehicle Number...",
+
+    empty:"No vehicles added yet.",
+
+    page:"Page",
+
+    delete:"🗑️ Delete"
+
+  },
+
+  gu:{
+
+    dashboard:"ડેશબોર્ડ",
+
+    upload:"📸 વાહનનો ફોટો અપલોડ કરો",
+
+    total:"કુલ વાહનો",
+
+    soon:"ટૂંક સમયમાં સમાપ્ત",
+
+    expired:"સમાપ્ત થયેલ વાહનો",
+
+    search:"🔍 વાહન નંબર શોધો...",
+
+    empty:"હજુ સુધી કોઈ વાહન ઉમેરાયેલ નથી.",
+
+    page:"પેજ",
+
+    delete:"🗑️ ડિલીટ"
+
+  }
+
+};
+
+
+/* =========================================
+   CHANGE LANGUAGE
+========================================= */
+
+function setLanguage(lang){
+
+  currentLanguage = lang;
+
+  document.getElementById("pageTitle").innerText =
+    text[lang].dashboard;
+
+  document.getElementById("uploadText").innerText =
+    text[lang].upload;
+
+  document.getElementById("totalTitle").innerText =
+    text[lang].total;
+
+  document.getElementById("soonTitle").innerText =
+    text[lang].soon;
+
+  document.getElementById("expiredTitle").innerText =
+    text[lang].expired;
+
+  document.getElementById("searchInput").placeholder =
+    text[lang].search;
+
+  renderTable();
+
+}
+
+
+/* =========================================
+   LOAD VEHICLES
+========================================= */
+
+async function loadVehicles(){
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+
+    .from("vehicles")
+
+    .select("*")
+
+    .order("id", {
+      ascending:false
+    });
+
+
+  if(error){
+
+    console.error(
+      "Database error:",
+      error
+    );
+
+    alert(
+      "Database connection error.\n\n" +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  allVehicles = data || [];
+
+  filteredVehicles = [
+    ...allVehicles
+  ];
+
+  updateCounts();
+
+  renderTable();
+
+}
+
+
+/* =========================================
+   UPDATE COUNTS
+========================================= */
+
+function updateCounts(){
+
+  const today = new Date();
+
+  today.setHours(
+    0,0,0,0
+  );
+
+
+  let soon = 0;
+
+  let expired = 0;
+
+
+  allVehicles.forEach(
+    v => {
+
+      const dates = [
+
+        v.fitness_expiry,
+
+        v.insurance_expiry,
+
+        v.pucc_expiry,
+
+        v.permit_expiry
+
+      ];
+
+
+      dates.forEach(
+        d => {
+
+          if(!d) return;
+
+
+          const date =
+            new Date(d);
+
+          date.setHours(
+            0,0,0,0
+          );
+
+
+          const diff =
+            Math.ceil(
+              (date - today) /
+              (1000*60*60*24)
+            );
+
+
+          if(diff < 0){
+
+            expired++;
+
+          }
+
+          else if(diff <= 10){
+
+            soon++;
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  document.getElementById(
+    "totalVehicles"
+  ).innerText =
+    allVehicles.length +
+    " / 1000";
+
+
+  document.getElementById(
+    "expiringSoon"
+  ).innerText =
+    soon;
+
+
+  document.getElementById(
+    "expiredVehicles"
+  ).innerText =
+    expired;
+
+}
+
+
+/* =========================================
+   RENDER TABLE
+========================================= */
+
+function renderTable(){
+
+  const tbody =
+    document.getElementById(
+      "vehicleTable"
+    );
+
+
+  const start =
+    (currentPage - 1) *
+    perPage;
+
+
+  const pageData =
+    filteredVehicles.slice(
+      start,
+      start + perPage
+    );
+
+
+  tbody.innerHTML = "";
+
+
+  if(pageData.length === 0){
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="8"
+          class="empty">
+
+          ${text[currentLanguage].empty}
+
+        </td>
+
+      </tr>
+
+    `;
+
+  }
+
+
+  pageData.forEach(
+    v => {
+
+      const tr =
+        document.createElement("tr");
+
+
+      const vehicleNumber =
+        v.vehicle_number || "-";
+
+
+      const photoPath =
+        v.photo_path || "";
+
+
+      tr.innerHTML = `
+
+        <td>
+          <b>${vehicleNumber}</b>
+        </td>
+
+        <td>
+          ${v.registration_date || "-"}
+        </td>
+
+        <td>
+          ${v.fitness_expiry || "-"}
+        </td>
+
+        <td>
+          ${v.insurance_expiry || "-"}
+        </td>
+
+        <td>
+          ${v.tax_expiry || "-"}
+        </td>
+
+        <td>
+          ${v.pucc_expiry || "-"}
+        </td>
+
+        <td>
+          ${v.permit_expiry || "-"}
+        </td>
+
+        <td>
+
+          <button
+            class="action-btn delete"
+            onclick="permanentDelete(
+              '${String(v.id).replace(/'/g,"\\'")}',
+              '${String(vehicleNumber).replace(/'/g,"\\'")}',
+              '${String(photoPath).replace(/'/g,"\\'")}'
+            )">
+
+            ${text[currentLanguage].delete}
+
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    }
+  );
+
+
+  document.getElementById(
+    "pageNumber"
+  ).innerText =
+    text[currentLanguage].page +
+    " " +
+    currentPage;
+
+}
+
+
+/* =========================================
+   SEARCH VEHICLE
+========================================= */
+
+function searchVehicle(){
+
+  const value =
+    document.getElementById(
+      "searchInput"
+    ).value
+    .toUpperCase()
+    .trim();
+
+
+  filteredVehicles =
+    allVehicles.filter(
+      v =>
+        (v.vehicle_number || "")
+        .toUpperCase()
+        .includes(value)
+    );
+
+
+  currentPage = 1;
+
+  renderTable();
+
+}
+
+
+/* =========================================
+   PERMANENT DELETE
+========================================= */
+
+async function permanentDelete(
+  id,
+  vehicleNumber,
+  photoPath
+){
 
   const ok = confirm(
-    "Permanently delete " + vehicleNumber +
-    "?\n\nVehicle record and its photo will be permanently deleted."
+
+    "Permanently delete " +
+    vehicleNumber +
+    "?\n\n" +
+
+    "Vehicle record and its photo " +
+    "will be permanently deleted."
+
   );
+
 
   if(!ok) return;
 
+
   try{
 
-    // 1. Delete photo from Storage
+    /* ==============================
+       1. DELETE PHOTO
+    ============================== */
+
     if(photoPath){
 
-      const { error: photoError } =
+      const {
+        error: photoError
+      } =
         await supabaseClient
+
           .storage
-          .from("vehicle-photos")
-          .remove([photoPath]);
+
+          .from(
+            "vehicle-photos"
+          )
+
+          .remove([
+            photoPath
+          ]);
+
 
       if(photoError){
+
         console.error(
           "Photo delete error:",
           photoError
         );
+
       }
+
     }
 
-    // 2. Delete vehicle record from database
-    const { error: dbError } =
+
+    /* ==============================
+       2. DELETE DATABASE RECORD
+    ============================== */
+
+    const {
+      error: dbError
+    } =
       await supabaseClient
+
         .from("vehicles")
+
         .delete()
+
         .eq("id", id);
 
+
     if(dbError){
+
       throw dbError;
+
     }
+
+
+    /* ==============================
+       3. SUCCESS
+    ============================== */
 
     alert(
       "Vehicle and photo deleted permanently."
     );
 
-    // 3. Refresh dashboard
+
+    /* ==============================
+       4. RELOAD DASHBOARD
+    ============================== */
+
     await loadVehicles();
 
-  }catch(error){
+  }
+
+
+  catch(error){
 
     console.error(
       "Delete error:",
       error
     );
 
+
     alert(
       "Delete failed: " +
-      (error.message || "Unknown error")
+      (
+        error.message ||
+        "Unknown error"
+      )
     );
+
   }
+
 }
+
+
+/* =========================================
+   PREVIOUS PAGE
+========================================= */
+
+function previousPage(){
+
+  if(currentPage > 1){
+
+    currentPage--;
+
+    renderTable();
+
+  }
+
+}
+
+
+/* =========================================
+   NEXT PAGE
+========================================= */
+
+function nextPage(){
+
+  if(
+    currentPage * perPage
+    <
+    filteredVehicles.length
+  ){
+
+    currentPage++;
+
+    renderTable();
+
+  }
+
+}
+
+
+/* =========================================
+   GO TO UPLOAD PAGE
+========================================= */
+
+function goToUpload(){
+
+  window.location.href =
+    "upload.html";
+
+}
+
+
+/* =========================================
+   START DASHBOARD
+========================================= */
+
+loadVehicles();
+
+</script>
+
+</body>
+  </html>
