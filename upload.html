@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>RV Vehicle Reminder - OCR Upload</title>
 
 <style>
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
@@ -91,342 +93,892 @@ button{
 #result{
   display:none;
 }
+
 </style>
 
+<!-- Tesseract OCR -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
 </head>
 
 <body>
 
 <div class="header">
+
   <h2>📸 Upload Vehicle Photo</h2>
+
   <p>RV Vehicle Reminder</p>
+
 </div>
+
 
 <div class="container">
 
+
 <div class="box">
+
   <h2>📷 Vehicle Screenshot</h2>
 
   <input
     type="file"
     id="photo"
     accept="image/*"
-    onchange="previewPhoto()">
+    onchange="previewPhoto()"
+  >
 
-  <img id="preview" class="preview">
+  <img
+    id="preview"
+    class="preview"
+  >
 
-  <button class="ocr" onclick="readPhoto()">
+  <button
+    class="ocr"
+    onclick="readPhoto()"
+  >
     🔎 Read Vehicle Details
   </button>
 
   <div id="loading">
+
     ⏳ Photo વાંચી રહ્યા છીએ... થોડી રાહ જુઓ.
+
   </div>
+
 </div>
+
+
 
 <div class="box" id="result">
 
   <h2>🚘 Vehicle Details</h2>
 
+
   <label>Vehicle Number</label>
-  <input id="vehicleNumber" placeholder="GJ01AB1234">
+
+  <input
+    id="vehicleNumber"
+    placeholder="GJ01AB1234"
+  >
+
 
   <label>Registration Date</label>
-  <input type="date" id="registrationDate">
+
+  <input
+    type="date"
+    id="registrationDate"
+  >
+
 
   <label>Fitness Expiry</label>
-  <input type="date" id="fitness">
+
+  <input
+    type="date"
+    id="fitness"
+  >
+
 
   <label>Insurance Expiry</label>
-  <input type="date" id="insurance">
+
+  <input
+    type="date"
+    id="insurance"
+  >
+
 
   <label>Tax Expiry</label>
-  <input type="text" id="tax" placeholder="LTT / Date">
+
+  <input
+    type="text"
+    id="tax"
+    placeholder="LTT / Date"
+  >
+
 
   <label>PUCC Expiry</label>
-  <input type="date" id="pucc">
+
+  <input
+    type="date"
+    id="pucc"
+  >
+
 
   <label>Permit Expiry</label>
-  <input type="date" id="permit">
+
+  <input
+    type="date"
+    id="permit"
+  >
+
 
   <button onclick="saveVehicle()">
+
     💾 Confirm & Save
+
   </button>
 
 </div>
 
-<button class="back" onclick="history.back()">⬅️ Back</button>
+
+<button
+  class="back"
+  onclick="history.back()"
+>
+
+  ⬅️ Back
+
+</button>
+
 
 </div>
+
+
 
 <script>
 
 let selectedPhoto = null;
 
+
+
+/* =========================
+   PHOTO PREVIEW
+========================= */
+
 function previewPhoto(){
 
-  const file = document.getElementById("photo").files[0];
+  const file =
+    document.getElementById("photo").files[0];
 
-  if(!file) return;
+  if(!file){
+
+    selectedPhoto = null;
+
+    return;
+  }
 
   selectedPhoto = file;
 
-  const preview = document.getElementById("preview");
-  preview.src = URL.createObjectURL(file);
+  const preview =
+    document.getElementById("preview");
+
+  preview.src =
+    URL.createObjectURL(file);
+
   preview.style.display = "block";
 }
 
 
+
+/* =========================
+   READ PHOTO
+========================= */
+
 async function readPhoto(){
 
   if(!selectedPhoto){
-    alert("📸 પહેલા Vehicle Photo પસંદ કરો.");
+
+    alert(
+      "📸 પહેલા Vehicle Photo પસંદ કરો."
+    );
+
     return;
   }
 
-  document.getElementById("loading").style.display = "block";
+
+  document.getElementById(
+    "loading"
+  ).style.display = "block";
+
 
   try{
 
-    const result = await Tesseract.recognize(
-      selectedPhoto,
-      "eng"
+    const result =
+      await Tesseract.recognize(
+        selectedPhoto,
+        "eng"
+      );
+
+
+    const text =
+      result.data.text;
+
+
+    console.log(
+      "========== OCR TEXT =========="
     );
 
-    const text = result.data.text;
+    console.log(text);
 
-    console.log("OCR TEXT:", text);
+    console.log(
+      "==============================="
+    );
+
 
     extractVehicleData(text);
 
-    document.getElementById("result").style.display = "block";
+
+    document.getElementById(
+      "result"
+    ).style.display = "block";
+
 
   }catch(error){
 
     console.error(error);
 
-    alert("❌ Photo વાંચવામાં સમસ્યા આવી. સ્પષ્ટ screenshot upload કરો.");
+
+    alert(
+      "❌ Photo વાંચવામાં સમસ્યા આવી.\n\nકૃપા કરીને વધુ સ્પષ્ટ screenshot upload કરો."
+    );
 
   }
 
-  document.getElementById("loading").style.display = "none";
+
+  document.getElementById(
+    "loading"
+  ).style.display = "none";
+
 }
 
+
+
+/* =========================
+   EXTRACT VEHICLE DATA
+========================= */
 
 function extractVehicleData(text){
 
-  const clean = text
+  const clean =
+    text
     .replace(/\r/g,"")
     .replace(/[|]/g,"I");
 
-  // દરેક વખત નવું OCR વાંચતા પહેલાં fields ખાલી કરો
-  document.getElementById("registrationDate").value = "";
-  document.getElementById("fitness").value = "";
-  document.getElementById("insurance").value = "";
-  document.getElementById("tax").value = "";
-  document.getElementById("pucc").value = "";
-  document.getElementById("permit").value = "";
 
-  // Vehicle Number
-  const vehicleMatch = clean.match(
-    /\b[A-Z]{2}\s?\d{1,2}\s?[A-Z]{1,3}\s?\d{3,4}\b/i
-  );
+  /*
+    IMPORTANT:
+    જૂની OCR માહિતી remove
+  */
+
+  document.getElementById(
+    "registrationDate"
+  ).value = "";
+
+  document.getElementById(
+    "fitness"
+  ).value = "";
+
+  document.getElementById(
+    "insurance"
+  ).value = "";
+
+  document.getElementById(
+    "tax"
+  ).value = "";
+
+  document.getElementById(
+    "pucc"
+  ).value = "";
+
+  document.getElementById(
+    "permit"
+  ).value = "";
+
+
+
+  /* =========================
+     VEHICLE NUMBER
+  ========================= */
+
+  const vehicleMatch =
+    clean.match(
+      /\b[A-Z]{2}\s?\d{1,2}\s?[A-Z]{1,3}\s?\d{3,4}\b/i
+    );
+
 
   if(vehicleMatch){
-    document.getElementById("vehicleNumber").value =
-      vehicleMatch[0].replace(/\s/g,"").toUpperCase();
+
+    document.getElementById(
+      "vehicleNumber"
+    ).value =
+      vehicleMatch[0]
+      .replace(/\s/g,"")
+      .toUpperCase();
+
   }
 
-  // Date patterns
+
+
+  /* =========================
+     DATE PATTERN
+  ========================= */
+
   const datePattern =
-    "(\\d{1,2}[-\\/](?:[A-Za-z]{3}|\\d{1,2})[-\\/]\\d{4})";
+    "(\\d{1,2}[-\\/](?:[A-Za-z]{3,9}|\\d{1,2})[-\\/]\\d{4})";
+
+
+
+  /* =========================
+     DATE FINDER
+  ========================= */
 
   function findDate(patterns){
 
-    for(const pattern of patterns){
+    for(
+      const pattern of patterns
+    ){
 
-      const match = clean.match(pattern);
+      const match =
+        clean.match(pattern);
+
 
       if(match){
-        const converted = convertDate(match[1]);
 
-        if(converted) return converted;
+        const converted =
+          convertDate(match[1]);
+
+
+        if(converted){
+
+          return converted;
+
+        }
+
       }
+
     }
 
     return "";
+
   }
 
-  // Registration Date
-  const registration = findDate([
-    new RegExp("Registration\\s*Date\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Registration\\s*Da\\s*[:\\-]?\\s*" + datePattern, "i")
-  ]);
+
+
+  /* =========================
+     REGISTRATION DATE
+  ========================= */
+
+  const registration =
+    findDate([
+
+      new RegExp(
+        "Registration\\s*Date\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Registration\\s*Da\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      )
+
+    ]);
+
 
   if(registration){
-    document.getElementById("registrationDate").value = registration;
+
+    document.getElementById(
+      "registrationDate"
+    ).value =
+      registration;
+
   }
 
-  // Fitness - only Fitness-related labels
-  const fitness = findDate([
-    new RegExp("Fitness\\s*\\/\\s*REGN\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Fitness\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Fitness\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Fitness\\s*[:\\-]?\\s*" + datePattern, "i")
-  ]);
+
+
+  /* =========================
+     FITNESS
+  ========================= */
+
+  const fitness =
+    findDate([
+
+      new RegExp(
+        "Fitness\\s*\\/\\s*REGN\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Fitness\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Fitness\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Fitness\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      )
+
+    ]);
+
 
   if(fitness){
-    document.getElementById("fitness").value = fitness;
+
+    document.getElementById(
+      "fitness"
+    ).value =
+      fitness;
+
   }
 
-  // Insurance - only Insurance-related labels
-  const insurance = findDate([
-    new RegExp("Insurance\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Insurance\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Insurance\\s*Validity\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Insurance\\s*[:\\-]?\\s*" + datePattern, "i")
-  ]);
+
+
+  /* =========================
+     INSURANCE
+  ========================= */
+
+  const insurance =
+    findDate([
+
+      new RegExp(
+        "Insurance\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Insurance\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Insurance\\s*Validity\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Insurance\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      )
+
+    ]);
+
 
   if(insurance){
-    document.getElementById("insurance").value = insurance;
+
+    document.getElementById(
+      "insurance"
+    ).value =
+      insurance;
+
   }
 
-  // PUCC - only PUCC-related labels
-  const pucc = findDate([
-    new RegExp("PUCC\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("PUCC\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("PUCC\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("PUC\\s*[:\\-]?\\s*" + datePattern, "i")
-  ]);
+
+
+  /* =========================
+     PUCC
+  ========================= */
+
+  const pucc =
+    findDate([
+
+      new RegExp(
+        "PUCC\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "PUCC\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "PUCC\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "PUC\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "PUC\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      )
+
+    ]);
+
 
   if(pucc){
-    document.getElementById("pucc").value = pucc;
+
+    document.getElementById(
+      "pucc"
+    ).value =
+      pucc;
+
   }
 
-  // Permit - IMPORTANT:
-  // Permit શબ્દ વગર કોઈ તારીખ Permit માં નહીં આવે
-  const permit = findDate([
-    new RegExp("Permit\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Permit\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Permit\\s*Expiry\\s*[:\\-]?\\s*" + datePattern, "i"),
-    new RegExp("Permit\\s*[:\\-]?\\s*" + datePattern, "i")
-  ]);
+
+
+  /* =========================
+     PERMIT
+     
+     IMPORTANT:
+     Permit શબ્દ વગર
+     કોઈ તારીખ લેવામાં નહીં આવે.
+  ========================= */
+
+  const permit =
+    findDate([
+
+      new RegExp(
+        "Permit\\s*Valid\\s*Up\\s*To\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Permit\\s*Valid\\s*Upto\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Permit\\s*Expiry\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      ),
+
+      new RegExp(
+        "Permit\\s*[:\\-]?\\s*" +
+        datePattern,
+        "i"
+      )
+
+    ]);
+
 
   if(permit){
-    document.getElementById("permit").value = permit;
+
+    document.getElementById(
+      "permit"
+    ).value =
+      permit;
+
   }else{
-    // તારીખ ન મળે તો Permit ખાલી
-    document.getElementById("permit").value = "";
+
+    document.getElementById(
+      "permit"
+    ).value = "";
+
   }
 
-  // Tax - only read LTT or LTP
-const taxMatch = clean.match(
-  /(?:MV\s*Tax|Tax\s*Valid\s*UpTo|Tax)[\s:\-]*(LTT|LTP)\b/i
-);
 
-if(taxMatch){
-  document.getElementById("tax").value =
-    taxMatch[1].toUpperCase();
-}else{
-  document.getElementById("tax").value = "";
-}
+
+  /* =========================
+     TAX
+     
+     Only LTT / LTP
+     
+     "Valid" નહીં આવે.
+     "Upto" નહીં આવે.
+     Fitness date નહીં આવે.
+  ========================= */
+
+  const taxMatch =
+    clean.match(
+      /(?:MV\s*Tax|Tax\s*Valid\s*Up\s*To|Tax\s*Valid\s*Upto|Tax)[\s:\-]*(LTT|LTP)\b/i
+    );
+
+
+  if(taxMatch){
+
+    document.getElementById(
+      "tax"
+    ).value =
+      taxMatch[1]
+      .toUpperCase();
+
+  }else{
+
+    document.getElementById(
+      "tax"
+    ).value = "";
+
+  }
+
 }
 
+
+
+/* =========================
+   DATE CONVERTER
+========================= */
 
 function convertDate(value){
 
-  if(!value) return "";
+  if(!value){
 
-  value = value.replace(/\//g,"-");
+    return "";
 
-  const parts = value.split("-");
+  }
 
-  if(parts.length !== 3) return "";
 
-  let day = parts[0];
-  let month = parts[1];
-  let year = parts[2];
+  value =
+    value.replace(/\//g,"-");
+
+
+  const parts =
+    value.split("-");
+
+
+  if(parts.length !== 3){
+
+    return "";
+
+  }
+
+
+  let day =
+    parts[0].trim();
+
+  let month =
+    parts[1].trim();
+
+  let year =
+    parts[2].trim();
+
 
   const months = {
-    Jan:"01", January:"01",
-    Feb:"02", February:"02",
-    Mar:"03", March:"03",
-    Apr:"04", April:"04",
+
+    Jan:"01",
+    January:"01",
+
+    Feb:"02",
+    February:"02",
+
+    Mar:"03",
+    March:"03",
+
+    Apr:"04",
+    April:"04",
+
     May:"05",
-    Jun:"06", June:"06",
-    Jul:"07", July:"07",
-    Aug:"08", August:"08",
-    Sep:"09", September:"09",
-    Oct:"10", October:"10",
-    Nov:"11", November:"11",
-    Dec:"12", December:"12"
+
+    Jun:"06",
+    June:"06",
+
+    Jul:"07",
+    July:"07",
+
+    Aug:"08",
+    August:"08",
+
+    Sep:"09",
+    September:"09",
+
+    Oct:"10",
+    October:"10",
+
+    Nov:"11",
+    November:"11",
+
+    Dec:"12",
+    December:"12"
+
   };
+
 
   const monthKey =
     Object.keys(months).find(
-      key => key.toLowerCase() === month.toLowerCase()
+      key =>
+        key.toLowerCase() ===
+        month.toLowerCase()
     );
 
+
   if(monthKey){
-    month = months[monthKey];
+
+    month =
+      months[monthKey];
+
   }
 
-  if(!/^\d+$/.test(month)) return "";
-  if(!/^\d{4}$/.test(year)) return "";
 
-  return `${year}-${month.padStart(2,"0")}-${day.padStart(2,"0")}`;
+  if(!/^\d+$/.test(month)){
+
+    return "";
+
+  }
+
+
+  if(!/^\d{4}$/.test(year)){
+
+    return "";
+
+  }
+
+
+  if(!/^\d{1,2}$/.test(day)){
+
+    return "";
+
+  }
+
+
+  const d =
+    parseInt(day);
+
+  const m =
+    parseInt(month);
+
+  const y =
+    parseInt(year);
+
+
+  if(
+    d < 1 ||
+    d > 31 ||
+    m < 1 ||
+    m > 12
+  ){
+
+    return "";
+
+  }
+
+
+  return (
+    `${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`
+  );
+
 }
 
+
+
+/* =========================
+   SAVE VEHICLE
+========================= */
 
 function saveVehicle(){
 
   const vehicleNumber =
-    document.getElementById("vehicleNumber").value
+    document
+    .getElementById("vehicleNumber")
+    .value
     .trim()
     .toUpperCase()
     .replace(/\s/g,"");
 
+
   if(!vehicleNumber){
-    alert("❌ Vehicle Number મળ્યો નથી.");
+
+    alert(
+      "❌ Vehicle Number મળ્યો નથી."
+    );
+
     return;
+
   }
 
+
   let vehicles =
-    JSON.parse(localStorage.getItem("vehicles")) || [];
+    JSON.parse(
+      localStorage.getItem(
+        "vehicles"
+      )
+    ) || [];
+
+
 
   const newVehicle = {
 
-    vehicleNumber: vehicleNumber,
+    vehicleNumber:
+
+      vehicleNumber,
 
     registrationDate:
-      document.getElementById("registrationDate").value,
+
+      document
+      .getElementById(
+        "registrationDate"
+      )
+      .value,
 
     fitness:
-      document.getElementById("fitness").value,
+
+      document
+      .getElementById(
+        "fitness"
+      )
+      .value,
 
     insurance:
-      document.getElementById("insurance").value,
+
+      document
+      .getElementById(
+        "insurance"
+      )
+      .value,
 
     tax:
-      document.getElementById("tax").value,
+
+      document
+      .getElementById(
+        "tax"
+      )
+      .value,
 
     pucc:
-      document.getElementById("pucc").value,
+
+      document
+      .getElementById(
+        "pucc"
+      )
+      .value,
 
     permit:
-      document.getElementById("permit").value,
 
-    updatedAt: new Date().toISOString()
+      document
+      .getElementById(
+        "permit"
+      )
+      .value,
+
+    updatedAt:
+
+      new Date()
+      .toISOString()
+
   };
 
-  const existingIndex = vehicles.findIndex(
-    v => v.vehicleNumber === newVehicle.vehicleNumber
-  );
 
-  if(existingIndex !== -1){
 
-    vehicles[existingIndex] = newVehicle;
+  /* =========================
+     SAME VEHICLE UPDATE
+  ========================= */
+
+  const existingIndex =
+    vehicles.findIndex(
+      v =>
+        v.vehicleNumber ===
+        newVehicle.vehicleNumber
+    );
+
+
+  if(
+    existingIndex !== -1
+  ){
+
+    vehicles[existingIndex] =
+      newVehicle;
+
 
     alert(
       "🔄 Vehicle પહેલેથી હાજર હતું.\nજૂની માહિતી Update થઈ ગઈ."
@@ -434,14 +986,24 @@ function saveVehicle(){
 
   }else{
 
-    vehicles.push(newVehicle);
+    vehicles.push(
+      newVehicle
+    );
 
-    alert("✅ Vehicle Successfully Saved!");
+
+    alert(
+      "✅ Vehicle Successfully Saved!"
+    );
+
   }
+
+
 
   localStorage.setItem(
     "vehicles",
-    JSON.stringify(vehicles)
+    JSON.stringify(
+      vehicles
+    )
   );
 
 }
@@ -449,4 +1011,4 @@ function saveVehicle(){
 </script>
 
 </body>
-</html>
+  </html>
