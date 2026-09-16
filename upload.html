@@ -170,6 +170,7 @@ button:disabled{
 </div>
 
 <div class="container">
+
   <div class="card">
 
     <h2>Upload Vehicle Details</h2>
@@ -189,6 +190,7 @@ button:disabled{
     <img
       id="preview"
       class="preview"
+      alt="Vehicle Preview"
     >
 
     <button
@@ -204,6 +206,8 @@ button:disabled{
     </div>
 
 
+    <!-- VEHICLE NUMBER -->
+
     <label>Vehicle Number</label>
 
     <input
@@ -214,6 +218,8 @@ button:disabled{
     >
 
 
+    <!-- REGISTRATION DATE -->
+
     <label>Registration Date</label>
 
     <input
@@ -222,6 +228,8 @@ button:disabled{
       placeholder="DD/MM/YYYY"
     >
 
+
+    <!-- FITNESS -->
 
     <label>Fitness Expiry</label>
 
@@ -232,6 +240,8 @@ button:disabled{
     >
 
 
+    <!-- INSURANCE -->
+
     <label>Insurance Expiry</label>
 
     <input
@@ -240,6 +250,8 @@ button:disabled{
       placeholder="DD/MM/YYYY"
     >
 
+
+    <!-- TAX -->
 
     <label>Tax Valid UpTo</label>
 
@@ -254,6 +266,8 @@ button:disabled{
     </div>
 
 
+    <!-- PUCC -->
+
     <label>PUCC Expiry</label>
 
     <input
@@ -262,6 +276,8 @@ button:disabled{
       placeholder="DD/MM/YYYY"
     >
 
+
+    <!-- PERMIT -->
 
     <label>Permit Expiry</label>
 
@@ -272,12 +288,16 @@ button:disabled{
     >
 
 
+    <!-- SAVE -->
+
     <button
       class="btn-success"
       id="saveBtn">
       SAVE VEHICLE
     </button>
 
+
+    <!-- DASHBOARD -->
 
     <button
       class="btn-secondary"
@@ -286,11 +306,15 @@ button:disabled{
     </button>
 
 
+    <!-- STATUS -->
+
     <div
       id="status"
       class="status">
     </div>
 
+
+    <!-- OCR TEXT -->
 
     <div
       class="rawbox"
@@ -306,6 +330,7 @@ button:disabled{
     </div>
 
   </div>
+
 </div>
 
 
@@ -399,7 +424,9 @@ photoInput.addEventListener(
     }
 
     preview.src =
-      URL.createObjectURL(selectedFile);
+      URL.createObjectURL(
+        selectedFile
+      );
 
     preview.style.display =
       "block";
@@ -627,8 +654,8 @@ function findDateAfterKeyword(
 
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
@@ -651,7 +678,9 @@ function findDateAfterKeyword(
 
 
       const result =
-        findDate(nearbyText);
+        findDate(
+          nearbyText
+        );
 
 
       if(result){
@@ -668,21 +697,6 @@ function findDateAfterKeyword(
 /* =====================================
    TAX DETECTION
 ===================================== */
-
-/*
-  TAX માટે મહત્વપૂર્ણ નિયમ:
-
-  1. Tax label ની નજીક LTT મળે
-     તો LTT priority.
-
-  2. Tax label ની નજીક date મળે
-     તો date.
-
-  3. Insurance / PUCC ની date
-     Tax તરીકે લેવામાં નહીં આવે.
-
-  4. LTP ને LTT માનવામાં નહીં આવે.
-*/
 
 function findTax(text){
 
@@ -707,8 +721,8 @@ function findTax(text){
 
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
@@ -729,17 +743,17 @@ function findTax(text){
 
 
     /*
-      Tax label થી 5 lines સુધી
-      check કરીએ.
+      Check Tax label and next 5 lines.
     */
 
     const nearbyLines = [];
 
+
     for(
-      let j=i;
-      j<=Math.min(
-        i+5,
-        lines.length-1
+      let j = i;
+      j <= Math.min(
+        i + 5,
+        lines.length - 1
       );
       j++
     ){
@@ -759,7 +773,7 @@ function findTax(text){
 
 
     /*
-      LTT first
+      LTT has priority.
     */
 
     if(
@@ -773,15 +787,12 @@ function findTax(text){
 
 
     /*
-      OCR ક્યારેક LTT ને
-      L7T / LT7 / LIT તરીકે વાંચે છે.
-
-      પરંતુ LTP ને LTT ન બનાવવું.
+      Common OCR variants of LTT.
     */
 
     const possibleLTT =
       upperNearby.match(
-        /\b(L7T|LT7|LIT|LII|LTT)\b/
+        /\b(L7T|LT7|LIT|LII)\b/
       );
 
 
@@ -792,8 +803,7 @@ function findTax(text){
 
 
     /*
-      જો LTT નથી તો Tax label
-      પછીની date શોધો.
+      Otherwise find Tax date.
     */
 
     const dateValue =
@@ -810,27 +820,16 @@ function findTax(text){
 
 
   /*
-    જો Tax field OCR માં અલગ line પર
-    આવ્યું હોય તો આખા text માં LTT શોધો.
-
-    અહીં LTP intentionally ignore છે.
+    If Tax exists somewhere and
+    LTT exists in OCR text.
   */
 
   if(
+    /\bTAX\b/i.test(text) &&
     /\bLTT\b/i.test(text)
   ){
 
-    /*
-      માત્ર ત્યારે LTT return કરીએ
-      જ્યારે document માં Tax શબ્દ પણ હોય.
-    */
-
-    if(
-      /\bTAX\b/i.test(text)
-    ){
-
-      return "LTT";
-    }
+    return "LTT";
   }
 
 
@@ -842,9 +841,12 @@ function findTax(text){
    VEHICLE NUMBER CLEAN
 ===================================== */
 
-function cleanVehicleCandidate(
-  value
-){
+function cleanVehicleCandidate(value){
+
+  if(!value){
+    return "";
+  }
+
 
   let v =
     value
@@ -856,28 +858,16 @@ function cleanVehicleCandidate(
 
 
   /*
-    Common OCR mistakes
+    Common OCR errors in GJ prefix.
   */
 
-  if(v.startsWith("JO")){
-    v =
-      "GJ" +
-      v.substring(2);
-  }
+  if(
+    v.startsWith("JO") ||
+    v.startsWith("J0") ||
+    v.startsWith("GO") ||
+    v.startsWith("G0")
+  ){
 
-  else if(v.startsWith("J0")){
-    v =
-      "GJ" +
-      v.substring(2);
-  }
-
-  else if(v.startsWith("GO")){
-    v =
-      "GJ" +
-      v.substring(2);
-  }
-
-  else if(v.startsWith("G0")){
     v =
       "GJ" +
       v.substring(2);
@@ -885,8 +875,7 @@ function cleanVehicleCandidate(
 
 
   /*
-    First two Gujarat letters
-    must be GJ.
+    Sometimes OCR reads GJ as G0 / GO.
   */
 
   if(
@@ -894,7 +883,8 @@ function cleanVehicleCandidate(
     v[0] === "G" &&
     (
       v[1] === "0" ||
-      v[1] === "O"
+      v[1] === "O" ||
+      v[1] === "Q"
     )
   ){
 
@@ -904,37 +894,96 @@ function cleanVehicleCandidate(
   }
 
 
+  /*
+    Fix RTO code only.
+  */
+
+  if(
+    v.startsWith("GJ") &&
+    v.length >= 4
+  ){
+
+    let rto =
+      v.substring(2,4);
+
+
+    rto =
+      rto
+        .replace(/O/g,"0")
+        .replace(/Q/g,"0")
+        .replace(/D/g,"0")
+        .replace(/I/g,"1")
+        .replace(/L/g,"1")
+        .replace(/S/g,"5")
+        .replace(/B/g,"8");
+
+
+    v =
+      "GJ" +
+      rto +
+      v.substring(4);
+  }
+
+
   return v;
 }
 
 
 /* =====================================
-   VEHICLE NUMBER PATTERN
+   VEHICLE NUMBER VALIDATION
 ===================================== */
 
-function isValidGujaratNumber(
-  value
-){
+function isValidGujaratNumber(value){
 
   const v =
-    cleanVehicleCandidate(value);
+    cleanVehicleCandidate(
+      value
+    );
 
 
   const patterns = [
 
-    /^GJ\d{2}\d{5}$/,
+    /*
+      GJ06A1234
+    */
 
     /^GJ\d{2}[A-Z]\d{4}$/,
 
+
+    /*
+      GJ06A12345
+    */
+
     /^GJ\d{2}[A-Z]\d{5}$/,
+
+
+    /*
+      GJ0612345
+    */
+
+    /^GJ\d{2}\d{5}$/,
+
+
+    /*
+      GJ06AB1234
+    */
 
     /^GJ\d{2}[A-Z]{2}\d{4}$/,
 
+
+    /*
+      GJ06AB12345
+    */
+
     /^GJ\d{2}[A-Z]{2}\d{5}$/,
 
-    /^GJ\d{2}[A-Z]{3}\d{3,5}$/,
 
-    /^GJ\d{1,2}[A-Z]{1,3}\d{3,5}$/
+    /*
+      Other Gujarat series
+    */
+
+    /^GJ\d{2}[A-Z]{3}\d{3,5}$/
+
 
   ];
 
@@ -947,7 +996,7 @@ function isValidGujaratNumber(
 
 
 /* =====================================
-   VEHICLE NUMBER OCR CORRECTION
+   VEHICLE NUMBER CORRECTION
 ===================================== */
 
 function correctVehicleNumber(
@@ -966,68 +1015,31 @@ function correctVehicleNumber(
 
 
   /*
-    OCR common substitutions
+    =================================
+    SPECIAL CASE
+
+    OCR example:
+
+    GJO6AZ5038
+
+    becomes after prefix cleaning:
+
+    GJ06AZ5038
+
+    Here:
+
+    Z may actually be 2.
+
+    Expected possible number:
+
+    GJ06A25038
+    =================================
   */
 
-  v =
-    v
-      .replace(/^GJ([OQ])/,"GJ0")
-      .replace(/^GJ([IL])/,"GJ1");
-
-
-  /*
-    GJ પછીના RTO digits માં
-    O/Q/D/S/I જેવા OCR mistakes.
-  */
-
-  if(v.startsWith("GJ")){
-
-    let rest =
-      v.substring(2);
-
-
-    if(rest.length >= 2){
-
-      rest =
-        rest
-          .replace(/^O/,"0")
-          .replace(/^Q/,"0")
-          .replace(/^D/,"0")
-          .replace(/^I/,"1")
-          .replace(/^L/,"1")
-          .replace(/^S/,"5")
-          .replace(/^B/,"8");
-
-    }
-
-
-    v =
-      "GJ" +
-      rest;
-  }
-
-
-  /*
-    Special OCR case:
-
-    Example OCR:
-    GJO6AZ8139
-
-    Common visual mistakes:
-    O -> 0
-    Z -> 2
-
-    અને Gujarat single-letter
-    series હોય ત્યારે A પછીનો
-    numeric part અલગ પાડીએ.
-
-    GJ06AZ8139
-    -> GJ06A2813
-  */
 
   let special =
     v.match(
-      /^GJ(\d{2})([A-Z])Z(\d{4})(\d?)$/
+      /^GJ(\d{2})([A-Z])Z(\d{4,5})$/
     );
 
 
@@ -1036,37 +1048,112 @@ function correctVehicleNumber(
     const rto =
       special[1];
 
-    const letter =
+    const series =
       special[2];
 
-    const digits =
-      special[4];
+    const numbers =
+      special[3];
 
 
     /*
-      જો અંતે OCR એ extra digit ઉમેર્યો હોય
-      તો first 4 numeric characters રાખીએ.
+      Z -> 2
     */
 
-    v =
+    const option =
       "GJ" +
       rto +
-      letter +
+      series +
       "2" +
-      digits;
+      numbers;
+
 
     /*
-      જો resulting number 9 digitsથી વધુ હોય,
-      last extra digit remove.
+      Return only if this is
+      a valid Gujarat format.
     */
 
-    if(v.length > 10){
+    if(
+      isValidGujaratNumber(
+        option
+      )
+    ){
 
-      v =
-        v.substring(
-          0,
-          10
-        );
+      return option;
+    }
+  }
+
+
+  /*
+    =================================
+    Another common OCR case
+
+    GJ06A25038
+    =================================
+  */
+
+  if(
+    /^GJ\d{2}[A-Z]\d{5}$/.test(v)
+  ){
+
+    return v;
+  }
+
+
+  /*
+    =================================
+    Normal numeric-series vehicle
+    =================================
+  */
+
+  let normal =
+    v.match(
+      /^GJ(\d{2})([A-Z]{1,3})([A-Z0-9]{3,6})$/
+    );
+
+
+  if(normal){
+
+    const rto =
+      normal[1];
+
+    const series =
+      normal[2];
+
+    let number =
+      normal[3];
+
+
+    /*
+      Numeric portion OCR corrections.
+
+      Only apply where character appears
+      after a recognised letter series.
+    */
+
+    number =
+      number
+        .replace(/O/g,"0")
+        .replace(/Q/g,"0")
+        .replace(/I/g,"1")
+        .replace(/L/g,"1")
+        .replace(/S/g,"5")
+        .replace(/B/g,"8");
+
+
+    const result =
+      "GJ" +
+      rto +
+      series +
+      number;
+
+
+    if(
+      isValidGujaratNumber(
+        result
+      )
+    ){
+
+      return result;
     }
   }
 
@@ -1079,9 +1166,7 @@ function correctVehicleNumber(
    FIND VEHICLE NUMBER
 ===================================== */
 
-function findVehicleNumber(
-  text
-){
+function findVehicleNumber(text){
 
   const upperText =
     text.toUpperCase();
@@ -1095,13 +1180,15 @@ function findVehicleNumber(
 
 
   /*
-    FIRST PRIORITY:
+    =================================
+    PRIORITY 1:
     Vehicle Number label
+    =================================
   */
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
@@ -1110,40 +1197,68 @@ function findVehicleNumber(
 
 
     if(
-      line.includes(
-        "VEHICLE NUMBER"
-      ) ||
-      line.includes(
-        "VEHICLE NO"
-      ) ||
-      line.includes(
-        "REGISTRATION NUMBER"
-      ) ||
-      line.includes(
-        "REGISTRATION NO"
-      )
+      line.includes("VEHICLE NUMBER") ||
+      line.includes("VEHICLE NO") ||
+      line.includes("VEHICLE NO.") ||
+      line.includes("REGISTRATION NUMBER") ||
+      line.includes("REGISTRATION NO") ||
+      line.includes("REGISTRATION NO.")
     ){
 
-      const nearbyText = [
+      /*
+        Check next 4 lines.
+      */
 
-        lines[i],
+      const nearbyLines = [];
 
-        lines[i+1] || "",
 
-        lines[i+2] || ""
+      for(
+        let j = i;
+        j <= Math.min(
+          i + 4,
+          lines.length - 1
+        );
+        j++
+      ){
 
-      ].join(" ");
+        nearbyLines.push(
+          lines[j]
+        );
+      }
 
+
+      const nearbyText =
+        nearbyLines.join(" ");
+
+
+      /*
+        Normal candidates.
+      */
 
       const candidates =
         nearbyText.match(
-          /\b[A-Z0-9]{8,13}\b/g
+          /[A-Z0-9]{8,14}/g
         ) || [];
 
 
       for(
         let candidate of candidates
       ){
+
+        /*
+          Ignore labels.
+        */
+
+        if(
+          candidate === "VEHICLENUMBER" ||
+          candidate === "VEHICLENO" ||
+          candidate === "REGISTRATIONNUMBER" ||
+          candidate === "REGISTRATIONNO"
+        ){
+
+          continue;
+        }
+
 
         candidate =
           correctVehicleNumber(
@@ -1165,18 +1280,85 @@ function findVehicleNumber(
 
 
   /*
-    SECOND PRIORITY:
-    Whole OCR text
+    =================================
+    PRIORITY 2:
+    Search full OCR text
+    =================================
   */
 
   const allCandidates =
     upperText.match(
-      /\b[A-Z0-9]{8,13}\b/g
+      /[A-Z0-9]{8,14}/g
     ) || [];
 
 
   for(
     let candidate of allCandidates
+  ){
+
+    /*
+      Ignore obvious words.
+    */
+
+    if(
+      candidate === "VEHICLENUMBER" ||
+      candidate === "VEHICLENO" ||
+      candidate === "REGISTRATIONNUMBER" ||
+      candidate === "REGISTRATIONNO" ||
+      candidate === "OWNERNAM" ||
+      candidate === "OWNERNAME" ||
+      candidate === "VADODARA"
+    ){
+
+      continue;
+    }
+
+
+    candidate =
+      correctVehicleNumber(
+        candidate
+      );
+
+
+    if(
+      isValidGujaratNumber(
+        candidate
+      )
+    ){
+
+      return candidate;
+    }
+  }
+
+
+  /*
+    =================================
+    PRIORITY 3:
+    OCR with spaces
+
+    Example:
+
+    GJ 06 A 78397
+
+    GJ 06 A 25038
+    =================================
+  */
+
+  const compactText =
+    upperText.replace(
+      /GJ\s*(\d{1,2})\s*([A-Z]{1,3})?\s*([A-Z0-9]{3,6})/g,
+      "GJ$1$2$3"
+    );
+
+
+  const compactCandidates =
+    compactText.match(
+      /GJ[A-Z0-9]{7,13}/g
+    ) || [];
+
+
+  for(
+    let candidate of compactCandidates
   ){
 
     candidate =
@@ -1197,31 +1379,37 @@ function findVehicleNumber(
 
 
   /*
-    THIRD PRIORITY:
-    OCR માં spaces આવ્યા હોય તો
-    remove કરીને check.
+    =================================
+    PRIORITY 4:
+    Try direct OCR patterns
 
-    Example:
-    GJ 06 A 2813
+    This helps when OCR has:
+    GJO6A25038
+    GJ06AZ5038
+    =================================
   */
 
-  const compactText =
-    upperText
-      .replace(
-        /GJ\s+(\d{1,2})\s*([A-Z]{1,3})?\s*(\d{3,5})/g,
-        "GJ$1$2$3"
-      );
-
-
-  const compactCandidates =
-    compactText.match(
-      /\bGJ[A-Z0-9]{7,11}\b/g
+  const specialCandidates =
+    upperText.match(
+      /GJ[A-Z0-9]{7,13}/g
     ) || [];
 
 
   for(
-    let candidate of compactCandidates
+    let candidate of specialCandidates
   ){
+
+    /*
+      Fix O in RTO.
+    */
+
+    candidate =
+      candidate
+        .replace(
+          /^GJ([OQ])(\d)/,
+          "GJ0$2"
+        );
+
 
     candidate =
       correctVehicleNumber(
@@ -1314,6 +1502,21 @@ async function prepareImage(
             );
 
 
+          /*
+            White background.
+          */
+
+          ctx.fillStyle =
+            "#ffffff";
+
+          ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+          );
+
+
           ctx.drawImage(
             img,
             0,
@@ -1326,7 +1529,7 @@ async function prepareImage(
           resolve(
             canvas.toDataURL(
               "image/jpeg",
-              0.92
+              0.95
             )
           );
         };
@@ -1431,6 +1634,10 @@ readBtn.addEventListener(
           result.data.text
         );
 
+
+      /*
+        Show raw OCR.
+      */
 
       rawText.value =
         text;
@@ -1599,6 +1806,7 @@ readBtn.addEventListener(
 
       console.error(error);
 
+
       progress.style.display =
         "none";
 
@@ -1634,8 +1842,7 @@ function convertToDatabaseDate(
 
 
   /*
-    LTT database માં text તરીકે
-    save થશે.
+    LTT remains text.
   */
 
   if(
@@ -1714,10 +1921,12 @@ async function uploadPhoto(
         filePath,
         selectedFile,
         {
+
           contentType:
             "image/jpeg",
 
           upsert:false
+
         }
       );
 
@@ -1788,6 +1997,10 @@ saveBtn.addEventListener(
 
     try{
 
+      /*
+        Find existing vehicle.
+      */
+
       const {
         data:existing,
         error:findError
@@ -1821,7 +2034,7 @@ saveBtn.addEventListener(
       /*
         New photo:
         upload new photo
-        and remove old photo.
+        and delete old photo.
       */
 
       if(selectedFile){
@@ -1840,20 +2053,40 @@ saveBtn.addEventListener(
           uploaded.photo_path;
 
 
+        /*
+          Delete old photo.
+        */
+
         if(
           existing &&
           existing.photo_path
         ){
 
-          await supabaseClient
-            .storage
-            .from("vehicle-photos")
-            .remove([
-              existing.photo_path
-            ]);
+          const {
+            error:deletePhotoError
+          } =
+            await supabaseClient
+              .storage
+              .from("vehicle-photos")
+              .remove([
+                existing.photo_path
+              ]);
+
+
+          if(deletePhotoError){
+
+            console.warn(
+              "Old photo delete warning:",
+              deletePhotoError
+            );
+          }
         }
       }
 
+
+      /*
+        Vehicle data.
+      */
 
       const vehicleData = {
 
@@ -1876,7 +2109,8 @@ saveBtn.addEventListener(
           ),
 
         /*
-          LTT remains LTT.
+          Tax:
+          LTT stays LTT.
         */
 
         tax_expiry:
@@ -1901,6 +2135,10 @@ saveBtn.addEventListener(
 
       };
 
+
+      /*
+        UPDATE
+      */
 
       if(existing){
 
@@ -1929,7 +2167,13 @@ saveBtn.addEventListener(
           "success"
         );
 
-      }else{
+      }
+
+      /*
+        INSERT
+      */
+
+      else{
 
         const {
           error:insertError
@@ -1953,6 +2197,10 @@ saveBtn.addEventListener(
         );
       }
 
+
+      /*
+        Clear selected photo.
+      */
 
       selectedFile =
         null;
