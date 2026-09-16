@@ -320,15 +320,17 @@ function extractVehicleData(text){
     document.getElementById("permit").value = "";
   }
 
-  // Tax
-  const taxMatch = clean.match(
-    /(?:MV\s*Tax|Tax)\s*[:\-]?\s*([A-Za-z0-9\-\/]+)/i
-  );
+  // Tax - only read LTT or LTP
+const taxMatch = clean.match(
+  /(?:MV\s*Tax|Tax\s*Valid\s*UpTo|Tax)[\s:\-]*(LTT|LTP)\b/i
+);
 
-  if(taxMatch){
-    document.getElementById("tax").value =
-      taxMatch[1].trim();
-  }
+if(taxMatch){
+  document.getElementById("tax").value =
+    taxMatch[1].toUpperCase();
+}else{
+  document.getElementById("tax").value = "";
+}
 }
 
 
