@@ -3,12 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TEST RV UPLOAD</title>
+
+<title>RV Vehicle Reminder - Upload</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
@@ -217,403 +221,566 @@ button:disabled{
 
 <div class="container">
 
-<div class="card">
+    <!-- PHOTO CARD -->
+    <div class="card">
 
-<h2>Upload Vehicle Photo</h2>
+        <h2>Upload Vehicle Photo</h2>
 
-<input
-    type="file"
-    id="photoInput"
-    accept="image/*"
-    onchange="previewPhoto()"
->
+        <input
+            type="file"
+            id="photoInput"
+            accept="image/*"
+        >
 
-<img id="preview" alt="Vehicle Photo Preview">
+        <img
+            id="preview"
+            alt="Vehicle Photo Preview"
+        >
 
-<div class="progress" id="progress">
-    <div class="progress-bar" id="progressBar"></div>
+        <div
+            class="progress"
+            id="progress"
+        >
+            <div
+                class="progress-bar"
+                id="progressBar"
+            ></div>
+        </div>
+
+        <div
+            class="status"
+            id="ocrStatus"
+        >
+        </div>
+
+        <button
+            type="button"
+            class="btn-primary"
+            id="readButton"
+        >
+            🔍 Read Vehicle Details
+        </button>
+
+        <div class="note">
+            Upload a clear VAHAN / vehicle details screenshot.
+            After OCR, check all details and correct anything before saving.
+        </div>
+
+        <details class="ocr-box">
+
+            <summary>Show OCR text</summary>
+
+            <div id="rawText"></div>
+
+        </details>
+
+    </div>
+
+
+    <!-- VEHICLE DETAILS CARD -->
+    <div class="card">
+
+        <h2>Vehicle Details</h2>
+
+        <div class="form-grid">
+
+            <div class="full">
+
+                <label>Vehicle Number</label>
+
+                <input
+                    type="text"
+                    id="vehicleNumber"
+                    placeholder="GJ04AB1234"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>Registration Date</label>
+
+                <input
+                    type="date"
+                    id="registrationDate"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>Fitness Expiry</label>
+
+                <input
+                    type="date"
+                    id="fitness"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>Insurance Expiry</label>
+
+                <input
+                    type="date"
+                    id="insurance"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>Tax</label>
+
+                <input
+                    type="text"
+                    id="tax"
+                    placeholder="LTT / LTP"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>PUCC Expiry</label>
+
+                <input
+                    type="date"
+                    id="pucc"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>Permit Expiry</label>
+
+                <input
+                    type="date"
+                    id="permit"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="successMessage"
+            class="success"
+        ></div>
+
+
+        <div
+            id="errorMessage"
+            class="error"
+        ></div>
+
+
+        <div class="action-buttons">
+
+            <button
+                type="button"
+                class="btn-success"
+                id="saveButton"
+            >
+                💾 Save Vehicle
+            </button>
+
+
+            <button
+                type="button"
+                class="btn-secondary"
+                id="dashboardButton"
+            >
+                Dashboard
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="status" id="ocrStatus"></div>
-
-<button
-    type="button"
-    class="btn-primary"
-    id="readButton"
-    onclick="readPhoto()"
->
-    🔍 Read Vehicle Details
-</button>
-
-<div class="note">
-Upload a clear VAHAN / vehicle details screenshot.
-After OCR, check all details and correct anything before saving.
-</div>
-
-<details class="ocr-box">
-<summary>Show OCR text</summary>
-<div id="rawText"></div>
-</details>
-
-</div>
-
-<div class="card">
-
-<h2>Vehicle Details</h2>
-
-<div class="form-grid">
-
-<div class="full">
-
-<label>Vehicle Number</label>
-
-<input
-    type="text"
-    id="vehicleNumber"
-    placeholder="GJ04AB1234"
->
-
-</div>
-
-<div>
-
-<label>Registration Date</label>
-
-<input
-    type="date"
-    id="registrationDate"
->
-
-</div>
-
-<div>
-
-<label>Fitness Expiry</label>
-
-<input
-    type="date"
-    id="fitness"
->
-
-</div>
-
-<div>
-
-<label>Insurance Expiry</label>
-
-<input
-    type="date"
-    id="insurance"
->
-
-</div>
-
-<div>
-
-<label>Tax</label>
-
-<input
-    type="text"
-    id="tax"
-    placeholder="LTT / LTP"
->
-
-</div>
-
-<div>
-
-<label>PUCC Expiry</label>
-
-<input
-    type="date"
-    id="pucc"
->
-
-</div>
-
-<div>
-
-<label>Permit Expiry</label>
-
-<input
-    type="date"
-    id="permit"
->
-
-</div>
-
-</div>
-
-<div id="successMessage" class="success"></div>
-
-<div id="errorMessage" class="error"></div>
-
-<div class="action-buttons">
-
-<button
-    class="btn-success"
-    id="saveButton"
-    onclick="saveVehicle()"
->
-💾 Save Vehicle
-</button>
-
-<button
-    class="btn-secondary"
-    onclick="goDashboard()"
->
-Dashboard
-</button>
-
-</div>
-
-</div>
-
-</div>
 
 <script>
 
+/* =========================================================
+   SUPABASE
+========================================================= */
+
 const SUPABASE_URL =
-"https://lqbhafspabtlqeubqxjg.supabase.co";
+    "https://lqbhafspabtlqeubqxjg.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
+    "sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
 
 const supabaseClient =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 const STORAGE_BUCKET =
-"vehicle-photos";
+    "vehicle-photos";
 
 
-function previewPhoto(){
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-    const input =
-        document.getElementById("photoInput");
+const photoInput =
+    document.getElementById("photoInput");
 
-    const preview =
-        document.getElementById("preview");
+const preview =
+    document.getElementById("preview");
 
-    if(!input.files || !input.files[0]){
+const readButton =
+    document.getElementById("readButton");
 
-        preview.style.display="none";
+const saveButton =
+    document.getElementById("saveButton");
 
-        return;
+const dashboardButton =
+    document.getElementById("dashboardButton");
+
+const ocrStatus =
+    document.getElementById("ocrStatus");
+
+const progress =
+    document.getElementById("progress");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const rawText =
+    document.getElementById("rawText");
+
+
+/* =========================================================
+   PHOTO PREVIEW
+========================================================= */
+
+photoInput.addEventListener(
+    "change",
+    function(){
+
+        if(
+            !photoInput.files ||
+            !photoInput.files[0]
+        ){
+
+            preview.style.display = "none";
+
+            ocrStatus.innerText = "";
+
+            return;
+        }
+
+        const file =
+            photoInput.files[0];
+
+        preview.src =
+            URL.createObjectURL(file);
+
+        preview.style.display =
+            "block";
+
+        rawText.innerText = "";
+
+        hideMessages();
+
+        ocrStatus.innerText =
+            "Photo selected. Tap Read Vehicle Details.";
+
     }
+);
 
-    preview.src =
-        URL.createObjectURL(
-            input.files[0]
-        );
 
-    preview.style.display="block";
-
-    hideMessages();
-
-    document.getElementById(
-        "rawText"
-    ).innerText="";
-
-    document.getElementById(
-        "ocrStatus"
-    ).innerText =
-        "Photo selected. Tap Read Vehicle Details.";
-
-}
-
+/* =========================================================
+   IMAGE PREPARATION
+========================================================= */
 
 function prepareImage(file){
 
-    return new Promise((resolve,reject)=>{
+    return new Promise(
+        function(resolve,reject){
 
-        const reader =
-            new FileReader();
+            const reader =
+                new FileReader();
 
-        reader.onload=function(){
+            reader.onload =
+                function(){
 
-            const img =
-                new Image();
+                    const img =
+                        new Image();
 
-            img.onload=function(){
+                    img.onload =
+                        function(){
 
-                const maxWidth=1800;
+                            const maxWidth =
+                                1800;
 
-                let width=img.width;
-                let height=img.height;
+                            let width =
+                                img.width;
 
-                if(width>maxWidth){
+                            let height =
+                                img.height;
 
-                    height =
-                        Math.round(
-                            height *
-                            maxWidth /
-                            width
-                        );
+                            if(
+                                width > maxWidth
+                            ){
 
-                    width=maxWidth;
-                }
+                                height =
+                                    Math.round(
+                                        height *
+                                        maxWidth /
+                                        width
+                                    );
 
-                const canvas =
-                    document.createElement("canvas");
+                                width =
+                                    maxWidth;
+                            }
 
-                canvas.width=width;
-                canvas.height=height;
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
 
-                const ctx =
-                    canvas.getContext("2d");
+                            canvas.width =
+                                width;
 
-                ctx.drawImage(
-                    img,
-                    0,
-                    0,
-                    width,
-                    height
-                );
+                            canvas.height =
+                                height;
 
-                canvas.toBlob(
-                    function(blob){
+                            const ctx =
+                                canvas.getContext(
+                                    "2d"
+                                );
 
-                        if(!blob){
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+                            canvas.toBlob(
+                                function(blob){
+
+                                    if(!blob){
+
+                                        reject(
+                                            new Error(
+                                                "Image processing failed."
+                                            )
+                                        );
+
+                                        return;
+                                    }
+
+                                    resolve(blob);
+
+                                },
+                                "image/jpeg",
+                                0.9
+                            );
+
+                        };
+
+
+                    img.onerror =
+                        function(){
 
                             reject(
                                 new Error(
-                                    "Image processing failed"
+                                    "Could not open image."
                                 )
                             );
 
-                            return;
-                        }
+                        };
 
-                        resolve(blob);
 
-                    },
-                    "image/jpeg",
-                    0.85
-                );
+                    img.src =
+                        reader.result;
 
-            };
+                };
 
-            img.onerror=function(){
 
-                reject(
-                    new Error(
-                        "Could not open image"
-                    )
-                );
+            reader.onerror =
+                function(){
 
-            };
+                    reject(
+                        new Error(
+                            "Could not read image."
+                        )
+                    );
 
-            img.src=reader.result;
+                };
 
-        };
 
-        reader.onerror=function(){
+            reader.readAsDataURL(file);
 
-            reject(
-                new Error(
-                    "Could not read image"
-                )
-            );
+        }
+    );
+}
 
-        };
 
-        reader.readAsDataURL(file);
-
-    });
-
-    }
-    /* =========================================================
+/* =========================================================
    OCR
 ========================================================= */
 
 async function readPhoto(){
 
-    const input = document.getElementById("photoInput");
-    const button = document.getElementById("readButton");
-    const status = document.getElementById("ocrStatus");
-    const progress = document.getElementById("progress");
-    const progressBar = document.getElementById("progressBar");
+    hideMessages();
 
-    if(!input.files || !input.files[0]){
-        alert("Please select a vehicle photo first.");
+    if(
+        !photoInput.files ||
+        !photoInput.files[0]
+    ){
+
+        showError(
+            "Please select a vehicle photo first."
+        );
+
         return;
     }
 
-    button.disabled = true;
-    progress.style.display = "block";
-    progressBar.style.width = "5%";
-    status.innerText = "Starting OCR...";
 
-    try {
+    readButton.disabled =
+        true;
 
-        const file = input.files[0];
+    progress.style.display =
+        "block";
 
-        console.log("Selected file:", file);
+    progressBar.style.width =
+        "5%";
 
-        status.innerText = "Preparing photo...";
-        progressBar.style.width = "10%";
+    ocrStatus.innerText =
+        "Starting OCR...";
 
-        const processedImage = await prepareImage(file);
 
-        console.log("Image prepared successfully");
+    try{
 
-        status.innerText = "Loading OCR engine...";
-        progressBar.style.width = "20%";
+        const file =
+            photoInput.files[0];
 
-        if(typeof Tesseract === "undefined"){
-            throw new Error("Tesseract OCR library did not load.");
+
+        ocrStatus.innerText =
+            "Preparing photo...";
+
+        progressBar.style.width =
+            "10%";
+
+
+        const processedImage =
+            await prepareImage(file);
+
+
+        if(
+            typeof Tesseract ===
+            "undefined"
+        ){
+
+            throw new Error(
+                "Tesseract OCR library did not load."
+            );
         }
 
-        status.innerText = "Reading photo...";
 
-        const result = await Tesseract.recognize(
-            processedImage,
-            "eng",
-            {
-                logger: function(info){
+        ocrStatus.innerText =
+            "Loading OCR engine...";
 
-                    console.log(info);
+        progressBar.style.width =
+            "20%";
 
-                    if(info.status === "recognizing text"){
 
-                        const percent =
-                            Math.round(info.progress * 100);
+        const result =
+            await Tesseract.recognize(
+                processedImage,
+                "eng",
+                {
 
-                        progressBar.style.width =
-                            (20 + Math.round(percent * 0.8)) + "%";
+                    logger:
+                        function(info){
 
-                        status.innerText =
-                            "Reading photo... " +
-                            percent + "%";
-                    }
-                    else if(info.status){
-                        status.innerText =
-                            info.status;
-                    }
+                            if(
+                                info.status ===
+                                "recognizing text"
+                            ){
+
+                                const percent =
+                                    Math.round(
+                                        info.progress *
+                                        100
+                                    );
+
+                                progressBar.style.width =
+                                    (
+                                        20 +
+                                        Math.round(
+                                            percent *
+                                            0.8
+                                        )
+                                    ) + "%";
+
+                                ocrStatus.innerText =
+                                    "Reading photo... " +
+                                    percent +
+                                    "%";
+
+                            }
+                            else if(
+                                info.status
+                            ){
+
+                                ocrStatus.innerText =
+                                    info.status;
+
+                            }
+
+                        }
+
                 }
-            }
-        );
+            );
 
-        console.log("OCR RESULT:", result);
 
-        const ocrText =
+        const text =
             result &&
             result.data &&
             result.data.text
                 ? result.data.text
                 : "";
 
-        document.getElementById("rawText").innerText =
-            ocrText || "No text detected.";
 
-        progressBar.style.width = "100%";
+        console.log(
+            "OCR TEXT:",
+            text
+        );
 
-        if(!ocrText.trim()){
 
-            status.innerText =
+        rawText.innerText =
+            text ||
+            "No text detected.";
+
+
+        progressBar.style.width =
+            "100%";
+
+
+        if(
+            !text.trim()
+        ){
+
+            ocrStatus.innerText =
                 "⚠️ No readable text found.";
 
             showError(
@@ -623,133 +790,14 @@ async function readPhoto(){
             return;
         }
 
-        extractVehicleData(ocrText);
 
-        status.innerText =
-            "✅ Reading complete. Please check the details.";
+        extractVehicleData(text);
 
-    }
-    catch(error){
 
-        console.error("OCR ERROR:", error);
-
-        status.innerText =
-            "❌ OCR failed.";
-
-        showError(
-            "OCR Error: " +
-            (error.message || "Unknown error")
-        );
+        ocrStatus.innerText =
+            "✅ Reading complete. Please check the details before saving.";
 
     }
-    finally{
-
-        button.disabled = false;
-
-    }
-}
-
-    button.disabled=true;
-
-    progress.style.display="block";
-
-    progressBar.style.width="0%";
-
-    status.innerText=
-        "Preparing photo...";
-
-    hideMessages();
-
-    try{
-
-        const originalFile =
-            input.files[0];
-
-        const processedImage =
-            await prepareImage(
-                originalFile
-            );
-
-        status.innerText=
-            "Starting OCR...";
-
-        const result =
-            await Tesseract.recognize(
-                processedImage,
-                "eng",
-                {
-                    logger:function(info){
-
-                        if(
-                            info.status ===
-                            "recognizing text"
-                        ){
-
-                            const percent =
-                                Math.round(
-                                    info.progress * 100
-                                );
-
-                            progressBar.style.width =
-                                percent + "%";
-
-                            status.innerText =
-                                "Reading photo... " +
-                                percent +
-                                "%";
-                        }
-
-                        else if(info.status){
-
-                            status.innerText =
-                                info.status;
-                        }
-
-                    }
-                }
-            );
-
-        const ocrText =
-            result &&
-            result.data &&
-            result.data.text
-                ? result.data.text
-                : "";
-
-        console.log(
-            "OCR TEXT:",
-            ocrText
-        );
-
-        document.getElementById(
-            "rawText"
-        ).innerText =
-            ocrText ||
-            "No text detected.";
-
-        progressBar.style.width="100%";
-
-        if(!ocrText.trim()){
-
-            status.innerText =
-                "⚠️ No text found. Please upload a clearer screenshot.";
-
-            showError(
-                "No readable text was found in the photo."
-            );
-
-            return;
-        }
-
-        extractVehicleData(
-            ocrText
-        );
-
-        status.innerText =
-            "✅ Reading complete. Please check and edit the details before saving.";
-
-    }
-
     catch(error){
 
         console.error(
@@ -757,18 +805,22 @@ async function readPhoto(){
             error
         );
 
-        status.innerText =
+        ocrStatus.innerText =
             "❌ OCR failed.";
 
         showError(
-            "OCR could not read this image. Please use a clear VAHAN screenshot and try again."
+            "OCR Error: " +
+            (
+                error.message ||
+                "Unknown error."
+            )
         );
 
     }
-
     finally{
 
-        button.disabled=false;
+        readButton.disabled =
+            false;
 
     }
 
@@ -776,225 +828,7 @@ async function readPhoto(){
 
 
 /* =========================================================
-   DATE REGEX
-========================================================= */
-
-const datePart =
-"(\\d{1,2}[\\/-](?:\\d{1,2}|Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)[\\/-]\\d{4})";
-
-
-/* =========================================================
-   FIND DATE
-========================================================= */
-
-function findDate(text,patterns){
-
-    for(
-        const pattern of patterns
-    ){
-
-        const match =
-            text.match(pattern);
-
-        if(
-            match &&
-            match[1]
-        ){
-
-            return match[1];
-
-        }
-
-    }
-
-    return "";
-
-}
-
-
-/* =========================================================
-   EXTRACT VEHICLE DATA
-========================================================= */
-
-function extractVehicleData(text){
-
-    const normalized =
-        text
-            .replace(/\r/g,"\n")
-            .replace(/[|]/g," ")
-            .replace(/[ \t]+/g," ");
-
-
-    /* VEHICLE NUMBER */
-
-    const vehicleCandidates =
-        normalized.match(
-            /\b[A-Z]{2}\s*[-]?\s*\d{1,2}\s*[-]?\s*[A-Z]{1,3}\s*[-]?\s*\d{3,4}\b/gi
-        ) || [];
-
-
-    if(vehicleCandidates.length){
-
-        const vehicleNumber =
-            cleanVehicleNumber(
-                vehicleCandidates[0]
-            );
-
-        document.getElementById(
-            "vehicleNumber"
-        ).value =
-            vehicleNumber;
-
-    }
-
-
-    /* REGISTRATION */
-
-    const registration =
-        findDate(
-            normalized,
-            [
-                new RegExp(
-                    "(?:Registration\\s*Date|Registered\\s*Date|Date\\s*of\\s*Registration|Reg(?:istration)?\\s*Date)[\\s:\\-]*" +
-                    datePart,
-                    "i"
-                )
-            ]
-        );
-
-
-    if(registration){
-
-        setDateValue(
-            "registrationDate",
-            registration
-        );
-
-    }
-
-
-    /* FITNESS */
-
-    const fitness =
-        findDate(
-            normalized,
-            [
-                new RegExp(
-                    "(?:Fitness\\s*Valid\\s*Up\\s*To|Fitness\\s*Valid\\s*Upto|Fitness\\s*Expiry|Fitness\\s*Up\\s*To|Fitness)[\\s:\\-]*" +
-                    datePart,
-                    "i"
-                )
-            ]
-        );
-
-
-    if(fitness){
-
-        setDateValue(
-            "fitness",
-            fitness
-        );
-
-    }
-
-
-    /* INSURANCE */
-
-    const insurance =
-        findDate(
-            normalized,
-            [
-                new RegExp(
-                    "(?:Insurance\\s*Valid\\s*Up\\s*To|Insurance\\s*Valid\\s*Upto|Insurance\\s*Expiry|Insurance\\s*Up\\s*To|Insurance)[\\s:\\-]*" +
-                    datePart,
-                    "i"
-                )
-            ]
-        );
-
-
-    if(insurance){
-
-        setDateValue(
-            "insurance",
-            insurance
-        );
-
-    }
-
-
-    /* PUCC */
-
-    const pucc =
-        findDate(
-            normalized,
-            [
-                new RegExp(
-                    "(?:PUCC\\s*Valid\\s*Up\\s*To|PUCC\\s*Valid\\s*Upto|PUCC\\s*Expiry|PUC\\s*Valid\\s*Up\\s*To|PUC\\s*Valid\\s*Upto|PUC\\s*Expiry|PUCC|PUC)[\\s:\\-]*" +
-                    datePart,
-                    "i"
-                )
-            ]
-        );
-
-
-    if(pucc){
-
-        setDateValue(
-            "pucc",
-            pucc
-        );
-
-    }
-
-
-    /* PERMIT */
-
-    const permit =
-        findDate(
-            normalized,
-            [
-                new RegExp(
-                    "(?:Permit\\s*Valid\\s*Up\\s*To|Permit\\s*Valid\\s*Upto|Permit\\s*Expiry|Permit\\s*Up\\s*To|Permit)[\\s:\\-]*" +
-                    datePart,
-                    "i"
-                )
-            ]
-        );
-
-
-    if(permit){
-
-        setDateValue(
-            "permit",
-            permit
-        );
-
-    }
-
-
-    /* TAX */
-
-    const tax =
-        normalized.match(
-            /(?:MV\s*Tax|Tax\s*Valid\s*Up\s*To|Tax\s*Valid\s*Upto|Tax)[\s:\-]*(LTT|LTP)\b/i
-        );
-
-
-    if(tax){
-
-        document.getElementById(
-            "tax"
-        ).value =
-            tax[1].toUpperCase();
-
-    }
-
-}
-
-
-/* =========================================================
-   CLEAN VEHICLE NUMBER
+   VEHICLE NUMBER
 ========================================================= */
 
 function cleanVehicleNumber(value){
@@ -1013,26 +847,7 @@ function cleanVehicleNumber(value){
 
 
 /* =========================================================
-   SET DATE
-========================================================= */
-
-function setDateValue(id,value){
-
-    const converted =
-        convertDate(value);
-
-    if(converted){
-
-        document.getElementById(id).value =
-            converted;
-
-    }
-
-}
-
-
-/* =========================================================
-   CONVERT DATE
+   DATE CONVERSION
 ========================================================= */
 
 function convertDate(value){
@@ -1040,22 +855,29 @@ function convertDate(value){
     if(!value){
 
         return "";
-
     }
 
-    value =
+
+    let text =
         value
             .trim()
-            .replace(/[\/]/g,"-");
+            .replace(
+                /\//g,
+                "-"
+            );
+
 
     const parts =
-        value.split("-");
+        text.split("-");
 
-    if(parts.length!==3){
+
+    if(
+        parts.length !== 3
+    ){
 
         return "";
-
     }
+
 
     let day =
         parts[0].trim();
@@ -1066,7 +888,8 @@ function convertDate(value){
     let year =
         parts[2].trim();
 
-    const months={
+
+    const months = {
 
         jan:"01",
         january:"01",
@@ -1106,7 +929,10 @@ function convertDate(value){
 
     };
 
-    if(isNaN(month)){
+
+    if(
+        isNaN(month)
+    ){
 
         month =
             months[
@@ -1124,11 +950,13 @@ function convertDate(value){
 
     }
 
+
     day =
         day.padStart(
             2,
             "0"
         );
+
 
     if(
         !year ||
@@ -1137,8 +965,8 @@ function convertDate(value){
     ){
 
         return "";
-
     }
+
 
     return(
         year +
@@ -1147,6 +975,222 @@ function convertDate(value){
         "-" +
         day
     );
+
+}
+
+
+/* =========================================================
+   SET DATE
+========================================================= */
+
+function setDateValue(
+    id,
+    value
+){
+
+    const converted =
+        convertDate(value);
+
+    if(converted){
+
+        const element =
+            document.getElementById(id);
+
+        if(element){
+
+            element.value =
+                converted;
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   EXTRACT DATA FROM OCR
+========================================================= */
+
+function extractVehicleData(text){
+
+    const normalized =
+        text
+            .replace(
+                /\r/g,
+                "\n"
+            )
+            .replace(
+                /[|]/g,
+                " "
+            );
+
+
+    /* VEHICLE NUMBER */
+
+    const vehicleMatches =
+        normalized.match(
+            /\b[A-Z]{2}\s*[-]?\s*\d{1,2}\s*[-]?\s*[A-Z]{1,3}\s*[-]?\s*\d{3,4}\b/gi
+        ) || [];
+
+
+    if(
+        vehicleMatches.length
+    ){
+
+        document.getElementById(
+            "vehicleNumber"
+        ).value =
+            cleanVehicleNumber(
+                vehicleMatches[0]
+            );
+
+    }
+
+
+    /* ALL DATE PATTERNS */
+
+    const datePattern =
+        "(\\d{1,2}[\\/-]\\d{1,2}[\\/-]\\d{4}|\\d{1,2}[\\/-][A-Za-z]{3,9}[\\/-]\\d{4})";
+
+
+    /* REGISTRATION */
+
+    const registrationMatch =
+        normalized.match(
+            new RegExp(
+                "(?:Registration\\s*Date|Registered\\s*Date|Date\\s*of\\s*Registration)[\\s:\\-]*" +
+                datePattern,
+                "i"
+            )
+        );
+
+
+    if(
+        registrationMatch
+    ){
+
+        setDateValue(
+            "registrationDate",
+            registrationMatch[1]
+        );
+
+    }
+
+
+    /* FITNESS */
+
+    const fitnessMatch =
+        normalized.match(
+            new RegExp(
+                "(?:Fitness\\s*Valid\\s*Up\\s*To|Fitness\\s*Valid\\s*Upto|Fitness\\s*Expiry|Fitness\\s*Up\\s*To|Fitness)[\\s:\\-]*" +
+                datePattern,
+                "i"
+            )
+        );
+
+
+    if(
+        fitnessMatch
+    ){
+
+        setDateValue(
+            "fitness",
+            fitnessMatch[1]
+        );
+
+    }
+
+
+    /* INSURANCE */
+
+    const insuranceMatch =
+        normalized.match(
+            new RegExp(
+                "(?:Insurance\\s*Valid\\s*Up\\s*To|Insurance\\s*Valid\\s*Upto|Insurance\\s*Expiry|Insurance\\s*Up\\s*To|Insurance)[\\s:\\-]*" +
+                datePattern,
+                "i"
+            )
+        );
+
+
+    if(
+        insuranceMatch
+    ){
+
+        setDateValue(
+            "insurance",
+            insuranceMatch[1]
+        );
+
+    }
+
+
+    /* PUCC */
+
+    const puccMatch =
+        normalized.match(
+            new RegExp(
+                "(?:PUCC\\s*Valid\\s*Up\\s*To|PUCC\\s*Valid\\s*Upto|PUCC\\s*Expiry|PUC\\s*Valid\\s*Up\\s*To|PUC\\s*Valid\\s*Upto|PUC\\s*Expiry)[\\s:\\-]*" +
+                datePattern,
+                "i"
+            )
+        );
+
+
+    if(
+        puccMatch
+    ){
+
+        setDateValue(
+            "pucc",
+            puccMatch[1]
+        );
+
+    }
+
+
+    /* PERMIT */
+
+    const permitMatch =
+        normalized.match(
+            new RegExp(
+                "(?:Permit\\s*Valid\\s*Up\\s*To|Permit\\s*Valid\\s*Upto|Permit\\s*Expiry|Permit\\s*Up\\s*To|Permit)[\\s:\\-]*" +
+                datePattern,
+                "i"
+            )
+        );
+
+
+    if(
+        permitMatch
+    ){
+
+        setDateValue(
+            "permit",
+            permitMatch[1]
+        );
+
+    }
+
+
+    /* TAX */
+
+    const taxMatch =
+        normalized.match(
+            /(?:MV\s*Tax|Tax\s*Valid\s*Up\s*To|Tax\s*Valid\s*Upto|Tax)[\s:\-]*(LTT|LTP)\b/i
+        );
+
+
+    if(
+        taxMatch
+    ){
+
+        document.getElementById(
+            "tax"
+        ).value =
+            taxMatch[1].toUpperCase();
+
+    }
 
 }
 
@@ -1174,7 +1218,9 @@ function normalizeVehicleNumber(number){
    PHOTO PATH
 ========================================================= */
 
-function createPhotoPath(vehicleNumber){
+function createPhotoPath(
+    vehicleNumber
+){
 
     const safe =
         normalizeVehicleNumber(
@@ -1185,18 +1231,25 @@ function createPhotoPath(vehicleNumber){
             ""
         );
 
+
     return(
         safe +
         "_" +
         Date.now() +
         ".jpg"
-    );/* =========================================================
+    );
+
+}
+
+
+/* =========================================================
    SAVE VEHICLE
 ========================================================= */
 
 async function saveVehicle(){
 
     hideMessages();
+
 
     const vehicleNumber =
         normalizeVehicleNumber(
@@ -1205,20 +1258,24 @@ async function saveVehicle(){
             ).value
         );
 
+
     const registrationDate =
         document.getElementById(
             "registrationDate"
         ).value || null;
+
 
     const fitness =
         document.getElementById(
             "fitness"
         ).value || null;
 
+
     const insurance =
         document.getElementById(
             "insurance"
         ).value || null;
+
 
     const tax =
         document.getElementById(
@@ -1227,35 +1284,37 @@ async function saveVehicle(){
         .trim()
         .toUpperCase() || null;
 
+
     const pucc =
         document.getElementById(
             "pucc"
         ).value || null;
+
 
     const permit =
         document.getElementById(
             "permit"
         ).value || null;
 
-    if(!vehicleNumber){
+
+    if(
+        !vehicleNumber
+    ){
 
         showError(
             "Vehicle Number is required."
         );
 
         return;
-
     }
 
-    const saveButton =
-        document.getElementById(
-            "saveButton"
-        );
 
-    saveButton.disabled=true;
+    saveButton.disabled =
+        true;
 
-    saveButton.innerText=
+    saveButton.innerText =
         "Saving...";
+
 
     try{
 
@@ -1272,11 +1331,12 @@ async function saveVehicle(){
                 )
                 .limit(1);
 
+
         if(findError){
 
             throw findError;
-
         }
+
 
         const existing =
             existingRows &&
@@ -1284,33 +1344,33 @@ async function saveVehicle(){
                 ? existingRows[0]
                 : null;
 
+
         let photoPath =
             existing?.photo_path ||
             null;
+
 
         let photoUrl =
             existing?.photo_url ||
             null;
 
-        const photoInput =
-            document.getElementById(
-                "photoInput"
-            );
+
+        const file =
+            photoInput.files &&
+            photoInput.files[0]
+                ? photoInput.files[0]
+                : null;
+
 
         /* UPLOAD NEW PHOTO */
 
-        if(
-            photoInput.files &&
-            photoInput.files[0]
-        ){
-
-            const file =
-                photoInput.files[0];
+        if(file){
 
             const newPath =
                 createPhotoPath(
                     vehicleNumber
                 );
+
 
             const {
                 error: uploadError
@@ -1332,11 +1392,12 @@ async function saveVehicle(){
                         }
                     );
 
+
             if(uploadError){
 
                 throw uploadError;
-
             }
+
 
             const {
                 data: publicData
@@ -1350,14 +1411,15 @@ async function saveVehicle(){
                         newPath
                     );
 
+
             photoPath =
                 newPath;
 
+
             photoUrl =
-                publicData &&
-                publicData.publicUrl
-                    ? publicData.publicUrl
-                    : null;
+                publicData?.publicUrl ||
+                null;
+
 
             /* DELETE OLD PHOTO */
 
@@ -1367,7 +1429,7 @@ async function saveVehicle(){
             ){
 
                 const {
-                    error: deleteOldError
+                    error: oldPhotoError
                 } =
                     await supabaseClient
                         .storage
@@ -1378,11 +1440,12 @@ async function saveVehicle(){
                             existing.photo_path
                         ]);
 
-                if(deleteOldError){
+
+                if(oldPhotoError){
 
                     console.warn(
                         "Old photo delete warning:",
-                        deleteOldError
+                        oldPhotoError
                     );
 
                 }
@@ -1391,7 +1454,8 @@ async function saveVehicle(){
 
         }
 
-        const vehicleData={
+
+        const vehicleData = {
 
             vehicle_number:
                 vehicleNumber,
@@ -1422,7 +1486,8 @@ async function saveVehicle(){
 
         };
 
-        /* UPDATE EXISTING */
+
+        /* UPDATE */
 
         if(existing){
 
@@ -1439,11 +1504,12 @@ async function saveVehicle(){
                         existing.id
                     );
 
+
             if(updateError){
 
                 throw updateError;
-
             }
+
 
             showSuccess(
                 "Vehicle updated successfully. Old photo replaced."
@@ -1451,7 +1517,8 @@ async function saveVehicle(){
 
         }
 
-        /* INSERT NEW */
+
+        /* INSERT */
 
         else{
 
@@ -1464,11 +1531,12 @@ async function saveVehicle(){
                         [vehicleData]
                     );
 
+
             if(insertError){
 
                 throw insertError;
-
             }
+
 
             showSuccess(
                 "Vehicle saved successfully."
@@ -1476,29 +1544,30 @@ async function saveVehicle(){
 
         }
 
-        photoInput.value="";
 
-        document.getElementById(
-            "preview"
-        ).style.display="none";
+        photoInput.value =
+            "";
 
-        document.getElementById(
-            "ocrStatus"
-        ).innerText=
+
+        preview.style.display =
+            "none";
+
+
+        rawText.innerText =
+            "";
+
+
+        ocrStatus.innerText =
             "Vehicle saved. You can upload another photo.";
 
-        document.getElementById(
-            "rawText"
-        ).innerText="";
-
     }
-
     catch(error){
 
         console.error(
             "SAVE ERROR:",
             error
         );
+
 
         showError(
             "Could not save vehicle. " +
@@ -1509,12 +1578,12 @@ async function saveVehicle(){
         );
 
     }
-
     finally{
 
-        saveButton.disabled=false;
+        saveButton.disabled =
+            false;
 
-        saveButton.innerText=
+        saveButton.innerText =
             "💾 Save Vehicle";
 
     }
@@ -1523,15 +1592,30 @@ async function saveVehicle(){
 
 
 /* =========================================================
-   DASHBOARD
+   BUTTONS
 ========================================================= */
 
-function goDashboard(){
+readButton.addEventListener(
+    "click",
+    readPhoto
+);
 
-    window.location.href=
-        "index.html";
 
-}
+saveButton.addEventListener(
+    "click",
+    saveVehicle
+);
+
+
+dashboardButton.addEventListener(
+    "click",
+    function(){
+
+        window.location.href =
+            "index.html";
+
+    }
+);
 
 
 /* =========================================================
@@ -1545,9 +1629,11 @@ function showSuccess(message){
             "successMessage"
         );
 
-    box.innerText=message;
+    box.innerText =
+        message;
 
-    box.style.display="block";
+    box.style.display =
+        "block";
 
 }
 
@@ -1559,9 +1645,11 @@ function showError(message){
             "errorMessage"
         );
 
-    box.innerText=message;
+    box.innerText =
+        message;
 
-    box.style.display="block";
+    box.style.display =
+        "block";
 
 }
 
@@ -1570,49 +1658,17 @@ function hideMessages(){
 
     document.getElementById(
         "successMessage"
-    ).style.display="none";
+    ).style.display =
+        "none";
 
     document.getElementById(
         "errorMessage"
-    ).style.display="none";
+    ).style.display =
+        "none";
 
 }
-document.addEventListener("DOMContentLoaded", function(){
 
-    const readButton =
-        document.getElementById("readButton");
-
-    if(readButton){
-
-        readButton.addEventListener(
-            "click",
-            function(){
-
-                readPhoto();
-
-            }
-        );
-
-    }
-
-});
 </script>
-<<script>
-async function readPhoto() {
 
-    const status = document.getElementById("ocrStatus");
-
-    if (status) {
-        status.innerText = "⏳ OCR શરૂ થઈ રહ્યું છે...";
-    } else {
-        alert("OCR શરૂ થઈ રહ્યું છે...");
-    }
-
-    console.log("readPhoto started");
-
-}
-</script>
 </body>
 </html>
-
-    }
