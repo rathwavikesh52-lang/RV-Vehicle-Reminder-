@@ -19,7 +19,10 @@ async function permanentDelete(id, vehicleNumber, photoPath){
           .remove([photoPath]);
 
       if(photoError){
-        console.error("Photo delete error:", photoError);
+        console.error(
+          "Photo delete error:",
+          photoError
+        );
       }
     }
 
@@ -43,7 +46,10 @@ async function permanentDelete(id, vehicleNumber, photoPath){
 
   }catch(error){
 
-    console.error("Delete error:", error);
+    console.error(
+      "Delete error:",
+      error
+    );
 
     alert(
       "Delete failed: " +
