@@ -5,280 +5,433 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RV Vehicle Reminder</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial, sans-serif;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f7fb;
-  color: #172033;
+body{
+  background:#f4f6f9;
+  color:#1f2937;
 }
 
-.header {
-  background: linear-gradient(135deg, #087cf5, #00b4ff);
-  color: white;
-  padding: 25px 20px;
-  border-radius: 0 0 28px 28px;
+header{
+  background:#111827;
+  color:white;
+  padding:15px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
-.header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+.logo{
+  font-size:21px;
+  font-weight:bold;
 }
 
-.header h1 {
-  font-size: 23px;
+.language button{
+  border:0;
+  padding:8px 12px;
+  border-radius:7px;
+  cursor:pointer;
+  background:white;
+  color:#111827;
+  font-weight:bold;
 }
 
-.header p {
-  opacity: 0.9;
-  font-size: 14px;
-  margin-top: 8px;
+.container{
+  max-width:1400px;
+  margin:auto;
+  padding:18px;
 }
 
-.logout-btn {
-  background: white;
-  color: #087cf5;
-  border: none;
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
 }
 
-.container {
-  padding: 20px;
-  max-width: 600px;
-  margin: auto;
+h1{
+  font-size:25px;
 }
 
-.welcome {
-  background: white;
-  padding: 20px;
-  border-radius: 18px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px #dce5f0;
+.btn{
+  border:0;
+  padding:11px 17px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  background:#2563eb;
+  color:white;
 }
 
-.welcome h2 {
-  font-size: 19px;
-  margin-bottom: 8px;
+.btn:hover{
+  opacity:.9;
 }
 
-.welcome p {
-  color: #687386;
-  font-size: 13px;
-  word-break: break-word;
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:20px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+.card{
+  background:white;
+  padding:18px;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
 }
 
-.card {
-  background: white;
-  padding: 22px 15px;
-  border-radius: 18px;
-  text-align: center;
-  box-shadow: 0 4px 15px #dce5f0;
-  cursor: pointer;
-  transition: 0.2s;
+.card-title{
+  color:#6b7280;
+  font-size:14px;
+  margin-bottom:8px;
 }
 
-.card:active {
-  transform: scale(0.96);
+.card-number{
+  font-size:28px;
+  font-weight:bold;
 }
 
-.icon {
-  font-size: 32px;
-  margin-bottom: 10px;
+.search-box{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:18px;
 }
 
-.card h3 {
-  font-size: 15px;
-  margin-bottom: 5px;
+.search-box input{
+  width:100%;
+  padding:12px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  font-size:15px;
 }
 
-.card p {
-  font-size: 12px;
-  color: #7b8494;
+.table-box{
+  background:white;
+  border-radius:12px;
+  overflow:auto;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
 }
 
-.upload {
-  grid-column: span 2;
-  background: linear-gradient(135deg, #087cf5, #00b4ff);
-  color: white;
+table{
+  width:100%;
+  min-width:1050px;
+  border-collapse:collapse;
 }
 
-.upload p {
-  color: white;
-  opacity: 0.9;
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:left;
+  white-space:nowrap;
 }
 
-.stats {
-  margin-top: 20px;
-  background: white;
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 4px 15px #dce5f0;
+th{
+  background:#f9fafb;
+  font-size:13px;
 }
 
-.stats h3 {
-  margin-bottom: 15px;
+td{
+  font-size:14px;
 }
 
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
+.status{
+  padding:5px 8px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:bold;
 }
 
-.stat-row:last-child {
-  border-bottom: none;
+.safe{
+  background:#dcfce7;
+  color:#166534;
 }
 
-.footer {
-  text-align: center;
-  margin-top: 25px;
-  color: #8993a3;
-  font-size: 12px;
+.warning{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.expired{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.action-btn{
+  border:0;
+  padding:7px 9px;
+  border-radius:6px;
+  cursor:pointer;
+  margin-right:4px;
+}
+
+.edit{
+  background:#e0e7ff;
+  color:#3730a3;
+}
+
+.delete{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.empty{
+  text-align:center;
+  padding:35px;
+  color:#6b7280;
+}
+
+.pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  padding:18px;
+}
+
+.pagination button{
+  padding:8px 13px;
+  border:1px solid #d1d5db;
+  background:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#6b7280;
+  font-size:13px;
+}
+
+@media(max-width:700px){
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  h1{
+    font-size:21px;
+  }
+
+  .container{
+    padding:12px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div class="header-top">
-    <h1>🚗 RV Vehicle Reminder</h1>
-    <button class="logout-btn" onclick="logout()">Logout</button>
+<header>
+  <div class="logo">🚘 RV Vehicle Reminder</div>
+
+  <div class="language">
+    <button onclick="setLanguage('en')">English</button>
+    <button onclick="setLanguage('gu')">ગુજરાતી</button>
   </div>
-  <p>Never Miss an Expiry</p>
-</div>
+</header>
 
 <div class="container">
 
-  <div class="welcome">
-    <h2>Welcome! 👋</h2>
-    <p id="userEmail">Checking login...</p>
+  <div class="topbar">
+    <h1 id="pageTitle">Dashboard</h1>
+
+    <button class="btn" onclick="goToUpload()">
+      📸 <span id="uploadText">Upload Vehicle Photo</span>
+    </button>
   </div>
 
-  <div class="grid">
+  <div class="cards">
 
-    <div class="card upload" onclick="uploadPhoto()">
-      <div class="icon">📸</div>
-      <h3>Upload Vehicle Photo</h3>
-      <p>Upload photo and save vehicle details</p>
+    <div class="card">
+      <div class="card-title" id="totalTitle">Total Vehicles</div>
+      <div class="card-number" id="totalVehicles">0 / 1000</div>
     </div>
 
-    <div class="card" onclick="goToPage('vehicles.html')">
-      <div class="icon">🚘</div>
-      <h3>All Vehicles</h3>
-      <p>View all vehicles</p>
+    <div class="card">
+      <div class="card-title" id="soonTitle">Expiring Soon</div>
+      <div class="card-number" id="expiringSoon">0</div>
     </div>
 
-    <div class="card" onclick="goToPage('expiring.html')">
-      <div class="icon">🔴</div>
-      <h3>Expiring Soon</h3>
-      <p>Expiry within 10 days</p>
-    </div>
-
-    <div class="card" onclick="goToPage('dashboard.html')">
-      <div class="icon">📊</div>
-      <h3>Dashboard</h3>
-      <p>View vehicle summary</p>
-    </div>
-
-    <div class="card" onclick="goToPage('vehicles.html')">
-      <div class="icon">🔍</div>
-      <h3>Search Vehicle</h3>
-      <p>Search by vehicle number</p>
+    <div class="card">
+      <div class="card-title" id="expiredTitle">Expired Vehicles</div>
+      <div class="card-number" id="expiredVehicles">0</div>
     </div>
 
   </div>
 
-  <div class="stats">
-    <h3>📋 Quick Summary</h3>
-
-    <div class="stat-row">
-      <span>Total Vehicles</span>
-      <strong>0</strong>
-    </div>
-
-    <div class="stat-row">
-      <span>Expiring Soon</span>
-      <strong>0</strong>
-    </div>
-
-    <div class="stat-row">
-      <span>Expired Documents</span>
-      <strong>0</strong>
-    </div>
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍 Search Vehicle Number..."
+      oninput="searchVehicle()"
+    >
   </div>
 
-  <div class="footer">
-    RV Vehicle Reminder © 2026
+  <div class="table-box">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Vehicle Number</th>
+          <th>Registration Date</th>
+          <th>Fitness Expiry</th>
+          <th>Insurance Expiry</th>
+          <th>Tax</th>
+          <th>PUCC Expiry</th>
+          <th>Permit Expiry</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="vehicleTable">
+
+        <tr>
+          <td colspan="8" class="empty" id="emptyMessage">
+            No vehicles added yet.
+            <br><br>
+            Upload a vehicle photo to get started.
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <div class="pagination">
+    <button onclick="previousPage()">◀</button>
+    <span id="pageNumber">Page 1</span>
+    <button onclick="nextPage()">▶</button>
   </div>
 
 </div>
 
+<footer>
+  RV Vehicle Reminder • Maximum 1,000 Vehicles
+</footer>
+
+
 <script>
-const SUPABASE_URL =
-  "https://ksgxxzssnolveakfbvgy.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_4qX68fhDfCIXWVNRqvTsqQ_3inRIYiV";
+let currentLanguage = "en";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+const text = {
 
-async function checkLogin() {
-  const {
-    data: { session }
-  } = await supabaseClient.auth.getSession();
+  en:{
+    dashboard:"Dashboard",
+    upload:"Upload Vehicle Photo",
+    total:"Total Vehicles",
+    soon:"Expiring Soon",
+    expired:"Expired Vehicles",
+    search:"🔍 Search Vehicle Number...",
+    empty:"No vehicles added yet."
+  },
 
-  if (!session) {
-    window.location.href = "login.html";
-    return;
+  gu:{
+    dashboard:"ડેશબોર્ડ",
+    upload:"વાહનનો ફોટો અપલોડ કરો",
+    total:"કુલ વાહનો",
+    soon:"ટૂંક સમયમાં સમાપ્ત",
+    expired:"સમાપ્ત થયેલ વાહનો",
+    search:"🔍 વાહન નંબર શોધો...",
+    empty:"હજુ સુધી કોઈ વાહન ઉમેરાયેલ નથી."
   }
 
-  document.getElementById("userEmail").innerText =
-    "Logged in as: " + session.user.email;
+};
+
+
+function setLanguage(lang){
+
+  currentLanguage = lang;
+
+  document.getElementById("pageTitle").innerText =
+    text[lang].dashboard;
+
+  document.getElementById("uploadText").innerText =
+    text[lang].upload;
+
+  document.getElementById("totalTitle").innerText =
+    text[lang].total;
+
+  document.getElementById("soonTitle").innerText =
+    text[lang].soon;
+
+  document.getElementById("expiredTitle").innerText =
+    text[lang].expired;
+
+  document.getElementById("searchInput").placeholder =
+    text[lang].search;
+
 }
 
-async function logout() {
-  const { error } = await supabaseClient.auth.signOut();
 
-  if (error) {
-    alert("Logout failed: " + error.message);
-    return;
-  }
+function goToUpload(){
 
-  window.location.href = "login.html";
-}
-
-function uploadPhoto() {
   window.location.href = "upload.html";
+
 }
 
-function goToPage(page) {
-  window.location.href = page;
+
+function searchVehicle(){
+
+  const value =
+    document.getElementById("searchInput").value
+    .toUpperCase()
+    .trim();
+
+  console.log("Searching:", value);
+
 }
 
-checkLogin();
+
+function previousPage(){
+
+  alert("Previous page");
+
+}
+
+
+function nextPage(){
+
+  alert("Next page");
+
+}
+
+
+function permanentDelete(vehicleNumber){
+
+  const confirmDelete = confirm(
+    "Permanently delete " +
+    vehicleNumber +
+    "?\n\nThis vehicle record and photo will be permanently deleted."
+  );
+
+  if(confirmDelete){
+
+    alert(
+      vehicleNumber +
+      " will be permanently deleted after database connection."
+    );
+
+  }
+
+}
+
 </script>
 
 </body>
