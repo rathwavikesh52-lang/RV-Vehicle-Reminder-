@@ -240,8 +240,9 @@ button:disabled{
     type="button"
     class="btn-primary"
     id="readButton"
-    onclick="alert('BUTTON WORKING'); readPhoto();"
 >
+🔍 Read Vehicle Details
+</button>
 🔍 Read Vehicle Details
 </button>
 
@@ -1577,7 +1578,25 @@ function hideMessages(){
     ).style.display="none";
 
 }
+document.addEventListener("DOMContentLoaded", function(){
 
+    const readButton =
+        document.getElementById("readButton");
+
+    if(readButton){
+
+        readButton.addEventListener(
+            "click",
+            function(){
+
+                readPhoto();
+
+            }
+        );
+
+    }
+
+});
 </script>
 
 </body>
