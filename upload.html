@@ -1597,9 +1597,19 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 </script>
-<script>
-function readPhoto() {
-    alert("✅ READ BUTTON WORKING");
+<<script>
+async function readPhoto() {
+
+    const status = document.getElementById("ocrStatus");
+
+    if (status) {
+        status.innerText = "⏳ OCR શરૂ થઈ રહ્યું છે...";
+    } else {
+        alert("OCR શરૂ થઈ રહ્યું છે...");
+    }
+
+    console.log("readPhoto started");
+
 }
 </script>
 </body>
