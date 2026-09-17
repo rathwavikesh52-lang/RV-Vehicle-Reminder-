@@ -121,6 +121,45 @@ body{
 
 
 /* =====================================================
+   TOTAL VEHICLES IN HEADER
+===================================================== */
+
+.header-total{
+
+  margin-left:28px;
+
+  text-align:center;
+
+  color:white;
+
+  line-height:1.15;
+
+  white-space:nowrap;
+
+}
+
+.header-total div{
+
+  font-size:14px;
+
+  font-weight:600;
+
+}
+
+.header-total strong{
+
+  display:block;
+
+  font-size:25px;
+
+  font-weight:800;
+
+  margin-top:5px;
+
+}
+
+
+/* =====================================================
    LANGUAGE BUTTONS
 ===================================================== */
 
@@ -252,7 +291,7 @@ body{
   display:grid;
 
   grid-template-columns:
-    repeat(4,1fr);
+    repeat(2,1fr);
 
   gap:14px;
 
@@ -273,23 +312,17 @@ body{
   box-shadow:
     0 7px 25px rgba(0,0,0,.13);
 
-  border-top:5px solid #123b70;
+  border-top:5px solid #f39c12;
 
 }
 
 .summary-card:nth-child(2){
 
-  border-top-color:#f39c12;
-
-}
-
-.summary-card:nth-child(3){
-
   border-top-color:#d63031;
 
 }
 
-.summary-card:nth-child(4){
+.summary-card:nth-child(3){
 
   border-top-color:#0b7a43;
 
@@ -765,6 +798,12 @@ body{
 
   }
 
+  .brand{
+
+    gap:9px;
+
+  }
+
   .brand-text h1{
 
     font-size:19px;
@@ -782,6 +821,40 @@ body{
     width:48px;
 
     height:48px;
+
+  }
+
+  .header-total{
+
+    margin-left:8px;
+
+  }
+
+  .header-total div{
+
+    font-size:11px;
+
+  }
+
+  .header-total strong{
+
+    font-size:21px;
+
+    margin-top:3px;
+
+  }
+
+  .language-box{
+
+    gap:4px;
+
+  }
+
+  .language-box button{
+
+    padding:6px 8px;
+
+    font-size:11px;
 
   }
 
@@ -846,6 +919,79 @@ body{
 }
 
 
+@media(max-width:480px){
+
+  .header{
+
+    align-items:center;
+
+  }
+
+  .brand{
+
+    flex:1;
+
+    min-width:0;
+
+  }
+
+  .brand-text{
+
+    min-width:0;
+
+  }
+
+  .brand-text h1{
+
+    font-size:17px;
+
+    white-space:nowrap;
+
+  }
+
+  .brand-text p{
+
+    font-size:9px;
+
+    white-space:nowrap;
+
+  }
+
+  .logo{
+
+    width:44px;
+
+    height:44px;
+
+  }
+
+  .header-total{
+
+    margin-left:5px;
+
+  }
+
+  .header-total div{
+
+    font-size:10px;
+
+  }
+
+  .header-total strong{
+
+    font-size:20px;
+
+  }
+
+  .language-box{
+
+    display:none;
+
+  }
+
+}
+
+
 @media(max-width:420px){
 
   .summary-grid{
@@ -895,6 +1041,21 @@ body{
       <h1>RV Vehicle Reminder</h1>
 
       <p>Vehicle Expiry Management System</p>
+
+    </div>
+
+
+    <!-- TOTAL VEHICLES -->
+
+    <div class="header-total">
+
+      <div>
+        Total Vehicles
+      </div>
+
+      <strong id="headerTotalVehicles">
+        0
+      </strong>
 
     </div>
 
@@ -956,21 +1117,6 @@ body{
 
 <div class="summary-grid">
 
-  <div class="summary-card">
-
-    <div class="summary-label">
-      TOTAL VEHICLES
-    </div>
-
-    <div
-      id="totalVehicles"
-      class="summary-number"
-    >
-      0
-    </div>
-
-  </div>
-
 
   <div class="summary-card">
 
@@ -1018,6 +1164,7 @@ body{
     </div>
 
   </div>
+
 
 </div>
 
@@ -1716,10 +1863,23 @@ function updateSummary(){
   );
 
 
-  document.getElementById(
-    "totalVehicles"
-  ).textContent =
-    total;
+  /*
+    TOTAL VEHICLES
+    NOW SHOWN IN HEADER
+  */
+
+  const headerTotal =
+    document.getElementById(
+      "headerTotalVehicles"
+    );
+
+
+  if(headerTotal){
+
+    headerTotal.textContent =
+      total;
+
+  }
 
 
   document.getElementById(
@@ -1779,9 +1939,9 @@ function updateSummary(){
 async function loadVehicles(){
 
   const list =
-  document.getElementById(
-    "vehicleList"
-  );
+    document.getElementById(
+      "vehicleList"
+    );
 
 
   list.innerHTML =
@@ -1854,9 +2014,9 @@ async function loadVehicles(){
 function renderTable(){
 
   const list =
-  document.getElementById(
-    "vehicleList"
-  );
+    document.getElementById(
+      "vehicleList"
+    );
 
 
   if(
@@ -1888,198 +2048,198 @@ function renderTable(){
 
 
   const pageVehicles =
-  filteredVehicles.slice(
-    start,
-    end
-  );
+    filteredVehicles.slice(
+      start,
+      end
+    );
 
 
   list.innerHTML =
-  pageVehicles
-  .map(
-    vehicle => {
+    pageVehicles
+    .map(
+      vehicle => {
 
-      const customer =
-        vehicle.customer_name ||
-        "-";
-
-
-      const mobile =
-        vehicle.mobile ||
-        "-";
+        const customer =
+          vehicle.customer_name ||
+          "-";
 
 
-      const registration =
-        formatDate(
-          vehicle.registration_date
-        );
+        const mobile =
+          vehicle.mobile ||
+          "-";
 
 
-      const fitness =
-        formatDate(
-          vehicle.fitness_expiry
-        );
+        const registration =
+          formatDate(
+            vehicle.registration_date
+          );
 
 
-      const insurance =
-        formatDate(
-          vehicle.insurance_expiry
-        );
+        const fitness =
+          formatDate(
+            vehicle.fitness_expiry
+          );
 
 
-      const tax =
-        vehicle.tax_expiry ||
-        "-";
+        const insurance =
+          formatDate(
+            vehicle.insurance_expiry
+          );
 
 
-      const pucc =
-        formatDate(
-          vehicle.pucc_expiry
-        );
+        const tax =
+          vehicle.tax_expiry ||
+          "-";
 
 
-      const permit =
-        formatDate(
-          vehicle.permit_expiry
-        );
+        const pucc =
+          formatDate(
+            vehicle.pucc_expiry
+          );
 
 
-      return `
+        const permit =
+          formatDate(
+            vehicle.permit_expiry
+          );
 
-        <div class="vehicle-card">
 
-          <div class="vehicle-top">
+        return `
 
-            <div>
+          <div class="vehicle-card">
 
-              <div class="vehicle-number">
-                ${vehicle.vehicle_number || "-"}
+            <div class="vehicle-top">
+
+              <div>
+
+                <div class="vehicle-number">
+                  ${vehicle.vehicle_number || "-"}
+                </div>
+
+                <div class="customer-info">
+
+                  👤 ${customer}
+
+                  <br>
+
+                  📱 ${mobile}
+
+                </div>
+
               </div>
 
-              <div class="customer-info">
 
-                👤 ${customer}
+              <div class="vehicle-actions">
 
-                <br>
+                <button
+                  class="edit-btn"
+                  onclick="editVehicle('${vehicle.id}')"
+                >
+                  Edit
+                </button>
 
-                📱 ${mobile}
+                <button
+                  class="delete-btn"
+                  onclick="deleteVehicle('${vehicle.id}')"
+                >
+                  Delete
+                </button>
 
               </div>
 
             </div>
 
 
-            <div class="vehicle-actions">
+            <div class="details-grid">
 
-              <button
-                class="edit-btn"
-                onclick="editVehicle('${vehicle.id}')"
-              >
-                Edit
-              </button>
 
-              <button
-                class="delete-btn"
-                onclick="deleteVehicle('${vehicle.id}')"
-              >
-                Delete
-              </button>
+              <div class="detail-box">
+
+                <div class="detail-label">
+                  Registration
+                </div>
+
+                <div class="detail-value">
+                  ${registration}
+                </div>
+
+              </div>
+
+
+              <div class="detail-box">
+
+                <div class="detail-label">
+                  Fitness
+                </div>
+
+                <div class="detail-value ${getDateClass(vehicle.fitness_expiry)}">
+                  ${fitness}
+                </div>
+
+              </div>
+
+
+              <div class="detail-box">
+
+                <div class="detail-label">
+                  Insurance
+                </div>
+
+                <div class="detail-value ${getDateClass(vehicle.insurance_expiry)}">
+                  ${insurance}
+                </div>
+
+              </div>
+
+
+              <div class="detail-box">
+
+                <div class="detail-label">
+                  Tax
+                </div>
+
+                <div class="detail-value ${getDateClass(vehicle.tax_expiry)}">
+                  ${tax}
+                </div>
+
+              </div>
+
+
+              <div class="detail-box">
+
+                <div class="detail-label">
+                  PUCC
+                </div>
+
+                <div class="detail-value ${getDateClass(vehicle.pucc_expiry)}">
+                  ${pucc}
+                </div>
+
+              </div>
+
+
+              <div class="detail-box">
+
+                <div class="detail-label">
+                  Permit
+                </div>
+
+                <div class="detail-value ${getDateClass(vehicle.permit_expiry)}">
+                  ${permit}
+                </div>
+
+              </div>
+
 
             </div>
 
           </div>
 
+        `;
 
-          <div class="details-grid">
-
-
-            <div class="detail-box">
-
-              <div class="detail-label">
-                Registration
-              </div>
-
-              <div class="detail-value">
-                ${registration}
-              </div>
-
-            </div>
-
-
-            <div class="detail-box">
-
-              <div class="detail-label">
-                Fitness
-              </div>
-
-              <div class="detail-value ${getDateClass(vehicle.fitness_expiry)}">
-                ${fitness}
-              </div>
-
-            </div>
-
-
-            <div class="detail-box">
-
-              <div class="detail-label">
-                Insurance
-              </div>
-
-              <div class="detail-value ${getDateClass(vehicle.insurance_expiry)}">
-                ${insurance}
-              </div>
-
-            </div>
-
-
-            <div class="detail-box">
-
-              <div class="detail-label">
-                Tax
-              </div>
-
-              <div class="detail-value ${getDateClass(vehicle.tax_expiry)}">
-                ${tax}
-              </div>
-
-            </div>
-
-
-            <div class="detail-box">
-
-              <div class="detail-label">
-                PUCC
-              </div>
-
-              <div class="detail-value ${getDateClass(vehicle.pucc_expiry)}">
-                ${pucc}
-              </div>
-
-            </div>
-
-
-            <div class="detail-box">
-
-              <div class="detail-label">
-                Permit
-              </div>
-
-              <div class="detail-value ${getDateClass(vehicle.permit_expiry)}">
-                ${permit}
-              </div>
-
-            </div>
-
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-  )
-  .join("");
+      }
+    )
+    .join("");
 
 
   updatePagination();
