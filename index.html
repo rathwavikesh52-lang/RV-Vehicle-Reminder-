@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>RV Vehicle Reminder</title>
 
@@ -10,1385 +15,1236 @@
 
 <style>
 
-/* =========================
-   RESET
-========================= */
-
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-    min-height:100vh;
-    font-family:Arial,Helvetica,sans-serif;
-    color:#172033;
 
-    /* FULL BACKGROUND - NO OVERLAY */
-    background-image:url("./assets/background.png");
-    background-size:cover;
-    background-position:center center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
+  color:#172033;
+
+  background-image:url("./assets/background.png");
+
+  background-size:cover;
+
+  background-position:center center;
+
+  background-repeat:no-repeat;
+
+  background-attachment:fixed;
+
 }
 
 
-/* =========================
+/* =====================================================
    HEADER
-========================= */
+===================================================== */
 
 .header{
-    min-height:82px;
 
-    background:linear-gradient(
-        135deg,
-        #0f3c91,
-        #1769d1,
-        #1687e8
-    );
+  background:linear-gradient(
+    135deg,
+    #061a3a,
+    #123b70
+  );
 
-    color:white;
+  color:white;
 
-    display:flex;
-    align-items:center;
+  padding:16px 20px;
 
-    padding:14px 28px;
+  display:flex;
 
-    box-shadow:
-        0 8px 25px rgba(15,60,145,.25);
+  align-items:center;
 
-    position:relative;
-    z-index:10;
+  justify-content:space-between;
+
+  gap:15px;
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.25);
+
+}
+
+.brand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:13px;
+
 }
 
 .logo{
-    width:55px;
-    height:55px;
 
-    background:white;
+  width:58px;
 
-    border-radius:16px;
+  height:58px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  object-fit:contain;
 
-    overflow:hidden;
+  border-radius:12px;
 
-    box-shadow:
-        0 5px 15px rgba(0,0,0,.18);
+  background:white;
 
-    flex-shrink:0;
+  padding:4px;
+
 }
 
-.logo img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
+.brand-text h1{
+
+  margin:0;
+
+  font-size:25px;
+
+  font-weight:800;
+
+  letter-spacing:.5px;
+
 }
 
-.header-text{
-    margin-left:15px;
-}
+.brand-text p{
 
-.header-text h1{
-    font-size:25px;
-    font-weight:800;
-    letter-spacing:.2px;
-}
+  margin:4px 0 0;
 
-.header-text p{
-    margin-top:4px;
-    font-size:12px;
-    opacity:.9;
-}
+  font-size:13px;
 
-.language-buttons{
-    margin-left:auto;
+  opacity:.9;
 
-    display:flex;
-    gap:7px;
-}
-
-.language-buttons button{
-    border:1px solid rgba(255,255,255,.35);
-
-    padding:8px 11px;
-
-    border-radius:9px;
-
-    background:rgba(255,255,255,.14);
-
-    color:white;
-
-    cursor:pointer;
-
-    font-size:12px;
-    font-weight:600;
-
-    backdrop-filter:blur(5px);
-}
-
-.language-buttons button:hover{
-    background:rgba(255,255,255,.28);
 }
 
 
-/* =========================
-   MAIN CONTAINER
-========================= */
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+.language-box{
+
+  display:flex;
+
+  gap:6px;
+
+  flex-wrap:wrap;
+
+  justify-content:flex-end;
+
+}
+
+.language-box button{
+
+  border:1px solid rgba(255,255,255,.35);
+
+  background:rgba(255,255,255,.12);
+
+  color:white;
+
+  padding:8px 12px;
+
+  border-radius:8px;
+
+  cursor:pointer;
+
+  font-size:13px;
+
+  font-weight:700;
+
+}
+
+.language-box button:hover{
+
+  background:rgba(255,255,255,.25);
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
 
 .container{
-    max-width:1250px;
 
-    margin:0 auto;
+  max-width:1200px;
 
-    padding:30px 18px 10px;
+  margin:25px auto;
+
+  padding:0 15px;
+
 }
 
 
-/* =========================
-   PAGE TITLE
-========================= */
+/* =====================================================
+   TOP CONTROLS
+===================================================== */
+
+.top-bar{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:12px;
+
+  margin-bottom:20px;
+
+}
 
 .page-title{
-    display:flex;
 
-    align-items:center;
-    justify-content:space-between;
+  background:rgba(255,255,255,.82);
 
-    margin-bottom:22px;
+  backdrop-filter:blur(10px);
 
-    gap:15px;
+  padding:12px 18px;
 
-    flex-wrap:wrap;
+  border-radius:13px;
+
+  font-size:20px;
+
+  font-weight:800;
+
+  color:#092754;
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.10);
+
 }
 
-.page-title h2{
-    font-size:27px;
-    font-weight:800;
+.actions{
 
-    color:#102a56;
+  display:flex;
 
-    background:rgba(255,255,255,.88);
+  gap:9px;
 
-    padding:8px 14px;
-
-    border-radius:10px;
-
-    box-shadow:
-        0 5px 15px rgba(0,0,0,.08);
-}
-
-.top-buttons{
-    display:flex;
-    gap:10px;
-}
-
-.btn{
-    border:none;
-
-    padding:12px 18px;
-
-    border-radius:11px;
-
-    cursor:pointer;
-
-    font-size:14px;
-    font-weight:700;
-
-    transition:.2s;
-
-    box-shadow:
-        0 5px 12px rgba(0,0,0,.12);
-}
-
-.btn:hover{
-    transform:translateY(-2px);
-}
-
-.btn-primary{
-    background:linear-gradient(
-        135deg,
-        #1769d1,
-        #1687e8
-    );
-
-    color:white;
-}
-
-.btn-refresh{
-    background:white;
-
-    color:#1769d1;
-
-    border:1px solid #d8e5f5;
-}
-
-
-/* =========================
-   SUMMARY CARDS
-========================= */
-
-.summary-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:16px;
-
-    margin-bottom:20px;
-}
-
-.summary-card{
-    position:relative;
-
-    overflow:hidden;
-
-    background:rgba(255,255,255,.94);
-
-    border:1px solid rgba(210,224,242,.9);
-
-    border-radius:17px;
-
-    padding:20px;
-
-    box-shadow:
-        0 8px 25px rgba(30,70,120,.12);
-
-    transition:.2s;
-
-    border-top:4px solid #1769d1;
-}
-
-.summary-card:hover{
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 14px 30px rgba(30,70,120,.18);
-}
-
-.summary-card::after{
-    content:"";
-
-    position:absolute;
-
-    right:-25px;
-    top:-25px;
-
-    width:85px;
-    height:85px;
-
-    border-radius:50%;
-
-    background:#eaf3ff;
-}
-
-.summary-card h3{
-    position:relative;
-
-    z-index:1;
-
-    font-size:13px;
-
-    color:#64748b;
-
-    margin-bottom:12px;
-
-    font-weight:700;
-}
-
-.summary-card .number{
-    position:relative;
-
-    z-index:1;
-
-    font-size:34px;
-
-    font-weight:800;
-
-    color:#102a56;
-}
-
-.summary-card.expiring{
-    border-top-color:#f59e0b;
-}
-
-.summary-card.expired{
-    border-top-color:#dc2626;
-}
-
-.summary-card.today{
-    border-top-color:#16a34a;
-}
-
-
-/* =========================
-   TODAY SECTION
-========================= */
-
-.today-section{
-    background:rgba(255,255,255,.94);
-
-    border:1px solid #dce7f5;
-
-    border-radius:17px;
-
-    padding:20px;
-
-    margin-bottom:20px;
-
-    box-shadow:
-        0 8px 25px rgba(30,70,120,.10);
-}
-
-.today-heading{
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    margin-bottom:17px;
-}
-
-.today-icon{
-    width:36px;
-    height:36px;
-
-    border-radius:10px;
-
-    background:#e8f8ef;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    font-size:18px;
-}
-
-.today-section h3{
-    font-size:18px;
-
-    color:#102a56;
-}
-
-.today-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(5,1fr);
-
-    gap:12px;
-}
-
-.today-card{
-    background:#f8fbff;
-
-    border:1px solid #dce8f5;
-
-    padding:16px 10px;
-
-    border-radius:13px;
-
-    text-align:center;
-
-    transition:.2s;
-}
-
-.today-card:hover{
-    background:#eef6ff;
-
-    transform:translateY(-2px);
-}
-
-.today-card .label{
-    font-size:11px;
-
-    color:#64748b;
-
-    margin-bottom:8px;
-
-    font-weight:800;
-
-    letter-spacing:.4px;
-}
-
-.today-card .value{
-    font-size:27px;
-
-    font-weight:800;
-
-    color:#16a34a;
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-.search-box{
-    background:rgba(255,255,255,.95);
-
-    border:1px solid #dce7f5;
-
-    border-radius:15px;
-
-    padding:15px;
-
-    margin-bottom:20px;
-
-    box-shadow:
-        0 8px 25px rgba(30,70,120,.10);
-}
-
-.search-wrapper{
-    position:relative;
-}
-
-.search-icon{
-    position:absolute;
-
-    left:15px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    font-size:18px;
-
-    color:#64748b;
-}
-
-.search-box input{
-    width:100%;
-
-    padding:14px 15px 14px 44px;
-
-    border:1px solid #cbd8e8;
-
-    border-radius:11px;
-
-    font-size:14px;
-
-    outline:none;
-
-    color:#172033;
-
-    background:#fbfdff;
-}
-
-.search-box input:focus{
-    border-color:#1687e8;
-
-    box-shadow:
-        0 0 0 3px rgba(22,135,232,.10);
-}
-
-
-/* =========================
-   VEHICLE LIST
-========================= */
-
-.vehicle-list{
-    display:flex;
-
-    flex-direction:column;
-
-    gap:16px;
-}
-
-
-/* =========================
-   VEHICLE CARD
-========================= */
-
-.vehicle-card{
-    background:rgba(255,255,255,.96);
-
-    border:1px solid #dce7f5;
-
-    border-left:6px solid #1769d1;
-
-    border-radius:17px;
-
-    padding:19px;
-
-    box-shadow:
-        0 8px 25px rgba(30,70,120,.10);
-
-    transition:.2s;
-}
-
-.vehicle-card:hover{
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 12px 30px rgba(30,70,120,.15);
-}
-
-
-/* =========================
-   VEHICLE TOP
-========================= */
-
-.vehicle-main-line{
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:20px;
-
-    flex-wrap:wrap;
-
-    margin-bottom:17px;
-
-    padding-bottom:14px;
-
-    border-bottom:1px solid #edf2f7;
-}
-
-.vehicle-number-text{
-    font-size:20px;
-
-    font-weight:800;
-
-    color:#0f4da8;
-
-    letter-spacing:.3px;
-}
-
-.customer-group{
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-end;
-
-    gap:4px;
-}
-
-.customer-text{
-    font-size:14px;
-
-    font-weight:700;
-
-    color:#26364d;
-}
-
-.mobile-text{
-    font-size:13px;
-
-    font-weight:600;
-
-    color:#64748b;
-}
-
-
-/* =========================
-   VEHICLE DETAILS
-========================= */
-
-.vehicle-details{
-    display:grid;
-
-    grid-template-columns:
-        repeat(6,1fr);
-
-    gap:10px;
-
-    margin-bottom:16px;
-}
-
-.detail-box{
-    background:#f8fbff;
-
-    border:1px solid #e1eaf4;
-
-    padding:12px;
-
-    border-radius:11px;
-}
-
-.detail-box .label{
-    display:block;
-
-    font-size:10px;
-
-    color:#718096;
-
-    font-weight:800;
-
-    margin-bottom:6px;
-
-    text-transform:uppercase;
-
-    letter-spacing:.4px;
-}
-
-.detail-box .value{
-    font-size:13px;
-
-    font-weight:800;
-
-    color:#26364d;
-}
-
-.date-normal{
-    color:#16a34a!important;
-}
-
-.date-warning{
-    color:#d97706!important;
-}
-
-.date-danger{
-    color:#dc2626!important;
-}
-
-
-/* =========================
-   ACTIONS
-========================= */
-
-.vehicle-actions{
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:8px;
-
-    padding-top:13px;
-
-    border-top:1px solid #edf2f7;
 }
 
 .action-btn{
-    border:none;
 
-    padding:9px 15px;
+  border:0;
 
-    border-radius:9px;
+  padding:12px 16px;
 
-    cursor:pointer;
+  border-radius:10px;
 
-    font-size:12px;
+  color:white;
 
-    font-weight:800;
+  font-weight:700;
 
-    transition:.2s;
+  cursor:pointer;
+
+  font-size:14px;
+
+}
+
+.add-btn{
+
+  background:#0b7a43;
+
+}
+
+.refresh-btn{
+
+  background:#123b70;
+
 }
 
 .action-btn:hover{
-    transform:translateY(-1px);
+
+  opacity:.9;
+
+  transform:translateY(-1px);
+
+}
+
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+.summary-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:14px;
+
+  margin-bottom:22px;
+
+}
+
+.summary-card{
+
+  background:rgba(255,255,255,.92);
+
+  backdrop-filter:blur(10px);
+
+  border-radius:16px;
+
+  padding:18px;
+
+  box-shadow:
+    0 7px 25px rgba(0,0,0,.13);
+
+  border-top:5px solid #123b70;
+
+}
+
+.summary-card:nth-child(2){
+
+  border-top-color:#f39c12;
+
+}
+
+.summary-card:nth-child(3){
+
+  border-top-color:#d63031;
+
+}
+
+.summary-card:nth-child(4){
+
+  border-top-color:#0b7a43;
+
+}
+
+.summary-label{
+
+  color:#667085;
+
+  font-size:13px;
+
+  font-weight:700;
+
+}
+
+.summary-number{
+
+  font-size:31px;
+
+  font-weight:800;
+
+  margin-top:7px;
+
+  color:#092754;
+
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section{
+
+  background:rgba(255,255,255,.90);
+
+  backdrop-filter:blur(12px);
+
+  border-radius:18px;
+
+  padding:20px;
+
+  margin-bottom:20px;
+
+  box-shadow:
+    0 7px 28px rgba(0,0,0,.13);
+
+}
+
+.section-title{
+
+  margin:0 0 15px;
+
+  color:#092754;
+
+  font-size:20px;
+
+  font-weight:800;
+
+}
+
+
+/* =====================================================
+   TODAY EXPIRY
+===================================================== */
+
+.today-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:12px;
+
+}
+
+.today-card{
+
+  background:white;
+
+  border-radius:13px;
+
+  padding:15px;
+
+  text-align:center;
+
+  box-shadow:
+    0 3px 14px rgba(0,0,0,.08);
+
+  border:1px solid #e1e6ed;
+
+}
+
+.today-icon{
+
+  font-size:25px;
+
+}
+
+.today-name{
+
+  margin-top:7px;
+
+  font-size:12px;
+
+  font-weight:800;
+
+  color:#667085;
+
+}
+
+.today-value{
+
+  margin-top:6px;
+
+  font-size:15px;
+
+  font-weight:800;
+
+  color:#092754;
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search-box{
+
+  position:relative;
+
+  margin-bottom:18px;
+
+}
+
+.search-box input{
+
+  width:100%;
+
+  padding:14px 15px 14px 43px;
+
+  border:1px solid #ccd3dd;
+
+  border-radius:12px;
+
+  font-size:15px;
+
+  outline:none;
+
+  background:rgba(255,255,255,.95);
+
+}
+
+.search-box input:focus{
+
+  border-color:#1d5fa7;
+
+  box-shadow:
+    0 0 0 3px rgba(29,95,167,.10);
+
+}
+
+.search-icon{
+
+  position:absolute;
+
+  left:15px;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  font-size:18px;
+
+  color:#667085;
+
+}
+
+
+/* =====================================================
+   VEHICLE CARD
+===================================================== */
+
+.vehicle-card{
+
+  background:rgba(255,255,255,.96);
+
+  border-radius:16px;
+
+  margin-bottom:15px;
+
+  padding:18px;
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.10);
+
+  border-left:5px solid #123b70;
+
+  transition:.2s;
+
+}
+
+.vehicle-card:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.14);
+
+}
+
+.vehicle-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:12px;
+
+  margin-bottom:13px;
+
+}
+
+.vehicle-number{
+
+  font-size:21px;
+
+  font-weight:800;
+
+  color:#092754;
+
+}
+
+.customer-info{
+
+  margin-top:5px;
+
+  color:#667085;
+
+  font-size:13px;
+
+  line-height:1.6;
+
+}
+
+.vehicle-actions{
+
+  display:flex;
+
+  gap:7px;
+
+}
+
+.edit-btn,
+.delete-btn{
+
+  border:0;
+
+  padding:8px 12px;
+
+  border-radius:8px;
+
+  color:white;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  font-size:12px;
+
 }
 
 .edit-btn{
-    background:#e8f2ff;
 
-    color:#1769d1;
+  background:#123b70;
+
 }
 
 .delete-btn{
-    background:#fff0f0;
 
-    color:#dc2626;
+  background:#c62828;
+
 }
 
 
-/* =========================
-   EMPTY / LOADING
-========================= */
+/* =====================================================
+   DETAILS
+===================================================== */
 
-.empty{
-    background:rgba(255,255,255,.96);
+.details-grid{
 
-    border:1px solid #dce7f5;
+  display:grid;
 
-    padding:55px 20px;
+  grid-template-columns:
+    repeat(6,1fr);
 
-    text-align:center;
+  gap:9px;
 
-    border-radius:17px;
-
-    color:#64748b;
-
-    box-shadow:
-        0 8px 25px rgba(30,70,120,.10);
 }
 
-.loading{
-    background:rgba(255,255,255,.96);
+.detail-box{
 
-    padding:40px;
+  background:#f5f8fc;
 
-    text-align:center;
+  border-radius:10px;
 
-    border-radius:17px;
+  padding:11px;
 
-    color:#64748b;
+  border:1px solid #e2e8f0;
 
-    box-shadow:
-        0 8px 25px rgba(30,70,120,.10);
+}
+
+.detail-label{
+
+  font-size:10px;
+
+  font-weight:800;
+
+  color:#667085;
+
+  text-transform:uppercase;
+
+  margin-bottom:5px;
+
+}
+
+.detail-value{
+
+  font-size:13px;
+
+  font-weight:800;
+
+  color:#172033;
+
+  word-break:break-word;
+
+}
+
+.detail-value.expiring{
+
+  color:#d97706;
+
+}
+
+.detail-value.expired{
+
+  color:#c62828;
+
+}
+
+.detail-value.valid{
+
+  color:#087443;
+
+}
+
+.detail-value.today{
+
+  color:#7c3aed;
+
 }
 
 
-/* =========================
+/* =====================================================
    PAGINATION
-========================= */
+===================================================== */
 
 .pagination{
-    display:flex;
 
-    justify-content:center;
+  display:flex;
 
-    align-items:center;
+  justify-content:center;
 
-    gap:15px;
+  align-items:center;
 
-    margin:25px 0;
+  gap:10px;
+
+  margin-top:20px;
+
 }
 
 .pagination button{
-    border:none;
 
-    background:#1769d1;
+  border:0;
 
-    color:white;
+  background:#123b70;
 
-    padding:10px 17px;
+  color:white;
 
-    border-radius:9px;
+  padding:10px 16px;
 
-    cursor:pointer;
+  border-radius:9px;
 
-    font-weight:700;
-}
+  cursor:pointer;
 
-.pagination button:hover{
-    background:#0f4da8;
+  font-weight:700;
+
 }
 
 .pagination button:disabled{
-    background:#aebdce;
 
-    cursor:not-allowed;
+  opacity:.45;
+
+  cursor:not-allowed;
+
 }
 
-#pageInfo{
-    font-size:14px;
+.page-info{
 
-    font-weight:800;
+  font-weight:700;
 
-    color:#334155;
+  color:#172033;
+
 }
 
 
-/* =========================
-   FOOTER
-========================= */
+/* =====================================================
+   EMPTY
+===================================================== */
 
-.footer{
+.empty{
+
+  text-align:center;
+
+  padding:35px 15px;
+
+  color:#667085;
+
+  font-weight:600;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:900px){
+
+  .summary-grid{
+
+    grid-template-columns:
+      repeat(2,1fr);
+
+  }
+
+  .today-grid{
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+  }
+
+  .details-grid{
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  .header{
+
+    padding:13px;
+
+  }
+
+  .brand-text h1{
+
+    font-size:19px;
+
+  }
+
+  .brand-text p{
+
+    font-size:11px;
+
+  }
+
+  .logo{
+
+    width:48px;
+
+    height:48px;
+
+  }
+
+  .top-bar{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+  }
+
+  .page-title{
+
     text-align:center;
 
-    padding:25px;
+  }
 
-    color:#ffffff;
+  .actions{
 
-    font-size:12px;
+    width:100%;
 
-    text-shadow:
-        0 1px 3px rgba(0,0,0,.5);
-}
+  }
 
+  .action-btn{
 
-/* =========================
-   TABLET
-========================= */
+    flex:1;
 
-@media(max-width:1000px){
+  }
 
-    .summary-grid{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
+  .summary-grid{
 
-    .today-grid{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
+    grid-template-columns:
+      repeat(2,1fr);
 
-    .vehicle-details{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-}
+  }
 
+  .today-grid{
 
-/* =========================
-   MOBILE
-========================= */
+    grid-template-columns:
+      repeat(2,1fr);
 
-@media(max-width:600px){
+  }
 
-    .header{
-        padding:12px 14px;
+  .details-grid{
 
-        min-height:70px;
-    }
+    grid-template-columns:
+      repeat(2,1fr);
 
-    .logo{
-        width:45px;
-        height:45px;
+  }
 
-        border-radius:12px;
-    }
+  .vehicle-top{
 
-    .header-text{
-        margin-left:10px;
-    }
+    flex-direction:column;
 
-    .header-text h1{
-        font-size:18px;
-    }
+  }
 
-    .header-text p{
-        font-size:10px;
-    }
+  .vehicle-actions{
 
-    .language-buttons{
-        display:none;
-    }
+    width:100%;
 
-    .container{
-        padding:20px 10px 5px;
-    }
+  }
 
-    .page-title{
-        margin-bottom:18px;
-    }
+  .edit-btn,
+  .delete-btn{
 
-    .page-title h2{
-        font-size:22px;
+    flex:1;
 
-        padding:7px 11px;
-    }
-
-    .top-buttons{
-        width:100%;
-    }
-
-    .top-buttons .btn{
-        flex:1;
-
-        padding:11px 8px;
-    }
-
-    .summary-grid{
-        grid-template-columns:
-            repeat(2,1fr);
-
-        gap:10px;
-    }
-
-    .summary-card{
-        padding:15px;
-
-        border-radius:14px;
-    }
-
-    .summary-card h3{
-        font-size:11px;
-    }
-
-    .summary-card .number{
-        font-size:27px;
-    }
-
-    .today-section{
-        padding:15px;
-
-        border-radius:14px;
-    }
-
-    .today-grid{
-        grid-template-columns:
-            repeat(2,1fr);
-
-        gap:9px;
-    }
-
-    .today-card{
-        padding:13px 8px;
-    }
-
-    .today-card .value{
-        font-size:24px;
-    }
-
-    .vehicle-card{
-        padding:14px;
-
-        border-radius:14px;
-    }
-
-    .vehicle-main-line{
-        display:block;
-
-        margin-bottom:13px;
-    }
-
-    .vehicle-number-text{
-        display:block;
-
-        font-size:18px;
-
-        margin-bottom:10px;
-    }
-
-    .customer-group{
-        align-items:flex-start;
-    }
-
-    .vehicle-details{
-        grid-template-columns:
-            repeat(2,1fr);
-
-        gap:8px;
-    }
-
-    .detail-box{
-        padding:10px;
-    }
-
-    .detail-box .value{
-        font-size:12px;
-    }
-
-    .vehicle-actions{
-        justify-content:stretch;
-    }
-
-    .action-btn{
-        flex:1;
-
-        padding:10px;
-    }
+  }
 
 }
 
 
-/* =========================
-   SMALL PHONE
-========================= */
+@media(max-width:420px){
 
-@media(max-width:380px){
+  .summary-grid{
 
-    .summary-card .number{
-        font-size:24px;
-    }
+    grid-template-columns:1fr;
 
-    .vehicle-number-text{
-        font-size:16px;
-    }
+  }
 
-    .detail-box .label{
-        font-size:9px;
-    }
+  .today-grid{
+
+    grid-template-columns:1fr 1fr;
+
+  }
+
+  .details-grid{
+
+    grid-template-columns:1fr 1fr;
+
+  }
 
 }
 
 </style>
+
 </head>
 
 
 <body>
 
 
-<!-- =========================
+<!-- =====================================================
      HEADER
-========================= -->
+===================================================== -->
 
-<div class="header">
+<header class="header">
 
-    <div class="logo">
+  <div class="brand">
 
-        <img
-            src="./assets/logo.png"
-            alt="RV Logo"
-        >
+    <img
+      src="./assets/logo.png"
+      class="logo"
+      alt="RV Vehicle Reminder Logo"
+    >
 
-    </div>
+    <div class="brand-text">
 
+      <h1>RV Vehicle Reminder</h1>
 
-    <div class="header-text">
-
-        <h1>
-            RV Vehicle Reminder
-        </h1>
-
-        <p>
-            Vehicle Expiry Management System
-        </p>
+      <p>Vehicle Expiry Management System</p>
 
     </div>
 
-
-    <div class="language-buttons">
-
-        <button
-            onclick="setLanguage('en')"
-        >
-            English
-        </button>
-
-        <button
-            onclick="setLanguage('gu')"
-        >
-            ગુજરાતી
-        </button>
-
-        <button
-            onclick="setLanguage('hi')"
-        >
-            हिंदी
-        </button>
-
-    </div>
-
-</div>
+  </div>
 
 
+  <div class="language-box">
 
-<!-- =========================
-     MAIN
-========================= -->
+    <button onclick="setLanguage('en')">
+      English
+    </button>
+
+    <button onclick="setLanguage('gu')">
+      ગુજરાતી
+    </button>
+
+    <button onclick="setLanguage('hi')">
+      हिन्दी
+    </button>
+
+  </div>
+
+</header>
+
 
 <div class="container">
 
 
-    <!-- PAGE TITLE -->
+<!-- =====================================================
+     TOP BAR
+     
+     Dashboard heading REMOVED
+===================================================== -->
 
-    <div class="page-title">
+<div class="top-bar">
 
-        <h2 id="dashboardTitle">
-            Dashboard
-        </h2>
+  <div class="page-title">
+    RV Vehicle Reminder
+  </div>
+
+  <div class="actions">
+
+    <button
+      class="action-btn add-btn"
+      onclick="goToUpload()"
+    >
+      + Add Vehicle
+    </button>
+
+    <button
+      class="action-btn refresh-btn"
+      onclick="loadVehicles()"
+    >
+      ↻ Refresh
+    </button>
+
+  </div>
+
+</div>
 
 
-        <div class="top-buttons">
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
 
-            <button
-                class="btn btn-primary"
-                onclick="goToUpload()"
-            >
-                + Add Vehicle
-            </button>
+<div class="summary-grid">
 
+  <div class="summary-card">
 
-            <button
-                class="btn btn-refresh"
-                onclick="loadVehicles()"
-            >
-                ↻ Refresh
-            </button>
-
-        </div>
-
+    <div class="summary-label">
+      TOTAL VEHICLES
     </div>
-
-
-
-    <!-- =========================
-         SUMMARY CARDS
-    ========================= -->
-
-    <div class="summary-grid">
-
-
-        <div class="summary-card">
-
-            <h3>
-                Total Vehicles
-            </h3>
-
-            <div
-                class="number"
-                id="totalVehicles"
-            >
-                0
-            </div>
-
-        </div>
-
-
-
-        <div class="summary-card expiring">
-
-            <h3>
-                Expiring Soon
-            </h3>
-
-            <div
-                class="number"
-                id="expiringVehicles"
-            >
-                0
-            </div>
-
-        </div>
-
-
-
-        <div class="summary-card expired">
-
-            <h3>
-                Expired Vehicles
-            </h3>
-
-            <div
-                class="number"
-                id="expiredVehicles"
-            >
-                0
-            </div>
-
-        </div>
-
-
-
-        <div class="summary-card today">
-
-            <h3>
-                Today's Expiry
-            </h3>
-
-            <div
-                class="number"
-                id="todayVehicles"
-            >
-                0
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
-         TODAY EXPIRY
-    ========================= -->
-
-    <div class="today-section">
-
-
-        <div class="today-heading">
-
-            <div class="today-icon">
-                📅
-            </div>
-
-            <h3>
-                Today's Expiry Details
-            </h3>
-
-        </div>
-
-
-
-        <div class="today-grid">
-
-
-            <div class="today-card">
-
-                <div class="label">
-                    FITNESS
-                </div>
-
-                <div
-                    class="value"
-                    id="todayFitness"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-
-            <div class="today-card">
-
-                <div class="label">
-                    INSURANCE
-                </div>
-
-                <div
-                    class="value"
-                    id="todayInsurance"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-
-            <div class="today-card">
-
-                <div class="label">
-                    PUC
-                </div>
-
-                <div
-                    class="value"
-                    id="todayPuc"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-
-            <div class="today-card">
-
-                <div class="label">
-                    TAX
-                </div>
-
-                <div
-                    class="value"
-                    id="todayTax"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-
-            <div class="today-card">
-
-                <div class="label">
-                    PERMIT
-                </div>
-
-                <div
-                    class="value"
-                    id="todayPermit"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
-         SEARCH
-    ========================= -->
-
-    <div class="search-box">
-
-
-        <div class="search-wrapper">
-
-            <span class="search-icon">
-                🔍
-            </span>
-
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search by Vehicle Number, Customer Name or Mobile..."
-                oninput="searchVehicle()"
-            >
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
-         VEHICLE LIST
-    ========================= -->
 
     <div
-        id="vehicleList"
-        class="vehicle-list"
+      id="totalVehicles"
+      class="summary-number"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <div class="summary-label">
+      EXPIRING SOON
+    </div>
+
+    <div
+      id="expiringVehicles"
+      class="summary-number"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <div class="summary-label">
+      EXPIRED VEHICLES
+    </div>
+
+    <div
+      id="expiredVehicles"
+      class="summary-number"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <div class="summary-label">
+      TODAY'S EXPIRY
+    </div>
+
+    <div
+      id="todayVehicles"
+      class="summary-number"
+    >
+      0
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     TODAY'S EXPIRY
+===================================================== -->
+
+<div class="section">
+
+  <h2 class="section-title">
+    📅 Today's Expiry
+  </h2>
+
+
+  <div class="today-grid">
+
+
+    <div class="today-card">
+
+      <div class="today-icon">
+        🏋️
+      </div>
+
+      <div class="today-name">
+        FITNESS
+      </div>
+
+      <div
+        id="todayFitness"
+        class="today-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="today-card">
+
+      <div class="today-icon">
+        🛡️
+      </div>
+
+      <div class="today-name">
+        INSURANCE
+      </div>
+
+      <div
+        id="todayInsurance"
+        class="today-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="today-card">
+
+      <div class="today-icon">
+        📄
+      </div>
+
+      <div class="today-name">
+        PUCC
+      </div>
+
+      <div
+        id="todayPucc"
+        class="today-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="today-card">
+
+      <div class="today-icon">
+        💰
+      </div>
+
+      <div class="today-name">
+        TAX
+      </div>
+
+      <div
+        id="todayTax"
+        class="today-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="today-card">
+
+      <div class="today-icon">
+        🚘
+      </div>
+
+      <div class="today-name">
+        PERMIT
+      </div>
+
+      <div
+        id="todayPermit"
+        class="today-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     VEHICLE LIST
+===================================================== -->
+
+<div class="section">
+
+  <h2 class="section-title">
+    🚗 Vehicle List
+  </h2>
+
+
+  <div class="search-box">
+
+    <span class="search-icon">
+      🔍
+    </span>
+
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Search vehicle number, customer name or mobile..."
+      oninput="searchVehicle()"
     >
 
-        <div class="loading">
-            Loading vehicles...
-        </div>
-
-    </div>
+  </div>
 
 
-
-    <!-- =========================
-         PAGINATION
-    ========================= -->
-
-    <div class="pagination">
+  <div id="vehicleList"></div>
 
 
-        <button
-            id="prevBtn"
-            onclick="previousPage()"
-        >
-            Previous
-        </button>
+  <div class="pagination">
 
+    <button
+      id="previousBtn"
+      onclick="previousPage()"
+    >
+      ← Previous
+    </button>
 
-        <span id="pageInfo">
-            Page 1
-        </span>
+    <span
+      id="pageInfo"
+      class="page-info"
+    >
+      Page 1
+    </span>
 
+    <button
+      id="nextBtn"
+      onclick="nextPage()"
+    >
+      Next →
+    </button>
 
-        <button
-            id="nextBtn"
-            onclick="nextPage()"
-        >
-            Next
-        </button>
-
-
-    </div>
+  </div>
 
 </div>
 
 
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<div class="footer">
-
-    © 2026 RV Vehicle Reminder
-
 </div>
-
 
 
 <script>
 
-/* =========================
+
+/* =====================================================
    SUPABASE
-========================= */
+===================================================== */
 
 const SUPABASE_URL =
 "https://lqbhafspabtlqeubqxjg.supabase.co";
@@ -1398,14 +1254,14 @@ const SUPABASE_KEY =
 
 const supabaseClient =
 supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
 
-/* =========================
+/* =====================================================
    VARIABLES
-========================= */
+===================================================== */
 
 let allVehicles = [];
 
@@ -1413,1093 +1269,1221 @@ let filteredVehicles = [];
 
 let currentPage = 1;
 
-const perPage = 10;
+const recordsPerPage = 10;
 
 
-/* =========================
+/* =====================================================
+   DATE PARSER
+===================================================== */
+
+function parseDate(value){
+
+  if(!value){
+
+    return null;
+
+  }
+
+
+  if(
+    String(value).toUpperCase() ===
+    "LTT"
+  ){
+
+    return null;
+
+  }
+
+
+  const date =
+  new Date(value);
+
+  if(
+    isNaN(date.getTime())
+  ){
+
+    return null;
+
+  }
+
+
+  return date;
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value){
+
+  if(!value){
+
+    return "-";
+
+  }
+
+
+  if(
+    String(value).toUpperCase() ===
+    "LTT"
+  ){
+
+    return "LTT";
+
+  }
+
+
+  const date =
+  parseDate(value);
+
+
+  if(!date){
+
+    return value;
+
+  }
+
+
+  const day =
+  String(
+    date.getDate()
+  ).padStart(2,"0");
+
+
+  const month =
+  String(
+    date.getMonth()+1
+  ).padStart(2,"0");
+
+
+  const year =
+  date.getFullYear();
+
+
+  return (
+    day +
+    "/" +
+    month +
+    "/" +
+    year
+  );
+
+}
+
+
+/* =====================================================
+   TODAY
+===================================================== */
+
+function isToday(value){
+
+  const date =
+  parseDate(value);
+
+  if(!date){
+
+    return false;
+
+  }
+
+
+  const today =
+  new Date();
+
+
+  return (
+
+    date.getDate() ===
+    today.getDate() &&
+
+    date.getMonth() ===
+    today.getMonth() &&
+
+    date.getFullYear() ===
+    today.getFullYear()
+
+  );
+
+}
+
+
+/* =====================================================
+   DATE CLASS
+===================================================== */
+
+function getDateClass(value){
+
+  if(!value){
+
+    return "";
+
+  }
+
+
+  if(
+    String(value).toUpperCase() ===
+    "LTT"
+  ){
+
+    return "valid";
+
+  }
+
+
+  const date =
+  parseDate(value);
+
+  if(!date){
+
+    return "";
+
+  }
+
+
+  const today =
+  new Date();
+
+  today.setHours(
+    0,0,0,0
+  );
+
+  date.setHours(
+    0,0,0,0
+  );
+
+
+  const difference =
+    Math.ceil(
+      (
+        date - today
+      ) /
+      (
+        1000 *
+        60 *
+        60 *
+        24
+      )
+    );
+
+
+  if(
+    difference < 0
+  ){
+
+    return "expired";
+
+  }
+
+
+  if(
+    difference === 0
+  ){
+
+    return "today";
+
+  }
+
+
+  if(
+    difference <= 10
+  ){
+
+    return "expiring";
+
+  }
+
+
+  return "valid";
+
+}
+
+
+/* =====================================================
+   EXPIRING CHECK
+===================================================== */
+
+function isExpiringSoon(value){
+
+  if(!value){
+
+    return false;
+
+  }
+
+
+  if(
+    String(value).toUpperCase() ===
+    "LTT"
+  ){
+
+    return false;
+
+  }
+
+
+  const date =
+  parseDate(value);
+
+  if(!date){
+
+    return false;
+
+  }
+
+
+  const today =
+  new Date();
+
+  today.setHours(
+    0,0,0,0
+  );
+
+  date.setHours(
+    0,0,0,0
+  );
+
+
+  const days =
+    Math.ceil(
+      (
+        date - today
+      ) /
+      (
+        1000 *
+        60 *
+        60 *
+        24
+      )
+    );
+
+
+  return (
+    days >= 0 &&
+    days <= 10
+  );
+
+}
+
+
+/* =====================================================
+   EXPIRED CHECK
+===================================================== */
+
+function isExpired(value){
+
+  if(!value){
+
+    return false;
+
+  }
+
+
+  if(
+    String(value).toUpperCase() ===
+    "LTT"
+  ){
+
+    return false;
+
+  }
+
+
+  const date =
+  parseDate(value);
+
+  if(!date){
+
+    return false;
+
+  }
+
+
+  const today =
+  new Date();
+
+  today.setHours(
+    0,0,0,0
+  );
+
+  date.setHours(
+    0,0,0,0
+  );
+
+
+  return date < today;
+
+}
+
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+function updateSummary(){
+
+  let total =
+    allVehicles.length;
+
+
+  let expiring = 0;
+
+  let expired = 0;
+
+  let today = 0;
+
+
+  let fitnessToday = 0;
+
+  let insuranceToday = 0;
+
+  let puccToday = 0;
+
+  let taxToday = 0;
+
+  let permitToday = 0;
+
+
+  allVehicles.forEach(
+    vehicle => {
+
+
+      const fields = [
+
+        vehicle.fitness_expiry,
+
+        vehicle.insurance_expiry,
+
+        vehicle.tax_expiry,
+
+        vehicle.pucc_expiry,
+
+        vehicle.permit_expiry
+
+      ];
+
+
+      fields.forEach(
+        value => {
+
+          if(
+            isExpiringSoon(value)
+          ){
+
+            expiring++;
+
+          }
+
+
+          if(
+            isExpired(value)
+          ){
+
+            expired++;
+
+          }
+
+        }
+      );
+
+
+      if(
+        isToday(
+          vehicle.fitness_expiry
+        )
+      ){
+
+        fitnessToday++;
+
+        today++;
+
+      }
+
+
+      if(
+        isToday(
+          vehicle.insurance_expiry
+        )
+      ){
+
+        insuranceToday++;
+
+        today++;
+
+      }
+
+
+      if(
+        isToday(
+          vehicle.pucc_expiry
+        )
+      ){
+
+        puccToday++;
+
+        today++;
+
+      }
+
+
+      if(
+        isToday(
+          vehicle.tax_expiry
+        )
+      ){
+
+        taxToday++;
+
+        today++;
+
+      }
+
+
+      if(
+        isToday(
+          vehicle.permit_expiry
+        )
+      ){
+
+        permitToday++;
+
+        today++;
+
+      }
+
+    }
+  );
+
+
+  document.getElementById(
+    "totalVehicles"
+  ).textContent =
+    total;
+
+
+  document.getElementById(
+    "expiringVehicles"
+  ).textContent =
+    expiring;
+
+
+  document.getElementById(
+    "expiredVehicles"
+  ).textContent =
+    expired;
+
+
+  document.getElementById(
+    "todayVehicles"
+  ).textContent =
+    today;
+
+
+  document.getElementById(
+    "todayFitness"
+  ).textContent =
+    fitnessToday;
+
+
+  document.getElementById(
+    "todayInsurance"
+  ).textContent =
+    insuranceToday;
+
+
+  document.getElementById(
+    "todayPucc"
+  ).textContent =
+    puccToday;
+
+
+  document.getElementById(
+    "todayTax"
+  ).textContent =
+    taxToday;
+
+
+  document.getElementById(
+    "todayPermit"
+  ).textContent =
+    permitToday;
+
+}
+
+
+/* =====================================================
    LOAD VEHICLES
-========================= */
+===================================================== */
 
 async function loadVehicles(){
 
-    document.getElementById(
-        "vehicleList"
-    ).innerHTML =
-    `
-    <div class="loading">
-        Loading vehicles...
-    </div>
-    `;
+  const list =
+  document.getElementById(
+    "vehicleList"
+  );
 
+
+  list.innerHTML =
+    `<div class="empty">
+      Loading vehicles...
+    </div>`;
+
+
+  try{
 
     const {
-        data,
-        error
+      data,
+      error
     } =
     await supabaseClient
-        .from("vehicles")
-        .select("*")
-        .order(
-            "id",
-            {
-                ascending:false
-            }
-        );
+      .from("vehicles")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
 
 
     if(error){
 
-        console.error(error);
+      throw error;
 
-        document.getElementById(
-            "vehicleList"
-        ).innerHTML =
-        `
-        <div class="empty">
-            Unable to load vehicles.
-        </div>
-        `;
-
-        return;
     }
 
 
     allVehicles =
-        data || [];
+      data || [];
 
 
     filteredVehicles =
-        [...allVehicles];
+      [...allVehicles];
 
 
-    currentPage = 1;
+    currentPage =
+      1;
 
 
     updateSummary();
 
     renderTable();
 
-}
 
+  }catch(error){
 
-/* =========================
-   PARSE DATE
-========================= */
-
-function parseDate(date){
-
-    if(!date)
-        return null;
-
-
-    const d =
-        new Date(date);
-
-
-    if(isNaN(d.getTime()))
-        return null;
-
-
-    return d;
-
-}
-
-
-/* =========================
-   FORMAT DATE
-========================= */
-
-function formatDate(date){
-
-    if(!date)
-        return "-";
-
-
-    const d =
-        parseDate(date);
-
-
-    if(!d)
-        return date;
-
-
-    const day =
-        String(
-            d.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const monthNames = [
-
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
-
-    ];
-
-
-    const month =
-        monthNames[
-            d.getMonth()
-        ];
-
-
-    const year =
-        d.getFullYear();
-
-
-    return `${day}-${month}-${year}`;
-
-}
-
-
-/* =========================
-   DATE CLASS
-========================= */
-
-function getDateClass(date){
-
-    if(!date)
-        return "";
-
-
-    const d =
-        parseDate(date);
-
-
-    if(!d)
-        return "";
-
-
-    const today =
-        new Date();
-
-
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-
-    d.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-
-    const difference =
-        Math.ceil(
-            (d - today) /
-            (1000 * 60 * 60 * 24)
-        );
-
-
-    if(difference < 0)
-        return "date-danger";
-
-
-    if(difference <= 10)
-        return "date-warning";
-
-
-    return "date-normal";
-
-}
-
-
-/* =========================
-   TODAY CHECK
-========================= */
-
-function isToday(date){
-
-    if(!date)
-        return false;
-
-
-    const d =
-        parseDate(date);
-
-
-    if(!d)
-        return false;
-
-
-    const today =
-        new Date();
-
-
-    return (
-
-        d.getFullYear()
-        ===
-        today.getFullYear()
-
-        &&
-
-        d.getMonth()
-        ===
-        today.getMonth()
-
-        &&
-
-        d.getDate()
-        ===
-        today.getDate()
-
-    );
-
-}
-
-
-/* =========================
-   UPDATE SUMMARY
-========================= */
-
-function updateSummary(){
-
-    let expired = 0;
-
-    let expiring = 0;
-
-    let todayCount = 0;
-
-
-    let todayFitness = 0;
-
-    let todayInsurance = 0;
-
-    let todayPuc = 0;
-
-    let todayTax = 0;
-
-    let todayPermit = 0;
-
-
-    allVehicles.forEach(
-        vehicle => {
-
-
-        const expiryFields = [
-
-            "fitness_expiry",
-
-            "insurance_expiry",
-
-            "pucc_expiry",
-
-            "tax_expiry",
-
-            "permit_expiry"
-
-        ];
-
-
-        let vehicleExpired =
-            false;
-
-
-        let vehicleExpiring =
-            false;
-
-
-        expiryFields.forEach(
-            field => {
-
-
-            const date =
-                vehicle[field];
-
-
-            if(!date)
-                return;
-
-
-            const d =
-                parseDate(date);
-
-
-            if(!d)
-                return;
-
-
-            const today =
-                new Date();
-
-
-            today.setHours(
-                0,
-                0,
-                0,
-                0
-            );
-
-
-            d.setHours(
-                0,
-                0,
-                0,
-                0
-            );
-
-
-            const diff =
-                Math.ceil(
-                    (d - today) /
-                    (1000 * 60 * 60 * 24)
-                );
-
-
-            if(diff < 0){
-
-                vehicleExpired =
-                    true;
-
-            }
-
-            else if(diff <= 10){
-
-                vehicleExpiring =
-                    true;
-
-            }
-
-
-            if(isToday(date)){
-
-                todayCount++;
-
-
-                if(
-                    field ===
-                    "fitness_expiry"
-                ){
-
-                    todayFitness++;
-
-                }
-
-
-                if(
-                    field ===
-                    "insurance_expiry"
-                ){
-
-                    todayInsurance++;
-
-                }
-
-
-                if(
-                    field ===
-                    "pucc_expiry"
-                ){
-
-                    todayPuc++;
-
-                }
-
-
-                if(
-                    field ===
-                    "tax_expiry"
-                ){
-
-                    todayTax++;
-
-                }
-
-
-                if(
-                    field ===
-                    "permit_expiry"
-                ){
-
-                    todayPermit++;
-
-                }
-
-            }
-
-        });
-
-
-        if(vehicleExpired){
-
-            expired++;
-
-        }
-
-        else if(vehicleExpiring){
-
-            expiring++;
-
-        }
-
-    });
-
-
-    document.getElementById(
-        "totalVehicles"
-    ).innerText =
-        allVehicles.length;
-
-
-    document.getElementById(
-        "expiredVehicles"
-    ).innerText =
-        expired;
-
-
-    document.getElementById(
-        "expiringVehicles"
-    ).innerText =
-        expiring;
-
-
-    document.getElementById(
-        "todayVehicles"
-    ).innerText =
-        todayCount;
-
-
-    document.getElementById(
-        "todayFitness"
-    ).innerText =
-        todayFitness;
-
-
-    document.getElementById(
-        "todayInsurance"
-    ).innerText =
-        todayInsurance;
-
-
-    document.getElementById(
-        "todayPuc"
-    ).innerText =
-        todayPuc;
-
-
-    document.getElementById(
-        "todayTax"
-    ).innerText =
-        todayTax;
-
-
-    document.getElementById(
-        "todayPermit"
-    ).innerText =
-        todayPermit;
-
-}
-
-
-/* =========================
-   RENDER TABLE
-========================= */
-
-function renderTable(){
-
-    const list =
-        document.getElementById(
-            "vehicleList"
-        );
-
-
-    if(
-        filteredVehicles.length
-        ===
-        0
-    ){
-
-        list.innerHTML =
-        `
-        <div class="empty">
-            No vehicles found.
-        </div>
-        `;
-
-
-        document.getElementById(
-            "pageInfo"
-        ).innerText =
-            "Page 0";
-
-
-        document.getElementById(
-            "prevBtn"
-        ).disabled =
-            true;
-
-
-        document.getElementById(
-            "nextBtn"
-        ).disabled =
-            true;
-
-
-        return;
-    }
-
-
-    const totalPages =
-        Math.ceil(
-            filteredVehicles.length /
-            perPage
-        );
-
-
-    if(
-        currentPage >
-        totalPages
-    ){
-
-        currentPage =
-            totalPages;
-
-    }
-
-
-    const start =
-        (currentPage - 1)
-        *
-        perPage;
-
-
-    const end =
-        start +
-        perPage;
-
-
-    const pageVehicles =
-        filteredVehicles.slice(
-            start,
-            end
-        );
+    console.error(error);
 
 
     list.innerHTML =
-
-        pageVehicles.map(
-            vehicle => `
-
-        <div class="vehicle-card">
-
-
-            <div class="vehicle-main-line">
-
-
-                <span
-                    class="vehicle-number-text"
-                >
-                    🚗
-                    ${vehicle.vehicle_number || "-"}
-                </span>
-
-
-                <div class="customer-group">
-
-
-                    <span
-                        class="customer-text"
-                    >
-                        👤
-                        ${vehicle.customer_name || "-"}
-                    </span>
-
-
-                    <span
-                        class="mobile-text"
-                    >
-                        📞
-                        ${vehicle.mobile || "-"}
-                    </span>
-
-
-                </div>
-
-
-            </div>
-
-
-
-            <div class="vehicle-details">
-
-
-                <div class="detail-box">
-
-                    <span class="label">
-                        Registration
-                    </span>
-
-                    <span class="value">
-                        ${
-                            formatDate(
-                                vehicle.registration_date
-                            )
-                        }
-                    </span>
-
-                </div>
-
-
-
-                <div class="detail-box">
-
-                    <span class="label">
-                        Fitness
-                    </span>
-
-                    <span
-                        class="
-                            value
-                            ${
-                                getDateClass(
-                                    vehicle.fitness_expiry
-                                )
-                            }
-                        "
-                    >
-                        ${
-                            formatDate(
-                                vehicle.fitness_expiry
-                            )
-                        }
-                    </span>
-
-                </div>
-
-
-
-                <div class="detail-box">
-
-                    <span class="label">
-                        Insurance
-                    </span>
-
-                    <span
-                        class="
-                            value
-                            ${
-                                getDateClass(
-                                    vehicle.insurance_expiry
-                                )
-                            }
-                        "
-                    >
-                        ${
-                            formatDate(
-                                vehicle.insurance_expiry
-                            )
-                        }
-                    </span>
-
-                </div>
-
-
-
-                <div class="detail-box">
-
-                    <span class="label">
-                        Tax
-                    </span>
-
-                    <span
-                        class="
-                            value
-                            ${
-                                getDateClass(
-                                    vehicle.tax_expiry
-                                )
-                            }
-                        "
-                    >
-                        ${
-                            vehicle.tax_expiry || "-"
-                        }
-                    </span>
-
-                </div>
-
-
-
-                <div class="detail-box">
-
-                    <span class="label">
-                        PUCC
-                    </span>
-
-                    <span
-                        class="
-                            value
-                            ${
-                                getDateClass(
-                                    vehicle.pucc_expiry
-                                )
-                            }
-                        "
-                    >
-                        ${
-                            formatDate(
-                                vehicle.pucc_expiry
-                            )
-                        }
-                    </span>
-
-                </div>
-
-
-
-                <div class="detail-box">
-
-                    <span class="label">
-                        Permit
-                    </span>
-
-                    <span
-                        class="
-                            value
-                            ${
-                                getDateClass(
-                                    vehicle.permit_expiry
-                                )
-                            }
-                        "
-                    >
-                        ${
-                            formatDate(
-                                vehicle.permit_expiry
-                            )
-                        }
-                    </span>
-
-                </div>
-
-
-            </div>
-
-
-
-            <div class="vehicle-actions">
-
-
-                <button
-                    class="action-btn edit-btn"
-                    onclick="
-                        editVehicle(
-                            ${vehicle.id}
-                        )
-                    "
-                >
-                    Edit
-                </button>
-
-
-                <button
-                    class="action-btn delete-btn"
-                    onclick="
-                        deleteVehicle(
-                            ${vehicle.id}
-                        )
-                    "
-                >
-                    Delete
-                </button>
-
-
-            </div>
-
-
-        </div>
-
-        `
-        ).join("");
-
-
-    document.getElementById(
-        "pageInfo"
-    ).innerText =
-        `Page ${currentPage} of ${totalPages}`;
-
-
-    document.getElementById(
-        "prevBtn"
-    ).disabled =
-        currentPage === 1;
-
-
-    document.getElementById(
-        "nextBtn"
-    ).disabled =
-        currentPage === totalPages;
+      `<div class="empty">
+        Error loading vehicles.<br><br>
+        ${error.message || error}
+      </div>`;
+
+  }
 
 }
 
 
-/* =========================
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderTable(){
+
+  const list =
+  document.getElementById(
+    "vehicleList"
+  );
+
+
+  if(
+    filteredVehicles.length === 0
+  ){
+
+    list.innerHTML =
+      `<div class="empty">
+        No vehicles found.
+      </div>`;
+
+    updatePagination();
+
+    return;
+
+  }
+
+
+  const start =
+    (
+      currentPage - 1
+    ) *
+    recordsPerPage;
+
+
+  const end =
+    start +
+    recordsPerPage;
+
+
+  const pageVehicles =
+    filteredVehicles.slice(
+      start,
+      end
+    );
+
+
+  list.innerHTML =
+    pageVehicles
+      .map(
+        vehicle => {
+
+
+          const customer =
+            vehicle.customer_name ||
+            "-";
+
+
+          const mobile =
+            vehicle.mobile ||
+            "-";
+
+
+          const registration =
+            formatDate(
+              vehicle.registration_date
+            );
+
+
+          const fitness =
+            formatDate(
+              vehicle.fitness_expiry
+            );
+
+
+          const insurance =
+            formatDate(
+              vehicle.insurance_expiry
+            );
+
+
+          const tax =
+            vehicle.tax_expiry ||
+            "-";
+
+
+          const pucc =
+            formatDate(
+              vehicle.pucc_expiry
+            );
+
+
+          const permit =
+            formatDate(
+              vehicle.permit_expiry
+            );
+
+
+          return `
+
+            <div class="vehicle-card">
+
+              <div class="vehicle-top">
+
+                <div>
+
+                  <div class="vehicle-number">
+                    ${vehicle.vehicle_number || "-"}
+                  </div>
+
+                  <div class="customer-info">
+
+                    👤 ${customer}
+
+                    <br>
+
+                    📱 ${mobile}
+
+                  </div>
+
+                </div>
+
+
+                <div class="vehicle-actions">
+
+                  <button
+                    class="edit-btn"
+                    onclick="editVehicle('${vehicle.id}')"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    class="delete-btn"
+                    onclick="deleteVehicle('${vehicle.id}')"
+                  >
+                    Delete
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <div class="details-grid">
+
+
+                <div class="detail-box">
+
+                  <div class="detail-label">
+                    Registration
+                  </div>
+
+                  <div class="detail-value">
+                    ${registration}
+                  </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <div class="detail-label">
+                    Fitness
+                  </div>
+
+                  <div class="detail-value ${getDateClass(vehicle.fitness_expiry)}">
+                    ${fitness}
+                  </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <div class="detail-label">
+                    Insurance
+                  </div>
+
+                  <div class="detail-value ${getDateClass(vehicle.insurance_expiry)}">
+                    ${insurance}
+                  </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <div class="detail-label">
+                    Tax
+                  </div>
+
+                  <div class="detail-value ${getDateClass(vehicle.tax_expiry)}">
+                    ${tax}
+                  </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <div class="detail-label">
+                    PUCC
+                  </div>
+
+                  <div class="detail-value ${getDateClass(vehicle.pucc_expiry)}">
+                    ${pucc}
+                  </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <div class="detail-label">
+                    Permit
+                  </div>
+
+                  <div class="detail-value ${getDateClass(vehicle.permit_expiry)}">
+                    ${permit}
+                  </div>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  updatePagination();
+
+}
+
+
+/* =====================================================
    SEARCH
-========================= */
+===================================================== */
 
 function searchVehicle(){
 
-    const search =
-        document.getElementById(
-            "searchInput"
-        )
-        .value
-        .toLowerCase()
-        .trim();
+  const search =
+    document.getElementById(
+      "searchInput"
+    )
+    .value
+    .trim()
+    .toLowerCase();
 
+
+  if(!search){
 
     filteredVehicles =
-        allVehicles.filter(
-            vehicle =>
+      [...allVehicles];
 
-            (
-                vehicle.vehicle_number
-                ||
-                ""
+  }else{
+
+    filteredVehicles =
+      allVehicles.filter(
+        vehicle => {
+
+
+          const number =
+            String(
+              vehicle.vehicle_number ||
+              ""
             )
-            .toLowerCase()
-            .includes(search)
+            .toLowerCase();
 
-            ||
 
-            (
-                vehicle.customer_name
-                ||
-                ""
+          const customer =
+            String(
+              vehicle.customer_name ||
+              ""
             )
-            .toLowerCase()
-            .includes(search)
+            .toLowerCase();
 
-            ||
 
-            (
-                vehicle.mobile
-                ||
-                ""
+          const mobile =
+            String(
+              vehicle.mobile ||
+              ""
             )
-            .toLowerCase()
-            .includes(search)
-
-        );
+            .toLowerCase();
 
 
-    currentPage = 1;
+          return (
+
+            number.includes(search) ||
+
+            customer.includes(search) ||
+
+            mobile.includes(search)
+
+          );
+
+        }
+      );
+
+  }
 
 
-    renderTable();
+  currentPage =
+    1;
+
+
+  renderTable();
 
 }
 
 
-/* =========================
-   NEXT PAGE
-========================= */
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+function updatePagination(){
+
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        filteredVehicles.length /
+        recordsPerPage
+      )
+    );
+
+
+  document.getElementById(
+    "pageInfo"
+  ).textContent =
+    "Page " +
+    currentPage +
+    " of " +
+    totalPages;
+
+
+  document.getElementById(
+    "previousBtn"
+  ).disabled =
+    currentPage <= 1;
+
+
+  document.getElementById(
+    "nextBtn"
+  ).disabled =
+    currentPage >= totalPages;
+
+}
+
 
 function nextPage(){
 
-    const totalPages =
-        Math.ceil(
-            filteredVehicles.length /
-            perPage
-        );
+  const totalPages =
+    Math.ceil(
+      filteredVehicles.length /
+      recordsPerPage
+    );
 
 
-    if(
-        currentPage <
-        totalPages
-    ){
+  if(
+    currentPage <
+    totalPages
+  ){
 
-        currentPage++;
+    currentPage++;
 
-        renderTable();
+    renderTable();
 
-    }
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }
 
 }
 
-
-/* =========================
-   PREVIOUS PAGE
-========================= */
 
 function previousPage(){
 
-    if(currentPage > 1){
+  if(
+    currentPage > 1
+  ){
 
-        currentPage--;
+    currentPage--;
 
-        renderTable();
+    renderTable();
 
-    }
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }
 
 }
 
 
-/* =========================
+/* =====================================================
    GO TO UPLOAD
-========================= */
+===================================================== */
 
 function goToUpload(){
 
-    window.location.href =
-        "upload.html";
+  window.location.href =
+    "upload.html";
 
 }
 
 
-/* =========================
+/* =====================================================
    EDIT VEHICLE
-========================= */
+===================================================== */
 
 function editVehicle(id){
 
-    window.location.href =
-        `upload.html?id=${id}`;
+  window.location.href =
+    "upload.html?id=" +
+    encodeURIComponent(id);
 
 }
 
 
-/* =========================
+/* =====================================================
    DELETE VEHICLE
-========================= */
+===================================================== */
 
 async function deleteVehicle(id){
 
-    const confirmDelete =
-        confirm(
-            "Are you sure you want to delete this vehicle?"
-        );
+  const vehicle =
+    allVehicles.find(
+      item =>
+      String(item.id) ===
+      String(id)
+    );
 
 
-    if(!confirmDelete)
-        return;
+  if(!vehicle){
+
+    return;
+
+  }
 
 
-    const vehicle =
-        allVehicles.find(
-            v => v.id === id
-        );
+  const confirmed =
+    confirm(
+      "Are you sure you want to delete vehicle " +
+      vehicle.vehicle_number +
+      "?"
+    );
 
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  try{
+
+    /*
+      Delete photo from storage
+    */
 
     if(
-        vehicle &&
-        vehicle.photo_path
+      vehicle.photo_path
     ){
 
-        const {
-            error:storageError
-        } =
-        await supabaseClient
-            .storage
-            .from(
-                "vehicle-photos"
-            )
-            .remove([
-                vehicle.photo_path
-            ]);
+      const {
+        error:storageError
+      } =
+      await supabaseClient
+        .storage
+        .from("vehicle-photos")
+        .remove([
+          vehicle.photo_path
+        ]);
 
 
-        if(storageError){
+      if(storageError){
 
-            console.log(
-                storageError
-            );
+        console.warn(
+          "Photo delete error:",
+          storageError
+        );
 
-        }
+      }
 
     }
 
 
+    /*
+      Delete database record
+    */
+
     const {
-        error
+      error
     } =
     await supabaseClient
-        .from("vehicles")
-        .delete()
-        .eq("id",id);
+      .from("vehicles")
+      .delete()
+      .eq(
+        "id",
+        id
+      );
 
 
     if(error){
 
-        alert(
-            "Delete failed: "
-            +
-            error.message
-        );
+      throw error;
 
-        return;
     }
 
 
     alert(
-        "Vehicle deleted successfully!"
+      "Vehicle deleted successfully."
     );
 
 
-    loadVehicles();
+    await loadVehicles();
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    alert(
+      "Error deleting vehicle:\n" +
+      (
+        error.message ||
+        error
+      )
+    );
+
+  }
 
 }
 
 
-/* =========================
+/* =====================================================
    LANGUAGE
-========================= */
+===================================================== */
 
 function setLanguage(language){
 
-    const title =
-        document.getElementById(
-            "dashboardTitle"
-        );
+  /*
+    Current app remains English.
+    Language buttons are kept for future
+    Gujarati/Hindi support.
+  */
+
+  if(
+    language === "en"
+  ){
+
+    alert(
+      "English selected."
+    );
+
+  }
 
 
-    if(language === "gu"){
+  if(
+    language === "gu"
+  ){
 
-        title.innerText =
-            "ડેશબોર્ડ";
+    alert(
+      "Gujarati language support will be available soon."
+    );
 
-    }
+  }
 
-    else if(language === "hi"){
 
-        title.innerText =
-            "डैशबोर्ड";
+  if(
+    language === "hi"
+  ){
 
-    }
+    alert(
+      "Hindi language support will be available soon."
+    );
 
-    else{
-
-        title.innerText =
-            "Dashboard";
-
-    }
+  }
 
 }
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 loadVehicles();
 
