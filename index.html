@@ -21,7 +21,7 @@ html{
 body{
     margin:0;
     min-height:100vh;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     color:#1e293b;
 
     background-image:url("./assets/background.png");
@@ -34,7 +34,11 @@ body{
 /* HEADER */
 
 .header{
-    background:linear-gradient(135deg,rgba(15,61,104,.94),rgba(23,105,170,.90));
+    background:linear-gradient(
+        135deg,
+        rgba(15,61,104,.94),
+        rgba(23,105,170,.90)
+    );
     color:white;
     padding:18px 20px;
     display:flex;
@@ -149,7 +153,7 @@ body{
 }
 
 .summary-card{
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,.93);
     backdrop-filter:blur(8px);
     border-radius:12px;
     padding:16px;
@@ -184,7 +188,7 @@ body{
 /* TODAY */
 
 .today-section{
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,.93);
     backdrop-filter:blur(8px);
     padding:15px;
     border-radius:12px;
@@ -228,7 +232,7 @@ body{
 /* SEARCH */
 
 .search-box{
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,.93);
     backdrop-filter:blur(8px);
     padding:14px;
     border-radius:12px;
@@ -413,9 +417,9 @@ body{
 .footer{
     text-align:center;
     padding:20px;
-    color:#ffffff;
+    color:white;
     font-size:12px;
-    text-shadow:0 1px 3px rgba(0,0,0,.5);
+    text-shadow:0 1px 4px rgba(0,0,0,.6);
 }
 
 /* MOBILE */
@@ -508,8 +512,232 @@ body{
 
 }
 
+</style>
+</head>
 
-/* SUPABASE */
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="header-left">
+
+        <div class="logo">🚗</div>
+
+        <div>
+
+            <div class="header-title">
+                RV Vehicle Reminder
+            </div>
+
+            <div class="header-subtitle">
+                Vehicle Expiry Management System
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="language-buttons">
+
+        <button onclick="setLanguage('en')">
+            English
+        </button>
+
+        <button onclick="setLanguage('gu')">
+            ગુજરાતી
+        </button>
+
+        <button onclick="setLanguage('hi')">
+            हिंदी
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="page-title" id="dashboardTitle">
+            Dashboard
+        </div>
+
+        <div class="top-actions">
+
+            <button class="btn btn-primary"
+                    onclick="goToUpload()">
+                ➕ Add Vehicle
+            </button>
+
+            <button class="btn btn-success"
+                    onclick="loadVehicles()">
+                🔄 Refresh
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Total Vehicles
+            </div>
+
+            <div class="summary-number"
+                 id="totalVehicles">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card expiring">
+
+            <div class="summary-title">
+                Expiring Soon
+            </div>
+
+            <div class="summary-number"
+                 id="expiringVehicles">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card expired">
+
+            <div class="summary-title">
+                Expired Vehicles
+            </div>
+
+            <div class="summary-number"
+                 id="expiredVehicles">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card today">
+
+            <div class="summary-title">
+                Today's Expiry
+            </div>
+
+            <div class="summary-number"
+                 id="todayTotal">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TODAY EXPIRY -->
+
+    <div class="today-section">
+
+        <div class="section-title">
+            Today's Expiry
+        </div>
+
+        <div class="today-grid">
+
+            <div class="today-box">
+                <strong>FITNESS</strong>
+                <span id="todayFitness">0</span>
+            </div>
+
+            <div class="today-box">
+                <strong>INSURANCE</strong>
+                <span id="todayInsurance">0</span>
+            </div>
+
+            <div class="today-box">
+                <strong>PUC</strong>
+                <span id="todayPuc">0</span>
+            </div>
+
+            <div class="today-box">
+                <strong>TAX</strong>
+                <span id="todayTax">0</span>
+            </div>
+
+            <div class="today-box">
+                <strong>PERMIT</strong>
+                <span id="todayPermit">0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search Vehicle Number, Customer Name or Mobile..."
+            oninput="searchVehicle()"
+        >
+
+    </div>
+
+
+    <!-- VEHICLE LIST -->
+
+    <div id="vehicleList"></div>
+
+
+    <!-- PAGINATION -->
+
+    <div class="pagination">
+
+        <button id="prevBtn"
+                onclick="previousPage()">
+            ◀ Previous
+        </button>
+
+        <div class="page-info"
+             id="pageInfo">
+            Page 1
+        </div>
+
+        <button id="nextBtn"
+                onclick="nextPage()">
+            Next ▶
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+    © 2026 RV Vehicle Reminder | All Rights Reserved
+</div>
+
+
+<script>
+
+/* SUPABASE CONFIG */
 
 const SUPABASE_URL =
 "https://lqbhafspabtlqeubqxjg.supabase.co";
@@ -565,15 +793,21 @@ function setLanguage(language){
 
 async function loadVehicles(){
 
-    const { data, error } = await supabaseClient
+    const { data, error } =
+        await supabaseClient
         .from("vehicles")
         .select("*")
-        .order("id", { ascending:false });
+        .order("id", {
+            ascending:false
+        });
 
 
     if(error){
 
-        console.error("Load error:", error);
+        console.error(
+            "Load error:",
+            error
+        );
 
         document.getElementById("vehicleList").innerHTML =
         `
@@ -610,7 +844,8 @@ function parseDate(value){
 
     const date = new Date(value);
 
-    if(isNaN(date.getTime())) return null;
+    if(isNaN(date.getTime()))
+        return null;
 
     return date;
 
@@ -627,11 +862,14 @@ function formatDate(value){
 
     if(!date) return value;
 
-    return date.toLocaleDateString("en-GB",{
-        day:"2-digit",
-        month:"short",
-        year:"numeric"
-    });
+    return date.toLocaleDateString(
+        "en-GB",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
 
 }
 
@@ -660,12 +898,18 @@ function getDateClass(value){
 
 
     if(diff < 0){
+
         return "status-expired";
+
     }
 
+
     if(diff <= 10){
+
         return "status-expiring";
+
     }
+
 
     return "status-normal";
 
@@ -742,11 +986,15 @@ function updateCounts(){
 
 
             if(diff < 0){
+
                 expired++;
+
             }
 
             else if(diff <= 10){
+
                 expiring++;
+
             }
 
         });
@@ -776,15 +1024,20 @@ function updateTodayExpiryCounts(){
 
     allVehicles.forEach(vehicle => {
 
-        if(isToday(vehicle.fitness_expiry)) fitness++;
+        if(isToday(vehicle.fitness_expiry))
+            fitness++;
 
-        if(isToday(vehicle.insurance_expiry)) insurance++;
+        if(isToday(vehicle.insurance_expiry))
+            insurance++;
 
-        if(isToday(vehicle.pucc_expiry)) puc++;
+        if(isToday(vehicle.pucc_expiry))
+            puc++;
 
-        if(isToday(vehicle.tax_expiry)) tax++;
+        if(isToday(vehicle.tax_expiry))
+            tax++;
 
-        if(isToday(vehicle.permit_expiry)) permit++;
+        if(isToday(vehicle.permit_expiry))
+            permit++;
 
     });
 
@@ -805,7 +1058,11 @@ function updateTodayExpiryCounts(){
         permit;
 
     document.getElementById("todayTotal").innerText =
-        fitness + insurance + puc + tax + permit;
+        fitness +
+        insurance +
+        puc +
+        tax +
+        permit;
 
 }
 
@@ -830,9 +1087,11 @@ function renderTable(){
         document.getElementById("pageInfo").innerText =
             "Page 0";
 
-        document.getElementById("prevBtn").disabled = true;
+        document.getElementById("prevBtn").disabled =
+            true;
 
-        document.getElementById("nextBtn").disabled = true;
+        document.getElementById("nextBtn").disabled =
+            true;
 
         return;
 
@@ -846,7 +1105,10 @@ function renderTable(){
         start + perPage;
 
     const pageVehicles =
-        filteredVehicles.slice(start,end);
+        filteredVehicles.slice(
+            start,
+            end
+        );
 
 
     list.innerHTML = "";
@@ -868,7 +1130,6 @@ function renderTable(){
                 <span class="vehicle-number-text">
                     🚗 ${vehicle.vehicle_number || "-"}
                 </span>
-
 
                 <div class="customer-group">
 
@@ -894,7 +1155,9 @@ function renderTable(){
                     </div>
 
                     <div class="detail-value">
-                        ${formatDate(vehicle.registration_date)}
+                        ${formatDate(
+                            vehicle.registration_date
+                        )}
                     </div>
 
                 </div>
@@ -906,8 +1169,13 @@ function renderTable(){
                         FITNESS
                     </div>
 
-                    <div class="detail-value ${getDateClass(vehicle.fitness_expiry)}">
-                        ${formatDate(vehicle.fitness_expiry)}
+                    <div class="detail-value
+                        ${getDateClass(
+                            vehicle.fitness_expiry
+                        )}">
+                        ${formatDate(
+                            vehicle.fitness_expiry
+                        )}
                     </div>
 
                 </div>
@@ -919,8 +1187,13 @@ function renderTable(){
                         INSURANCE
                     </div>
 
-                    <div class="detail-value ${getDateClass(vehicle.insurance_expiry)}">
-                        ${formatDate(vehicle.insurance_expiry)}
+                    <div class="detail-value
+                        ${getDateClass(
+                            vehicle.insurance_expiry
+                        )}">
+                        ${formatDate(
+                            vehicle.insurance_expiry
+                        )}
                     </div>
 
                 </div>
@@ -945,8 +1218,13 @@ function renderTable(){
                         PUCC
                     </div>
 
-                    <div class="detail-value ${getDateClass(vehicle.pucc_expiry)}">
-                        ${formatDate(vehicle.pucc_expiry)}
+                    <div class="detail-value
+                        ${getDateClass(
+                            vehicle.pucc_expiry
+                        )}">
+                        ${formatDate(
+                            vehicle.pucc_expiry
+                        )}
                     </div>
 
                 </div>
@@ -958,8 +1236,13 @@ function renderTable(){
                         PERMIT
                     </div>
 
-                    <div class="detail-value ${getDateClass(vehicle.permit_expiry)}">
-                        ${formatDate(vehicle.permit_expiry)}
+                    <div class="detail-value
+                        ${getDateClass(
+                            vehicle.permit_expiry
+                        )}">
+                        ${formatDate(
+                            vehicle.permit_expiry
+                        )}
                     </div>
 
                 </div>
@@ -974,7 +1257,6 @@ function renderTable(){
                     onclick="editVehicle('${vehicle.id}')">
                     ✏️ Edit
                 </button>
-
 
                 <button
                     class="small-btn delete-btn"
@@ -993,7 +1275,10 @@ function renderTable(){
 
 
     const totalPages =
-        Math.ceil(filteredVehicles.length / perPage);
+        Math.ceil(
+            filteredVehicles.length /
+            perPage
+        );
 
 
     document.getElementById("pageInfo").innerText =
@@ -1024,16 +1309,19 @@ function searchVehicle(){
         allVehicles.filter(vehicle => {
 
             const vehicleNumber =
-                String(vehicle.vehicle_number || "")
-                .toLowerCase();
+                String(
+                    vehicle.vehicle_number || ""
+                ).toLowerCase();
 
             const customerName =
-                String(vehicle.customer_name || "")
-                .toLowerCase();
+                String(
+                    vehicle.customer_name || ""
+                ).toLowerCase();
 
             const mobile =
-                String(vehicle.mobile || "")
-                .toLowerCase();
+                String(
+                    vehicle.mobile || ""
+                ).toLowerCase();
 
 
             return (
@@ -1057,7 +1345,10 @@ function searchVehicle(){
 function nextPage(){
 
     const totalPages =
-        Math.ceil(filteredVehicles.length / perPage);
+        Math.ceil(
+            filteredVehicles.length /
+            perPage
+        );
 
 
     if(currentPage < totalPages){
@@ -1131,17 +1422,20 @@ async function deleteVehicle(id){
 
     const vehicle =
         allVehicles.find(
-            item => String(item.id) === String(id)
+            item =>
+            String(item.id) === String(id)
         );
 
 
     if(vehicle && vehicle.photo_path){
 
-        const { error: storageError } =
+        const { error:storageError } =
             await supabaseClient
             .storage
             .from("vehicle-photos")
-            .remove([vehicle.photo_path]);
+            .remove([
+                vehicle.photo_path
+            ]);
 
 
         if(storageError){
@@ -1160,7 +1454,7 @@ async function deleteVehicle(id){
         await supabaseClient
         .from("vehicles")
         .delete()
-        .eq("id", id);
+        .eq("id",id);
 
 
     if(error){
@@ -1192,4 +1486,4 @@ loadVehicles();
 </script>
 
 </body>
-    </html>
+</html>
