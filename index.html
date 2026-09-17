@@ -25,15 +25,11 @@ body{
     font-family:Arial,Helvetica,sans-serif;
     color:#172033;
 
-    background-image:
-        linear-gradient(
-            rgba(240,245,255,.82),
-            rgba(240,245,255,.82)
-        ),
-        url("./assets/background.png");
-
+    /* FULL BACKGROUND - NO OVERLAY */
+    background-image:url("./assets/background.png");
     background-size:cover;
-    background-position:center;
+    background-position:center center;
+    background-repeat:no-repeat;
     background-attachment:fixed;
 }
 
@@ -153,7 +149,7 @@ body{
 
 
 /* =========================
-   TOP TITLE
+   PAGE TITLE
 ========================= */
 
 .page-title{
@@ -174,21 +170,15 @@ body{
     font-weight:800;
 
     color:#102a56;
-}
 
-.page-title h2::after{
-    content:"";
+    background:rgba(255,255,255,.88);
 
-    display:block;
-
-    width:48px;
-    height:4px;
-
-    margin-top:7px;
+    padding:8px 14px;
 
     border-radius:10px;
 
-    background:#1687e8;
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.08);
 }
 
 .top-buttons{
@@ -210,7 +200,8 @@ body{
 
     transition:.2s;
 
-    box-shadow:0 5px 12px rgba(0,0,0,.08);
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.12);
 }
 
 .btn:hover{
@@ -218,13 +209,20 @@ body{
 }
 
 .btn-primary{
-    background:linear-gradient(135deg,#1769d1,#1687e8);
+    background:linear-gradient(
+        135deg,
+        #1769d1,
+        #1687e8
+    );
+
     color:white;
 }
 
 .btn-refresh{
     background:white;
+
     color:#1769d1;
+
     border:1px solid #d8e5f5;
 }
 
@@ -258,16 +256,18 @@ body{
     padding:20px;
 
     box-shadow:
-        0 8px 25px rgba(30,70,120,.10);
+        0 8px 25px rgba(30,70,120,.12);
 
     transition:.2s;
+
+    border-top:4px solid #1769d1;
 }
 
 .summary-card:hover{
     transform:translateY(-4px);
 
     box-shadow:
-        0 14px 30px rgba(30,70,120,.15);
+        0 14px 30px rgba(30,70,120,.18);
 }
 
 .summary-card::after{
@@ -288,6 +288,7 @@ body{
 
 .summary-card h3{
     position:relative;
+
     z-index:1;
 
     font-size:13px;
@@ -301,6 +302,7 @@ body{
 
 .summary-card .number{
     position:relative;
+
     z-index:1;
 
     font-size:34px;
@@ -308,10 +310,6 @@ body{
     font-weight:800;
 
     color:#102a56;
-}
-
-.summary-card{
-    border-top:4px solid #1769d1;
 }
 
 .summary-card.expiring{
@@ -343,7 +341,7 @@ body{
     margin-bottom:20px;
 
     box-shadow:
-        0 8px 25px rgba(30,70,120,.08);
+        0 8px 25px rgba(30,70,120,.10);
 }
 
 .today-heading{
@@ -365,6 +363,7 @@ body{
     background:#e8f8ef;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -373,6 +372,7 @@ body{
 
 .today-section h3{
     font-size:18px;
+
     color:#102a56;
 }
 
@@ -401,6 +401,7 @@ body{
 
 .today-card:hover{
     background:#eef6ff;
+
     transform:translateY(-2px);
 }
 
@@ -441,7 +442,7 @@ body{
     margin-bottom:20px;
 
     box-shadow:
-        0 8px 25px rgba(30,70,120,.08);
+        0 8px 25px rgba(30,70,120,.10);
 }
 
 .search-wrapper{
@@ -516,7 +517,7 @@ body{
     padding:19px;
 
     box-shadow:
-        0 8px 25px rgba(30,70,120,.08);
+        0 8px 25px rgba(30,70,120,.10);
 
     transition:.2s;
 }
@@ -525,7 +526,7 @@ body{
     transform:translateY(-2px);
 
     box-shadow:
-        0 12px 30px rgba(30,70,120,.13);
+        0 12px 30px rgba(30,70,120,.15);
 }
 
 
@@ -717,7 +718,7 @@ body{
     color:#64748b;
 
     box-shadow:
-        0 8px 25px rgba(30,70,120,.08);
+        0 8px 25px rgba(30,70,120,.10);
 }
 
 .loading{
@@ -732,7 +733,7 @@ body{
     color:#64748b;
 
     box-shadow:
-        0 8px 25px rgba(30,70,120,.08);
+        0 8px 25px rgba(30,70,120,.10);
 }
 
 
@@ -796,9 +797,12 @@ body{
 
     padding:25px;
 
-    color:#64748b;
+    color:#ffffff;
 
     font-size:12px;
+
+    text-shadow:
+        0 1px 3px rgba(0,0,0,.5);
 }
 
 
@@ -870,6 +874,8 @@ body{
 
     .page-title h2{
         font-size:22px;
+
+        padding:7px 11px;
     }
 
     .top-buttons{
@@ -1010,21 +1016,52 @@ body{
 <div class="header">
 
     <div class="logo">
-        <img src="./assets/logo.png" alt="RV Logo">
+
+        <img
+            src="./assets/logo.png"
+            alt="RV Logo"
+        >
+
     </div>
+
 
     <div class="header-text">
-        <h1>RV Vehicle Reminder</h1>
-        <p>Vehicle Expiry Management System</p>
+
+        <h1>
+            RV Vehicle Reminder
+        </h1>
+
+        <p>
+            Vehicle Expiry Management System
+        </p>
+
     </div>
 
+
     <div class="language-buttons">
-        <button onclick="setLanguage('en')">English</button>
-        <button onclick="setLanguage('gu')">ગુજરાતી</button>
-        <button onclick="setLanguage('hi')">हिंदी</button>
+
+        <button
+            onclick="setLanguage('en')"
+        >
+            English
+        </button>
+
+        <button
+            onclick="setLanguage('gu')"
+        >
+            ગુજરાતી
+        </button>
+
+        <button
+            onclick="setLanguage('hi')"
+        >
+            हिंदी
+        </button>
+
     </div>
 
 </div>
+
 
 
 <!-- =========================
@@ -1034,13 +1071,14 @@ body{
 <div class="container">
 
 
-    <!-- TITLE -->
+    <!-- PAGE TITLE -->
 
     <div class="page-title">
 
         <h2 id="dashboardTitle">
             Dashboard
         </h2>
+
 
         <div class="top-buttons">
 
@@ -1050,6 +1088,7 @@ body{
             >
                 + Add Vehicle
             </button>
+
 
             <button
                 class="btn btn-refresh"
@@ -1063,15 +1102,19 @@ body{
     </div>
 
 
+
     <!-- =========================
-         SUMMARY
+         SUMMARY CARDS
     ========================= -->
 
     <div class="summary-grid">
 
+
         <div class="summary-card">
 
-            <h3>Total Vehicles</h3>
+            <h3>
+                Total Vehicles
+            </h3>
 
             <div
                 class="number"
@@ -1083,9 +1126,12 @@ body{
         </div>
 
 
+
         <div class="summary-card expiring">
 
-            <h3>Expiring Soon</h3>
+            <h3>
+                Expiring Soon
+            </h3>
 
             <div
                 class="number"
@@ -1097,9 +1143,12 @@ body{
         </div>
 
 
+
         <div class="summary-card expired">
 
-            <h3>Expired Vehicles</h3>
+            <h3>
+                Expired Vehicles
+            </h3>
 
             <div
                 class="number"
@@ -1111,9 +1160,12 @@ body{
         </div>
 
 
+
         <div class="summary-card today">
 
-            <h3>Today's Expiry</h3>
+            <h3>
+                Today's Expiry
+            </h3>
 
             <div
                 class="number"
@@ -1127,11 +1179,13 @@ body{
     </div>
 
 
+
     <!-- =========================
          TODAY EXPIRY
     ========================= -->
 
     <div class="today-section">
+
 
         <div class="today-heading">
 
@@ -1146,7 +1200,9 @@ body{
         </div>
 
 
+
         <div class="today-grid">
+
 
             <div class="today-card">
 
@@ -1162,6 +1218,7 @@ body{
                 </div>
 
             </div>
+
 
 
             <div class="today-card">
@@ -1180,6 +1237,7 @@ body{
             </div>
 
 
+
             <div class="today-card">
 
                 <div class="label">
@@ -1194,6 +1252,7 @@ body{
                 </div>
 
             </div>
+
 
 
             <div class="today-card">
@@ -1212,6 +1271,7 @@ body{
             </div>
 
 
+
             <div class="today-card">
 
                 <div class="label">
@@ -1227,9 +1287,11 @@ body{
 
             </div>
 
+
         </div>
 
     </div>
+
 
 
     <!-- =========================
@@ -1238,11 +1300,13 @@ body{
 
     <div class="search-box">
 
+
         <div class="search-wrapper">
 
             <span class="search-icon">
                 🔍
             </span>
+
 
             <input
                 type="text"
@@ -1254,6 +1318,7 @@ body{
         </div>
 
     </div>
+
 
 
     <!-- =========================
@@ -1272,11 +1337,13 @@ body{
     </div>
 
 
+
     <!-- =========================
          PAGINATION
     ========================= -->
 
     <div class="pagination">
+
 
         <button
             id="prevBtn"
@@ -1285,9 +1352,11 @@ body{
             Previous
         </button>
 
+
         <span id="pageInfo">
             Page 1
         </span>
+
 
         <button
             id="nextBtn"
@@ -1296,9 +1365,11 @@ body{
             Next
         </button>
 
+
     </div>
 
 </div>
+
 
 
 <!-- =========================
@@ -1306,8 +1377,11 @@ body{
 ========================= -->
 
 <div class="footer">
+
     © 2026 RV Vehicle Reminder
+
 </div>
+
 
 
 <script>
@@ -1351,9 +1425,11 @@ async function loadVehicles(){
     document.getElementById(
         "vehicleList"
     ).innerHTML =
-    `<div class="loading">
+    `
+    <div class="loading">
         Loading vehicles...
-     </div>`;
+    </div>
+    `;
 
 
     const {
@@ -1363,7 +1439,12 @@ async function loadVehicles(){
     await supabaseClient
         .from("vehicles")
         .select("*")
-        .order("id",{ascending:false});
+        .order(
+            "id",
+            {
+                ascending:false
+            }
+        );
 
 
     if(error){
@@ -1373,24 +1454,31 @@ async function loadVehicles(){
         document.getElementById(
             "vehicleList"
         ).innerHTML =
-        `<div class="empty">
+        `
+        <div class="empty">
             Unable to load vehicles.
-         </div>`;
+        </div>
+        `;
 
         return;
     }
 
 
-    allVehicles = data || [];
+    allVehicles =
+        data || [];
+
 
     filteredVehicles =
         [...allVehicles];
 
+
     currentPage = 1;
+
 
     updateSummary();
 
     renderTable();
+
 }
 
 
@@ -1403,12 +1491,17 @@ function parseDate(date){
     if(!date)
         return null;
 
-    const d = new Date(date);
+
+    const d =
+        new Date(date);
+
 
     if(isNaN(d.getTime()))
         return null;
 
+
     return d;
+
 }
 
 
@@ -1421,35 +1514,59 @@ function formatDate(date){
     if(!date)
         return "-";
 
+
     const d =
         parseDate(date);
+
 
     if(!d)
         return date;
 
+
     const day =
-        String(d.getDate())
-        .padStart(2,"0");
+        String(
+            d.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const monthNames = [
-        "Jan","Feb","Mar",
-        "Apr","May","Jun",
-        "Jul","Aug","Sep",
-        "Oct","Nov","Dec"
+
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+
     ];
 
+
     const month =
-        monthNames[d.getMonth()];
+        monthNames[
+            d.getMonth()
+        ];
+
 
     const year =
         d.getFullYear();
 
+
     return `${day}-${month}-${year}`;
+
 }
 
 
 /* =========================
-   DATE COLOR
+   DATE CLASS
 ========================= */
 
 function getDateClass(date){
@@ -1457,27 +1574,39 @@ function getDateClass(date){
     if(!date)
         return "";
 
+
     const d =
         parseDate(date);
+
 
     if(!d)
         return "";
 
+
     const today =
         new Date();
 
+
     today.setHours(
-        0,0,0,0
+        0,
+        0,
+        0,
+        0
     );
 
+
     d.setHours(
-        0,0,0,0
+        0,
+        0,
+        0,
+        0
     );
+
 
     const difference =
         Math.ceil(
-            (d-today) /
-            (1000*60*60*24)
+            (d - today) /
+            (1000 * 60 * 60 * 24)
         );
 
 
@@ -1490,6 +1619,7 @@ function getDateClass(date){
 
 
     return "date-normal";
+
 }
 
 
@@ -1502,30 +1632,44 @@ function isToday(date){
     if(!date)
         return false;
 
+
     const d =
         parseDate(date);
+
 
     if(!d)
         return false;
 
+
     const today =
         new Date();
 
+
     return (
+
         d.getFullYear()
-        === today.getFullYear()
+        ===
+        today.getFullYear()
+
         &&
+
         d.getMonth()
-        === today.getMonth()
+        ===
+        today.getMonth()
+
         &&
+
         d.getDate()
-        === today.getDate()
+        ===
+        today.getDate()
+
     );
+
 }
 
 
 /* =========================
-   SUMMARY
+   UPDATE SUMMARY
 ========================= */
 
 function updateSummary(){
@@ -1535,6 +1679,7 @@ function updateSummary(){
     let expiring = 0;
 
     let todayCount = 0;
+
 
     let todayFitness = 0;
 
@@ -1549,6 +1694,7 @@ function updateSummary(){
 
     allVehicles.forEach(
         vehicle => {
+
 
         const expiryFields = [
 
@@ -1568,6 +1714,7 @@ function updateSummary(){
         let vehicleExpired =
             false;
 
+
         let vehicleExpiring =
             false;
 
@@ -1575,8 +1722,10 @@ function updateSummary(){
         expiryFields.forEach(
             field => {
 
+
             const date =
                 vehicle[field];
+
 
             if(!date)
                 return;
@@ -1585,6 +1734,7 @@ function updateSummary(){
             const d =
                 parseDate(date);
 
+
             if(!d)
                 return;
 
@@ -1592,19 +1742,27 @@ function updateSummary(){
             const today =
                 new Date();
 
+
             today.setHours(
-                0,0,0,0
+                0,
+                0,
+                0,
+                0
             );
 
+
             d.setHours(
-                0,0,0,0
+                0,
+                0,
+                0,
+                0
             );
 
 
             const diff =
                 Math.ceil(
-                    (d-today) /
-                    (1000*60*60*24)
+                    (d - today) /
+                    (1000 * 60 * 60 * 24)
                 );
 
 
@@ -1628,40 +1786,50 @@ function updateSummary(){
                 todayCount++;
 
 
-                if(field ===
-                    "fitness_expiry"){
+                if(
+                    field ===
+                    "fitness_expiry"
+                ){
 
                     todayFitness++;
 
                 }
 
 
-                if(field ===
-                    "insurance_expiry"){
+                if(
+                    field ===
+                    "insurance_expiry"
+                ){
 
                     todayInsurance++;
 
                 }
 
 
-                if(field ===
-                    "pucc_expiry"){
+                if(
+                    field ===
+                    "pucc_expiry"
+                ){
 
                     todayPuc++;
 
                 }
 
 
-                if(field ===
-                    "tax_expiry"){
+                if(
+                    field ===
+                    "tax_expiry"
+                ){
 
                     todayTax++;
 
                 }
 
 
-                if(field ===
-                    "permit_expiry"){
+                if(
+                    field ===
+                    "permit_expiry"
+                ){
 
                     todayPermit++;
 
@@ -1744,7 +1912,7 @@ function updateSummary(){
 
 
 /* =========================
-   RENDER VEHICLES
+   RENDER TABLE
 ========================= */
 
 function renderTable(){
@@ -1755,25 +1923,37 @@ function renderTable(){
         );
 
 
-    if(filteredVehicles.length === 0){
+    if(
+        filteredVehicles.length
+        ===
+        0
+    ){
 
         list.innerHTML =
-        `<div class="empty">
+        `
+        <div class="empty">
             No vehicles found.
-         </div>`;
+        </div>
+        `;
+
 
         document.getElementById(
             "pageInfo"
         ).innerText =
             "Page 0";
 
+
         document.getElementById(
             "prevBtn"
-        ).disabled = true;
+        ).disabled =
+            true;
+
 
         document.getElementById(
             "nextBtn"
-        ).disabled = true;
+        ).disabled =
+            true;
+
 
         return;
     }
@@ -1786,17 +1966,26 @@ function renderTable(){
         );
 
 
-    if(currentPage > totalPages)
-        currentPage = totalPages;
+    if(
+        currentPage >
+        totalPages
+    ){
+
+        currentPage =
+            totalPages;
+
+    }
 
 
     const start =
-        (currentPage-1) *
+        (currentPage - 1)
+        *
         perPage;
 
 
     const end =
-        start + perPage;
+        start +
+        perPage;
 
 
     const pageVehicles =
@@ -1807,30 +1996,48 @@ function renderTable(){
 
 
     list.innerHTML =
+
         pageVehicles.map(
             vehicle => `
 
         <div class="vehicle-card">
 
+
             <div class="vehicle-main-line">
 
-                <span class="vehicle-number-text">
-                    🚗 ${vehicle.vehicle_number || "-"}
+
+                <span
+                    class="vehicle-number-text"
+                >
+                    🚗
+                    ${vehicle.vehicle_number || "-"}
                 </span>
+
 
                 <div class="customer-group">
 
-                    <span class="customer-text">
-                        👤 ${vehicle.customer_name || "-"}
+
+                    <span
+                        class="customer-text"
+                    >
+                        👤
+                        ${vehicle.customer_name || "-"}
                     </span>
 
-                    <span class="mobile-text">
-                        📞 ${vehicle.mobile || "-"}
+
+                    <span
+                        class="mobile-text"
+                    >
+                        📞
+                        ${vehicle.mobile || "-"}
                     </span>
+
 
                 </div>
 
+
             </div>
+
 
 
             <div class="vehicle-details">
@@ -1843,12 +2050,15 @@ function renderTable(){
                     </span>
 
                     <span class="value">
-                        ${formatDate(
-                            vehicle.registration_date
-                        )}
+                        ${
+                            formatDate(
+                                vehicle.registration_date
+                            )
+                        }
                     </span>
 
                 </div>
+
 
 
                 <div class="detail-box">
@@ -1858,17 +2068,24 @@ function renderTable(){
                     </span>
 
                     <span
-                        class="value
-                        ${getDateClass(
-                            vehicle.fitness_expiry
-                        )}"
+                        class="
+                            value
+                            ${
+                                getDateClass(
+                                    vehicle.fitness_expiry
+                                )
+                            }
+                        "
                     >
-                        ${formatDate(
-                            vehicle.fitness_expiry
-                        )}
+                        ${
+                            formatDate(
+                                vehicle.fitness_expiry
+                            )
+                        }
                     </span>
 
                 </div>
+
 
 
                 <div class="detail-box">
@@ -1878,17 +2095,24 @@ function renderTable(){
                     </span>
 
                     <span
-                        class="value
-                        ${getDateClass(
-                            vehicle.insurance_expiry
-                        )}"
+                        class="
+                            value
+                            ${
+                                getDateClass(
+                                    vehicle.insurance_expiry
+                                )
+                            }
+                        "
                     >
-                        ${formatDate(
-                            vehicle.insurance_expiry
-                        )}
+                        ${
+                            formatDate(
+                                vehicle.insurance_expiry
+                            )
+                        }
                     </span>
 
                 </div>
+
 
 
                 <div class="detail-box">
@@ -1898,15 +2122,22 @@ function renderTable(){
                     </span>
 
                     <span
-                        class="value
-                        ${getDateClass(
-                            vehicle.tax_expiry
-                        )}"
+                        class="
+                            value
+                            ${
+                                getDateClass(
+                                    vehicle.tax_expiry
+                                )
+                            }
+                        "
                     >
-                        ${vehicle.tax_expiry || "-"}
+                        ${
+                            vehicle.tax_expiry || "-"
+                        }
                     </span>
 
                 </div>
+
 
 
                 <div class="detail-box">
@@ -1916,17 +2147,24 @@ function renderTable(){
                     </span>
 
                     <span
-                        class="value
-                        ${getDateClass(
-                            vehicle.pucc_expiry
-                        )}"
+                        class="
+                            value
+                            ${
+                                getDateClass(
+                                    vehicle.pucc_expiry
+                                )
+                            }
+                        "
                     >
-                        ${formatDate(
-                            vehicle.pucc_expiry
-                        )}
+                        ${
+                            formatDate(
+                                vehicle.pucc_expiry
+                            )
+                        }
                     </span>
 
                 </div>
+
 
 
                 <div class="detail-box">
@@ -1936,14 +2174,20 @@ function renderTable(){
                     </span>
 
                     <span
-                        class="value
-                        ${getDateClass(
-                            vehicle.permit_expiry
-                        )}"
+                        class="
+                            value
+                            ${
+                                getDateClass(
+                                    vehicle.permit_expiry
+                                )
+                            }
+                        "
                     >
-                        ${formatDate(
-                            vehicle.permit_expiry
-                        )}
+                        ${
+                            formatDate(
+                                vehicle.permit_expiry
+                            )
+                        }
                     </span>
 
                 </div>
@@ -1952,11 +2196,17 @@ function renderTable(){
             </div>
 
 
+
             <div class="vehicle-actions">
+
 
                 <button
                     class="action-btn edit-btn"
-                    onclick="editVehicle(${vehicle.id})"
+                    onclick="
+                        editVehicle(
+                            ${vehicle.id}
+                        )
+                    "
                 >
                     Edit
                 </button>
@@ -1964,17 +2214,23 @@ function renderTable(){
 
                 <button
                     class="action-btn delete-btn"
-                    onclick="deleteVehicle(${vehicle.id})"
+                    onclick="
+                        deleteVehicle(
+                            ${vehicle.id}
+                        )
+                    "
                 >
                     Delete
                 </button>
 
+
             </div>
+
 
         </div>
 
-    `
-    ).join("");
+        `
+        ).join("");
 
 
     document.getElementById(
@@ -2016,25 +2272,39 @@ function searchVehicle(){
         allVehicles.filter(
             vehicle =>
 
-            (vehicle.vehicle_number || "")
+            (
+                vehicle.vehicle_number
+                ||
+                ""
+            )
             .toLowerCase()
             .includes(search)
 
             ||
 
-            (vehicle.customer_name || "")
+            (
+                vehicle.customer_name
+                ||
+                ""
+            )
             .toLowerCase()
             .includes(search)
 
             ||
 
-            (vehicle.mobile || "")
+            (
+                vehicle.mobile
+                ||
+                ""
+            )
             .toLowerCase()
             .includes(search)
+
         );
 
 
     currentPage = 1;
+
 
     renderTable();
 
@@ -2054,7 +2324,10 @@ function nextPage(){
         );
 
 
-    if(currentPage < totalPages){
+    if(
+        currentPage <
+        totalPages
+    ){
 
         currentPage++;
 
@@ -2083,7 +2356,7 @@ function previousPage(){
 
 
 /* =========================
-   ADD VEHICLE
+   GO TO UPLOAD
 ========================= */
 
 function goToUpload(){
@@ -2128,24 +2401,31 @@ async function deleteVehicle(id){
         );
 
 
-    if(vehicle &&
-       vehicle.photo_path){
+    if(
+        vehicle &&
+        vehicle.photo_path
+    ){
 
         const {
             error:storageError
         } =
         await supabaseClient
             .storage
-            .from("vehicle-photos")
+            .from(
+                "vehicle-photos"
+            )
             .remove([
                 vehicle.photo_path
             ]);
 
 
-        if(storageError)
+        if(storageError){
+
             console.log(
                 storageError
             );
+
+        }
 
     }
 
@@ -2163,7 +2443,8 @@ async function deleteVehicle(id){
 
         alert(
             "Delete failed: "
-            + error.message
+            +
+            error.message
         );
 
         return;
