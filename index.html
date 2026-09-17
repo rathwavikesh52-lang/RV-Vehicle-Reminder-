@@ -9,28 +9,32 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
+html{
+    min-height:100%;
+}
+
 body{
     margin:0;
+    min-height:100vh;
     font-family:Arial, sans-serif;
     color:#1e293b;
 
-    background-image:url("assets/background.png");
+    background-image:url("./assets/background.png");
     background-size:cover;
-    background-position:center;
+    background-position:center center;
     background-repeat:no-repeat;
     background-attachment:fixed;
-
-    min-height:100vh;
 }
 
 /* HEADER */
 
 .header{
-    background:linear-gradient(135deg,#0f3d68,#1769aa);
+    background:linear-gradient(135deg,rgba(15,61,104,.94),rgba(23,105,170,.90));
     color:white;
     padding:18px 20px;
     display:flex;
@@ -38,7 +42,7 @@ body{
     align-items:center;
     flex-wrap:wrap;
     gap:12px;
-    box-shadow:0 3px 12px rgba(0,0,0,0.18);
+    box-shadow:0 3px 12px rgba(0,0,0,.18);
 }
 
 .header-left{
@@ -145,10 +149,11 @@ body{
 }
 
 .summary-card{
-    background:white;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
     border-radius:12px;
     padding:16px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
     border-left:5px solid #1769aa;
 }
 
@@ -179,10 +184,11 @@ body{
 /* TODAY */
 
 .today-section{
-    background:white;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
     padding:15px;
     border-radius:12px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
     margin-bottom:18px;
 }
 
@@ -203,7 +209,7 @@ body{
     border-radius:9px;
     padding:12px;
     text-align:center;
-    background:#f1f5f9;
+    background:rgba(241,245,249,.90);
 }
 
 .today-box strong{
@@ -222,10 +228,11 @@ body{
 /* SEARCH */
 
 .search-box{
-    background:white;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
     padding:14px;
     border-radius:12px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
     margin-bottom:18px;
 }
 
@@ -236,16 +243,18 @@ body{
     border-radius:8px;
     font-size:15px;
     outline:none;
+    background:white;
 }
 
 /* VEHICLE CARD */
 
 .vehicle-card{
-    background:white;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(8px);
     border-radius:13px;
     padding:17px;
     margin-bottom:14px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
     border-left:5px solid #1769aa;
 }
 
@@ -298,7 +307,7 @@ body{
 }
 
 .detail-box{
-    background:#f8fafc;
+    background:rgba(248,250,252,.92);
     border-radius:8px;
     padding:10px;
     border:1px solid #e2e8f0;
@@ -360,12 +369,13 @@ body{
 /* EMPTY */
 
 .empty{
-    background:white;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(8px);
     border-radius:12px;
     padding:35px;
     text-align:center;
     color:#64748b;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
 }
 
 /* PAGINATION */
@@ -403,8 +413,9 @@ body{
 .footer{
     text-align:center;
     padding:20px;
-    color:#64748b;
+    color:#ffffff;
     font-size:12px;
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
 }
 
 /* MOBILE */
@@ -426,6 +437,11 @@ body{
 }
 
 @media(max-width:600px){
+
+    body{
+        background-position:center top;
+        background-attachment:scroll;
+    }
 
     .header{
         padding:14px;
@@ -492,211 +508,8 @@ body{
 
 }
 
-</style>
-</head>
 
-<body>
-
-<!-- HEADER -->
-
-<div class="header">
-
-    <div class="header-left">
-
-        <div class="logo">🚗</div>
-
-        <div>
-            <div class="header-title">
-                RV Vehicle Reminder
-            </div>
-
-            <div class="header-subtitle">
-                Vehicle Expiry Management System
-            </div>
-        </div>
-
-    </div>
-
-    <div class="language-buttons">
-        <button onclick="setLanguage('en')">English</button>
-        <button onclick="setLanguage('gu')">ગુજરાતી</button>
-        <button onclick="setLanguage('hi')">हिंदी</button>
-    </div>
-
-</div>
-
-
-<div class="container">
-
-    <!-- TOPBAR -->
-
-    <div class="topbar">
-
-        <div class="page-title" id="dashboardTitle">
-            Dashboard
-        </div>
-
-        <div class="top-actions">
-
-            <button class="btn btn-primary" onclick="goToUpload()">
-                ➕ Add Vehicle
-            </button>
-
-            <button class="btn btn-success" onclick="loadVehicles()">
-                🔄 Refresh
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- SUMMARY -->
-
-    <div class="summary">
-
-        <div class="summary-card">
-
-            <div class="summary-title">
-                Total Vehicles
-            </div>
-
-            <div class="summary-number" id="totalVehicles">
-                0
-            </div>
-
-        </div>
-
-
-        <div class="summary-card expiring">
-
-            <div class="summary-title">
-                Expiring Soon
-            </div>
-
-            <div class="summary-number" id="expiringVehicles">
-                0
-            </div>
-
-        </div>
-
-
-        <div class="summary-card expired">
-
-            <div class="summary-title">
-                Expired Vehicles
-            </div>
-
-            <div class="summary-number" id="expiredVehicles">
-                0
-            </div>
-
-        </div>
-
-
-        <div class="summary-card today">
-
-            <div class="summary-title">
-                Today's Expiry
-            </div>
-
-            <div class="summary-number" id="todayTotal">
-                0
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- TODAY EXPIRY -->
-
-    <div class="today-section">
-
-        <div class="section-title">
-            Today's Expiry
-        </div>
-
-        <div class="today-grid">
-
-            <div class="today-box">
-                <strong>FITNESS</strong>
-                <span id="todayFitness">0</span>
-            </div>
-
-            <div class="today-box">
-                <strong>INSURANCE</strong>
-                <span id="todayInsurance">0</span>
-            </div>
-
-            <div class="today-box">
-                <strong>PUC</strong>
-                <span id="todayPuc">0</span>
-            </div>
-
-            <div class="today-box">
-                <strong>TAX</strong>
-                <span id="todayTax">0</span>
-            </div>
-
-            <div class="today-box">
-                <strong>PERMIT</strong>
-                <span id="todayPermit">0</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="search-box">
-
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search Vehicle Number, Customer Name or Mobile..."
-            oninput="searchVehicle()"
-        >
-
-    </div>
-
-
-    <!-- VEHICLE LIST -->
-
-    <div id="vehicleList"></div>
-
-
-    <!-- PAGINATION -->
-
-    <div class="pagination">
-
-        <button id="prevBtn" onclick="previousPage()">
-            ◀ Previous
-        </button>
-
-        <div class="page-info" id="pageInfo">
-            Page 1
-        </div>
-
-        <button id="nextBtn" onclick="nextPage()">
-            Next ▶
-        </button>
-
-    </div>
-
-</div>
-
-
-<div class="footer">
-    © 2026 RV Vehicle Reminder | All Rights Reserved
-</div>
-
-
-<script>
-
-/* SUPABASE CONFIG */
+/* SUPABASE */
 
 const SUPABASE_URL =
 "https://lqbhafspabtlqeubqxjg.supabase.co";
@@ -997,7 +810,7 @@ function updateTodayExpiryCounts(){
 }
 
 
-/* RENDER TABLE */
+/* RENDER VEHICLES */
 
 function renderTable(){
 
@@ -1379,4 +1192,4 @@ loadVehicles();
 </script>
 
 </body>
-</html>
+    </html>
