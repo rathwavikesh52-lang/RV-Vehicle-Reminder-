@@ -28,7 +28,6 @@ body{
 }
 
 body{
-
   color:#172033;
 
   background-image:url("./assets/background.png");
@@ -40,7 +39,6 @@ body{
   background-repeat:no-repeat;
 
   background-attachment:fixed;
-
 }
 
 
@@ -123,7 +121,7 @@ body{
 
 
 /* =====================================================
-   LANGUAGE
+   LANGUAGE BUTTONS
 ===================================================== */
 
 .language-box{
@@ -181,41 +179,20 @@ body{
 
 
 /* =====================================================
-   TOP CONTROLS
+   TOP ACTIONS
 ===================================================== */
 
 .top-bar{
 
   display:flex;
 
-  justify-content:space-between;
+  justify-content:flex-end;
 
   align-items:center;
 
   gap:12px;
 
   margin-bottom:20px;
-
-}
-
-.page-title{
-
-  background:rgba(255,255,255,.82);
-
-  backdrop-filter:blur(10px);
-
-  padding:12px 18px;
-
-  border-radius:13px;
-
-  font-size:20px;
-
-  font-weight:800;
-
-  color:#092754;
-
-  box-shadow:
-    0 5px 20px rgba(0,0,0,.10);
 
 }
 
@@ -810,15 +787,7 @@ body{
 
   .top-bar{
 
-    flex-direction:column;
-
-    align-items:stretch;
-
-  }
-
-  .page-title{
-
-    text-align:center;
+    justify-content:stretch;
 
   }
 
@@ -955,16 +924,10 @@ body{
 
 
 <!-- =====================================================
-     TOP BAR
-     
-     Dashboard heading REMOVED
+     TOP ACTIONS
 ===================================================== -->
 
 <div class="top-bar">
-
-  <div class="page-title">
-    RV Vehicle Reminder
-  </div>
 
   <div class="actions">
 
@@ -1626,13 +1589,11 @@ function updateSummary(){
   let total =
     allVehicles.length;
 
-
   let expiring = 0;
 
   let expired = 0;
 
   let today = 0;
-
 
   let fitnessToday = 0;
 
@@ -1647,7 +1608,6 @@ function updateSummary(){
 
   allVehicles.forEach(
     vehicle => {
-
 
       const fields = [
 
@@ -1888,7 +1848,7 @@ async function loadVehicles(){
 
 
 /* =====================================================
-   RENDER
+   RENDER VEHICLES
 ===================================================== */
 
 function renderTable(){
@@ -1928,199 +1888,198 @@ function renderTable(){
 
 
   const pageVehicles =
-    filteredVehicles.slice(
-      start,
-      end
-    );
+  filteredVehicles.slice(
+    start,
+    end
+  );
 
 
   list.innerHTML =
-    pageVehicles
-      .map(
-        vehicle => {
+  pageVehicles
+  .map(
+    vehicle => {
+
+      const customer =
+        vehicle.customer_name ||
+        "-";
 
 
-          const customer =
-            vehicle.customer_name ||
-            "-";
+      const mobile =
+        vehicle.mobile ||
+        "-";
 
 
-          const mobile =
-            vehicle.mobile ||
-            "-";
+      const registration =
+        formatDate(
+          vehicle.registration_date
+        );
 
 
-          const registration =
-            formatDate(
-              vehicle.registration_date
-            );
+      const fitness =
+        formatDate(
+          vehicle.fitness_expiry
+        );
 
 
-          const fitness =
-            formatDate(
-              vehicle.fitness_expiry
-            );
+      const insurance =
+        formatDate(
+          vehicle.insurance_expiry
+        );
 
 
-          const insurance =
-            formatDate(
-              vehicle.insurance_expiry
-            );
+      const tax =
+        vehicle.tax_expiry ||
+        "-";
 
 
-          const tax =
-            vehicle.tax_expiry ||
-            "-";
+      const pucc =
+        formatDate(
+          vehicle.pucc_expiry
+        );
 
 
-          const pucc =
-            formatDate(
-              vehicle.pucc_expiry
-            );
+      const permit =
+        formatDate(
+          vehicle.permit_expiry
+        );
 
 
-          const permit =
-            formatDate(
-              vehicle.permit_expiry
-            );
+      return `
 
+        <div class="vehicle-card">
 
-          return `
+          <div class="vehicle-top">
 
-            <div class="vehicle-card">
+            <div>
 
-              <div class="vehicle-top">
-
-                <div>
-
-                  <div class="vehicle-number">
-                    ${vehicle.vehicle_number || "-"}
-                  </div>
-
-                  <div class="customer-info">
-
-                    👤 ${customer}
-
-                    <br>
-
-                    📱 ${mobile}
-
-                  </div>
-
-                </div>
-
-
-                <div class="vehicle-actions">
-
-                  <button
-                    class="edit-btn"
-                    onclick="editVehicle('${vehicle.id}')"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    class="delete-btn"
-                    onclick="deleteVehicle('${vehicle.id}')"
-                  >
-                    Delete
-                  </button>
-
-                </div>
-
+              <div class="vehicle-number">
+                ${vehicle.vehicle_number || "-"}
               </div>
 
+              <div class="customer-info">
 
-              <div class="details-grid">
+                👤 ${customer}
 
+                <br>
 
-                <div class="detail-box">
-
-                  <div class="detail-label">
-                    Registration
-                  </div>
-
-                  <div class="detail-value">
-                    ${registration}
-                  </div>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                  <div class="detail-label">
-                    Fitness
-                  </div>
-
-                  <div class="detail-value ${getDateClass(vehicle.fitness_expiry)}">
-                    ${fitness}
-                  </div>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                  <div class="detail-label">
-                    Insurance
-                  </div>
-
-                  <div class="detail-value ${getDateClass(vehicle.insurance_expiry)}">
-                    ${insurance}
-                  </div>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                  <div class="detail-label">
-                    Tax
-                  </div>
-
-                  <div class="detail-value ${getDateClass(vehicle.tax_expiry)}">
-                    ${tax}
-                  </div>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                  <div class="detail-label">
-                    PUCC
-                  </div>
-
-                  <div class="detail-value ${getDateClass(vehicle.pucc_expiry)}">
-                    ${pucc}
-                  </div>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                  <div class="detail-label">
-                    Permit
-                  </div>
-
-                  <div class="detail-value ${getDateClass(vehicle.permit_expiry)}">
-                    ${permit}
-                  </div>
-
-                </div>
-
+                📱 ${mobile}
 
               </div>
 
             </div>
 
-          `;
 
-        }
-      )
-      .join("");
+            <div class="vehicle-actions">
+
+              <button
+                class="edit-btn"
+                onclick="editVehicle('${vehicle.id}')"
+              >
+                Edit
+              </button>
+
+              <button
+                class="delete-btn"
+                onclick="deleteVehicle('${vehicle.id}')"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="details-grid">
+
+
+            <div class="detail-box">
+
+              <div class="detail-label">
+                Registration
+              </div>
+
+              <div class="detail-value">
+                ${registration}
+              </div>
+
+            </div>
+
+
+            <div class="detail-box">
+
+              <div class="detail-label">
+                Fitness
+              </div>
+
+              <div class="detail-value ${getDateClass(vehicle.fitness_expiry)}">
+                ${fitness}
+              </div>
+
+            </div>
+
+
+            <div class="detail-box">
+
+              <div class="detail-label">
+                Insurance
+              </div>
+
+              <div class="detail-value ${getDateClass(vehicle.insurance_expiry)}">
+                ${insurance}
+              </div>
+
+            </div>
+
+
+            <div class="detail-box">
+
+              <div class="detail-label">
+                Tax
+              </div>
+
+              <div class="detail-value ${getDateClass(vehicle.tax_expiry)}">
+                ${tax}
+              </div>
+
+            </div>
+
+
+            <div class="detail-box">
+
+              <div class="detail-label">
+                PUCC
+              </div>
+
+              <div class="detail-value ${getDateClass(vehicle.pucc_expiry)}">
+                ${pucc}
+              </div>
+
+            </div>
+
+
+            <div class="detail-box">
+
+              <div class="detail-label">
+                Permit
+              </div>
+
+              <div class="detail-value ${getDateClass(vehicle.permit_expiry)}">
+                ${permit}
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+  )
+  .join("");
 
 
   updatePagination();
@@ -2153,7 +2112,6 @@ function searchVehicle(){
     filteredVehicles =
       allVehicles.filter(
         vehicle => {
-
 
           const number =
             String(
@@ -2439,12 +2397,6 @@ async function deleteVehicle(id){
 ===================================================== */
 
 function setLanguage(language){
-
-  /*
-    Current app remains English.
-    Language buttons are kept for future
-    Gujarati/Hindi support.
-  */
 
   if(
     language === "en"
