@@ -27,47 +27,52 @@ body{
     background-attachment:fixed;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 .header{
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    background:linear-gradient(135deg,rgba(29,78,216,.97),rgba(37,99,235,.93));
     color:white;
-    padding:18px 25px;
+    padding:16px 25px;
     display:flex;
     align-items:center;
-    gap:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.15);
+    gap:14px;
+    box-shadow:0 5px 20px rgba(0,0,0,.22);
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .logo{
-    width:48px;
-    height:48px;
-    border-radius:12px;
+    width:52px;
+    height:52px;
+    border-radius:14px;
     background:white;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
     flex-shrink:0;
+    box-shadow:0 3px 10px rgba(0,0,0,.18);
 }
 
 .logo img{
     width:100%;
     height:100%;
     object-fit:contain;
-    border-radius:12px;
+    border-radius:14px;
 }
 
 .header-text h1{
     margin:0;
     font-size:25px;
     font-weight:700;
+    letter-spacing:.2px;
 }
 
 .header-text p{
     margin:4px 0 0;
     font-size:13px;
-    opacity:0.9;
+    opacity:.9;
 }
 
 .language-buttons{
@@ -77,20 +82,21 @@ body{
 }
 
 .language-buttons button{
-    border:none;
-    padding:7px 10px;
-    border-radius:6px;
-    background:rgba(255,255,255,0.2);
+    border:1px solid rgba(255,255,255,.35);
+    padding:7px 11px;
+    border-radius:7px;
+    background:rgba(255,255,255,.15);
     color:white;
     cursor:pointer;
     font-size:12px;
+    transition:.2s;
 }
 
 .language-buttons button:hover{
-    background:rgba(255,255,255,0.35);
+    background:rgba(255,255,255,.3);
 }
 
-/* MAIN CONTAINER */
+/* ================= MAIN ================= */
 
 .container{
     max-width:1250px;
@@ -98,7 +104,7 @@ body{
     padding:0 15px;
 }
 
-/* TOP TITLE */
+/* ================= PAGE TITLE ================= */
 
 .page-title{
     display:flex;
@@ -111,8 +117,9 @@ body{
 
 .page-title h2{
     margin:0;
-    font-size:24px;
+    font-size:25px;
     color:#0f172a;
+    font-weight:700;
 }
 
 .top-buttons{
@@ -122,12 +129,13 @@ body{
 
 .btn{
     border:none;
-    padding:11px 17px;
-    border-radius:8px;
+    padding:11px 18px;
+    border-radius:9px;
     cursor:pointer;
     font-size:14px;
     font-weight:600;
-    transition:0.2s;
+    transition:.2s;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
 .btn-primary{
@@ -137,6 +145,7 @@ body{
 
 .btn-primary:hover{
     background:#1d4ed8;
+    transform:translateY(-1px);
 }
 
 .btn-refresh{
@@ -146,58 +155,80 @@ body{
 
 .btn-refresh:hover{
     background:#15803d;
+    transform:translateY(-1px);
 }
 
-/* SUMMARY CARDS */
+/* ================= SUMMARY ================= */
 
 .summary-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:15px;
+    gap:16px;
     margin-bottom:20px;
 }
 
 .summary-card{
-    background:rgba(255,255,255,0.92);
-    backdrop-filter:blur(8px);
-    border-radius:12px;
-    padding:20px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
-    border-left:5px solid #2563eb;
+    background:rgba(255,255,255,.90);
+    backdrop-filter:blur(12px);
+    border-radius:15px;
+    padding:19px;
+    box-shadow:0 7px 22px rgba(0,0,0,.10);
+    border:1px solid rgba(255,255,255,.75);
+    border-top:4px solid #2563eb;
+    transition:.2s;
+}
+
+.summary-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(0,0,0,.14);
 }
 
 .summary-card h3{
     margin:0 0 10px;
-    font-size:14px;
+    font-size:13px;
     color:#64748b;
+    font-weight:600;
 }
 
 .summary-card .number{
-    font-size:30px;
-    font-weight:700;
+    font-size:32px;
+    font-weight:800;
     color:#0f172a;
 }
 
 .summary-card.expiring{
-    border-left-color:#f59e0b;
+    border-top-color:#f59e0b;
+}
+
+.summary-card.expiring .number{
+    color:#d97706;
 }
 
 .summary-card.expired{
-    border-left-color:#dc2626;
+    border-top-color:#dc2626;
+}
+
+.summary-card.expired .number{
+    color:#dc2626;
 }
 
 .summary-card.today{
-    border-left-color:#16a34a;
+    border-top-color:#16a34a;
 }
 
-/* TODAY SECTION */
+.summary-card.today .number{
+    color:#16a34a;
+}
+
+/* ================= TODAY ================= */
 
 .today-section{
-    background:rgba(255,255,255,0.92);
-    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.90);
+    backdrop-filter:blur(12px);
     padding:20px;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    border-radius:15px;
+    box-shadow:0 7px 22px rgba(0,0,0,.10);
+    border:1px solid rgba(255,255,255,.75);
     margin-bottom:20px;
 }
 
@@ -214,52 +245,61 @@ body{
 }
 
 .today-card{
-    padding:15px;
-    background:#f8fafc;
-    border-radius:10px;
+    padding:15px 10px;
+    background:rgba(248,250,252,.95);
+    border-radius:11px;
     text-align:center;
     border:1px solid #e2e8f0;
+    transition:.2s;
+}
+
+.today-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 5px 12px rgba(0,0,0,.07);
 }
 
 .today-card .label{
-    font-size:12px;
+    font-size:11px;
     color:#64748b;
     margin-bottom:6px;
-    font-weight:bold;
+    font-weight:700;
 }
 
 .today-card .value{
-    font-size:24px;
-    font-weight:bold;
+    font-size:25px;
+    font-weight:800;
     color:#16a34a;
 }
 
-/* SEARCH */
+/* ================= SEARCH ================= */
 
 .search-box{
-    background:rgba(255,255,255,0.92);
-    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.90);
+    backdrop-filter:blur(12px);
     padding:15px;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    border-radius:15px;
+    box-shadow:0 7px 22px rgba(0,0,0,.10);
+    border:1px solid rgba(255,255,255,.75);
     margin-bottom:20px;
 }
 
 .search-box input{
     width:100%;
-    padding:13px 15px;
+    padding:14px 16px;
     border:1px solid #cbd5e1;
-    border-radius:8px;
+    border-radius:9px;
     font-size:15px;
     outline:none;
+    background:rgba(255,255,255,.95);
+    transition:.2s;
 }
 
 .search-box input:focus{
     border-color:#2563eb;
-    box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
 }
 
-/* VEHICLE LIST */
+/* ================= VEHICLE LIST ================= */
 
 .vehicle-list{
     display:flex;
@@ -268,12 +308,18 @@ body{
 }
 
 .vehicle-card{
-    background:rgba(255,255,255,0.94);
-    backdrop-filter:blur(8px);
-    border-radius:12px;
+    background:rgba(255,255,255,.93);
+    backdrop-filter:blur(12px);
+    border-radius:15px;
     padding:18px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    box-shadow:0 7px 22px rgba(0,0,0,.10);
+    border:1px solid rgba(255,255,255,.8);
     border-left:5px solid #2563eb;
+    transition:.2s;
+}
+
+.vehicle-card:hover{
+    box-shadow:0 10px 27px rgba(0,0,0,.14);
 }
 
 .vehicle-main-line{
@@ -282,12 +328,12 @@ body{
     justify-content:space-between;
     gap:20px;
     flex-wrap:wrap;
-    margin-bottom:15px;
+    margin-bottom:16px;
 }
 
 .vehicle-number-text{
-    font-size:19px;
-    font-weight:700;
+    font-size:20px;
+    font-weight:800;
     color:#1d4ed8;
 }
 
@@ -296,6 +342,7 @@ body{
     flex-direction:column;
     gap:4px;
     margin-left:auto;
+    text-align:right;
 }
 
 .customer-text{
@@ -305,10 +352,12 @@ body{
 }
 
 .mobile-text{
-    font-size:14px;
+    font-size:13px;
     font-weight:600;
-    color:#475569;
+    color:#64748b;
 }
+
+/* ================= DETAILS ================= */
 
 .vehicle-details{
     display:grid;
@@ -318,17 +367,17 @@ body{
 }
 
 .detail-box{
-    background:#f8fafc;
+    background:rgba(248,250,252,.95);
     border:1px solid #e2e8f0;
-    padding:10px;
-    border-radius:8px;
+    padding:11px;
+    border-radius:9px;
 }
 
 .detail-box .label{
     display:block;
-    font-size:11px;
+    font-size:10px;
     color:#64748b;
-    font-weight:bold;
+    font-weight:700;
     margin-bottom:5px;
     text-transform:uppercase;
 }
@@ -344,12 +393,14 @@ body{
 }
 
 .date-warning{
-    color:#f59e0b !important;
+    color:#d97706 !important;
 }
 
 .date-danger{
     color:#dc2626 !important;
 }
+
+/* ================= ACTIONS ================= */
 
 .vehicle-actions{
     display:flex;
@@ -359,11 +410,12 @@ body{
 
 .action-btn{
     border:none;
-    padding:8px 13px;
-    border-radius:6px;
+    padding:8px 14px;
+    border-radius:7px;
     cursor:pointer;
     font-size:12px;
-    font-weight:bold;
+    font-weight:700;
+    transition:.2s;
 }
 
 .edit-btn{
@@ -384,19 +436,19 @@ body{
     background:#fecaca;
 }
 
-/* EMPTY */
+/* ================= EMPTY ================= */
 
 .empty{
-    background:rgba(255,255,255,0.94);
-    backdrop-filter:blur(8px);
-    padding:40px 20px;
+    background:rgba(255,255,255,.93);
+    backdrop-filter:blur(12px);
+    padding:45px 20px;
     text-align:center;
-    border-radius:12px;
+    border-radius:15px;
     color:#64748b;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    box-shadow:0 7px 22px rgba(0,0,0,.10);
 }
 
-/* PAGINATION */
+/* ================= PAGINATION ================= */
 
 .pagination{
     display:flex;
@@ -410,10 +462,14 @@ body{
     border:none;
     background:#2563eb;
     color:white;
-    padding:9px 15px;
+    padding:9px 16px;
     border-radius:7px;
     cursor:pointer;
     font-weight:bold;
+}
+
+.pagination button:hover{
+    background:#1d4ed8;
 }
 
 .pagination button:disabled{
@@ -427,7 +483,7 @@ body{
     color:#334155;
 }
 
-/* LOADING */
+/* ================= LOADING ================= */
 
 .loading{
     text-align:center;
@@ -436,7 +492,16 @@ body{
     color:#64748b;
 }
 
-/* RESPONSIVE */
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+    padding:25px 20px;
+    color:#64748b;
+    font-size:12px;
+}
+
+/* ================= TABLET ================= */
 
 @media(max-width:900px){
 
@@ -454,18 +519,27 @@ body{
 
 }
 
+/* ================= MOBILE ================= */
+
 @media(max-width:600px){
 
     .header{
-        padding:15px;
+        padding:13px 12px;
+        gap:10px;
+    }
+
+    .logo{
+        width:45px;
+        height:45px;
+        border-radius:11px;
     }
 
     .header-text h1{
-        font-size:19px;
+        font-size:18px;
     }
 
     .header-text p{
-        font-size:11px;
+        font-size:10px;
     }
 
     .language-buttons{
@@ -473,12 +547,16 @@ body{
     }
 
     .container{
-        margin:18px auto;
+        margin:16px auto;
         padding:0 10px;
     }
 
+    .page-title{
+        margin-bottom:15px;
+    }
+
     .page-title h2{
-        font-size:20px;
+        font-size:21px;
     }
 
     .top-buttons{
@@ -487,6 +565,7 @@ body{
 
     .top-buttons .btn{
         flex:1;
+        padding:10px 8px;
     }
 
     .summary-grid{
@@ -495,15 +574,29 @@ body{
     }
 
     .summary-card{
-        padding:15px;
+        padding:14px;
+        border-radius:12px;
+    }
+
+    .summary-card h3{
+        font-size:11px;
     }
 
     .summary-card .number{
         font-size:25px;
     }
 
+    .today-section{
+        padding:15px;
+    }
+
     .today-grid{
         grid-template-columns:repeat(2,1fr);
+        gap:9px;
+    }
+
+    .today-card{
+        padding:12px 8px;
     }
 
     .vehicle-main-line{
@@ -512,26 +605,50 @@ body{
 
     .customer-group{
         margin-left:0;
-        margin-top:10px;
+        margin-top:9px;
+        text-align:left;
+    }
+
+    .vehicle-number-text{
+        font-size:18px;
     }
 
     .vehicle-details{
         grid-template-columns:repeat(2,1fr);
+        gap:8px;
     }
 
     .vehicle-card{
         padding:14px;
+        border-radius:12px;
+    }
+
+    .detail-box{
+        padding:9px;
     }
 
 }
 
-/* FOOTER */
+/* ================= SMALL MOBILE ================= */
 
-.footer{
-    text-align:center;
-    padding:20px;
-    color:#64748b;
-    font-size:12px;
+@media(max-width:380px){
+
+    .header-text h1{
+        font-size:16px;
+    }
+
+    .header-text p{
+        font-size:9px;
+    }
+
+    .summary-card .number{
+        font-size:22px;
+    }
+
+    .vehicle-details{
+        grid-template-columns:1fr 1fr;
+    }
+
 }
 
 </style>
@@ -570,6 +687,7 @@ body{
         <h2 id="dashboardTitle">Dashboard</h2>
 
         <div class="top-buttons">
+
             <button class="btn btn-primary" onclick="goToUpload()">
                 + Add Vehicle
             </button>
@@ -577,6 +695,7 @@ body{
             <button class="btn btn-refresh" onclick="loadVehicles()">
                 ↻ Refresh
             </button>
+
         </div>
 
     </div>
