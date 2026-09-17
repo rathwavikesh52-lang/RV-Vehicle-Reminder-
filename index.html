@@ -9,7 +9,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
@@ -17,7 +16,7 @@
 body{
     margin:0;
     font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#eef5ff,#f8fbff);
+    background:#eef5ff;
     color:#1e293b;
 }
 
@@ -50,7 +49,6 @@ body{
     align-items:center;
     justify-content:center;
     font-size:27px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.2);
 }
 
 .header-title{
@@ -60,7 +58,7 @@ body{
 
 .header-subtitle{
     font-size:12px;
-    opacity:0.85;
+    opacity:.85;
     margin-top:3px;
 }
 
@@ -80,7 +78,7 @@ body{
     cursor:pointer;
 }
 
-/* MAIN CONTAINER */
+/* CONTAINER */
 
 .container{
     max-width:1250px;
@@ -88,7 +86,7 @@ body{
     padding:18px;
 }
 
-/* TOP BAR */
+/* TOPBAR */
 
 .topbar{
     display:flex;
@@ -125,17 +123,8 @@ body{
     color:white;
 }
 
-.btn-primary:hover{
-    background:#0f4f86;
-}
-
 .btn-success{
     background:#16803c;
-    color:white;
-}
-
-.btn-danger{
-    background:#d62828;
     color:white;
 }
 
@@ -152,20 +141,8 @@ body{
     background:white;
     border-radius:12px;
     padding:16px;
-    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
     border-left:5px solid #1769aa;
-}
-
-.summary-title{
-    font-size:13px;
-    color:#64748b;
-    margin-bottom:7px;
-}
-
-.summary-number{
-    font-size:25px;
-    font-weight:bold;
-    color:#123e68;
 }
 
 .summary-card.expiring{
@@ -180,13 +157,25 @@ body{
     border-left-color:#7c3aed;
 }
 
-/* TODAY EXPIRY */
+.summary-title{
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:7px;
+}
+
+.summary-number{
+    font-size:25px;
+    font-weight:bold;
+    color:#123e68;
+}
+
+/* TODAY */
 
 .today-section{
     background:white;
     padding:15px;
     border-radius:12px;
-    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
     margin-bottom:18px;
 }
 
@@ -229,7 +218,7 @@ body{
     background:white;
     padding:14px;
     border-radius:12px;
-    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
     margin-bottom:18px;
 }
 
@@ -242,10 +231,6 @@ body{
     outline:none;
 }
 
-.search-box input:focus{
-    border-color:#1769aa;
-}
-
 /* VEHICLE CARD */
 
 .vehicle-card{
@@ -253,46 +238,51 @@ body{
     border-radius:13px;
     padding:17px;
     margin-bottom:14px;
-    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
     border-left:5px solid #1769aa;
 }
+
+/* VEHICLE NUMBER + CUSTOMER */
 
 .vehicle-main-line{
     display:flex;
     align-items:flex-start;
-    gap:18px;
-    white-space:nowrap;
-    overflow-x:auto;
-    padding-bottom:3px;
+    gap:20px;
     margin-bottom:15px;
-    padding-right:150px;
+    min-width:0;
 }
 
 .vehicle-number-text{
     font-size:18px;
     font-weight:bold;
     color:#123e68;
-    flex-shrink:0;
+    white-space:nowrap;
+    padding-top:2px;
 }
 
 .customer-group{
     display:flex;
     flex-direction:column;
-    gap:4px;
-    min-width:150px;
+    gap:5px;
+    min-width:0;
 }
 
 .customer-text{
     font-size:16px;
     font-weight:700;
     color:#344255;
+    white-space:nowrap;
 }
 
 .mobile-text{
+    display:block;
     font-size:14px;
     font-weight:700;
     color:#17528d;
+    white-space:nowrap;
 }
+
+/* DETAILS */
 
 .vehicle-details{
     display:grid;
@@ -332,6 +322,8 @@ body{
     color:#dc2626;
 }
 
+/* ACTIONS */
+
 .vehicle-actions{
     display:flex;
     justify-content:flex-end;
@@ -366,7 +358,7 @@ body{
     padding:35px;
     text-align:center;
     color:#64748b;
-    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
 /* PAGINATION */
@@ -408,7 +400,7 @@ body{
     font-size:12px;
 }
 
-/* RESPONSIVE */
+/* MOBILE */
 
 @media(max-width:1000px){
 
@@ -467,7 +459,8 @@ body{
 
     .vehicle-main-line{
         gap:12px;
-        padding-right:20px;
+        overflow-x:auto;
+        padding-bottom:3px;
     }
 
     .vehicle-number-text{
@@ -506,7 +499,10 @@ body{
         <div class="logo">🚗</div>
 
         <div>
-            <div class="header-title">RV Vehicle Reminder</div>
+            <div class="header-title">
+                RV Vehicle Reminder
+            </div>
+
             <div class="header-subtitle">
                 Vehicle Expiry Management System
             </div>
@@ -525,7 +521,7 @@ body{
 
 <div class="container">
 
-    <!-- TOP BAR -->
+    <!-- TOPBAR -->
 
     <div class="topbar">
 
@@ -708,11 +704,12 @@ supabase.createClient(
 );
 
 
-/* GLOBAL VARIABLES */
+/* VARIABLES */
 
 let allVehicles = [];
 let filteredVehicles = [];
 let currentPage = 1;
+
 const perPage = 10;
 
 
@@ -721,18 +718,24 @@ const perPage = 10;
 function setLanguage(language){
 
     if(language === "gu"){
+
         document.getElementById("dashboardTitle").innerText =
         "ડેશબોર્ડ";
+
     }
 
     else if(language === "hi"){
+
         document.getElementById("dashboardTitle").innerText =
         "डैशबोर्ड";
+
     }
 
     else{
+
         document.getElementById("dashboardTitle").innerText =
         "Dashboard";
+
     }
 
 }
@@ -747,24 +750,33 @@ async function loadVehicles(){
         .select("*")
         .order("id", { ascending:false });
 
+
     if(error){
 
-        console.error(error);
+        console.error("Load error:", error);
 
         document.getElementById("vehicleList").innerHTML =
-        `<div class="empty">
+        `
+        <div class="empty">
             ❌ Error loading vehicles
-        </div>`;
+        </div>
+        `;
 
         return;
+
     }
 
+
     allVehicles = data || [];
+
     filteredVehicles = [...allVehicles];
+
     currentPage = 1;
 
     updateCounts();
+
     updateTodayExpiryCounts();
+
     renderTable();
 
 }
@@ -804,7 +816,7 @@ function formatDate(value){
 }
 
 
-/* GET DATE STATUS */
+/* DATE CLASS */
 
 function getDateClass(value){
 
@@ -821,7 +833,11 @@ function getDateClass(value){
     date.setHours(0,0,0,0);
 
     const diff =
-        Math.ceil((date - today) / (1000 * 60 * 60 * 24));
+        Math.ceil(
+            (date - today) /
+            (1000 * 60 * 60 * 24)
+        );
+
 
     if(diff < 0){
         return "status-expired";
@@ -836,7 +852,7 @@ function getDateClass(value){
 }
 
 
-/* DATE IS TODAY */
+/* TODAY CHECK */
 
 function isToday(value){
 
@@ -857,25 +873,30 @@ function isToday(value){
 }
 
 
-/* UPDATE SUMMARY COUNTS */
+/* COUNTS */
 
 function updateCounts(){
 
     document.getElementById("totalVehicles").innerText =
         allVehicles.length;
 
+
     let expiring = 0;
     let expired = 0;
+
 
     allVehicles.forEach(vehicle => {
 
         const dates = [
+
             vehicle.fitness_expiry,
             vehicle.insurance_expiry,
             vehicle.pucc_expiry,
             vehicle.tax_expiry,
             vehicle.permit_expiry
+
         ];
+
 
         dates.forEach(value => {
 
@@ -885,17 +906,25 @@ function updateCounts(){
 
             if(!date) return;
 
+
             const today = new Date();
 
             today.setHours(0,0,0,0);
+
             date.setHours(0,0,0,0);
 
+
             const diff =
-                Math.ceil((date - today) / (1000 * 60 * 60 * 24));
+                Math.ceil(
+                    (date - today) /
+                    (1000 * 60 * 60 * 24)
+                );
+
 
             if(diff < 0){
                 expired++;
             }
+
             else if(diff <= 10){
                 expiring++;
             }
@@ -903,6 +932,7 @@ function updateCounts(){
         });
 
     });
+
 
     document.getElementById("expiringVehicles").innerText =
         expiring;
@@ -913,7 +943,7 @@ function updateCounts(){
 }
 
 
-/* TODAY EXPIRY COUNTS */
+/* TODAY COUNTS */
 
 function updateTodayExpiryCounts(){
 
@@ -922,6 +952,7 @@ function updateTodayExpiryCounts(){
     let puc = 0;
     let tax = 0;
     let permit = 0;
+
 
     allVehicles.forEach(vehicle => {
 
@@ -936,6 +967,7 @@ function updateTodayExpiryCounts(){
         if(isToday(vehicle.permit_expiry)) permit++;
 
     });
+
 
     document.getElementById("todayFitness").innerText =
         fitness;
@@ -958,26 +990,32 @@ function updateTodayExpiryCounts(){
 }
 
 
-/* RENDER VEHICLES */
+/* RENDER TABLE */
 
 function renderTable(){
 
-    const list = document.getElementById("vehicleList");
+    const list =
+        document.getElementById("vehicleList");
+
 
     if(filteredVehicles.length === 0){
 
         list.innerHTML =
-        `<div class="empty">
+        `
+        <div class="empty">
             🚗 No vehicles found
-        </div>`;
+        </div>
+        `;
 
         document.getElementById("pageInfo").innerText =
             "Page 0";
 
         document.getElementById("prevBtn").disabled = true;
+
         document.getElementById("nextBtn").disabled = true;
 
         return;
+
     }
 
 
@@ -996,9 +1034,11 @@ function renderTable(){
 
     pageVehicles.forEach(vehicle => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
-        card.className = "vehicle-card";
+        card.className =
+            "vehicle-card";
 
 
         card.innerHTML = `
@@ -1008,6 +1048,7 @@ function renderTable(){
                 <span class="vehicle-number-text">
                     🚗 ${vehicle.vehicle_number || "-"}
                 </span>
+
 
                 <div class="customer-group">
 
@@ -1071,7 +1112,7 @@ function renderTable(){
                         TAX
                     </div>
 
-                    <div class="detail-value ${getDateClass(vehicle.tax_expiry)}">
+                    <div class="detail-value">
                         ${vehicle.tax_expiry || "-"}
                     </div>
 
@@ -1114,6 +1155,7 @@ function renderTable(){
                     ✏️ Edit
                 </button>
 
+
                 <button
                     class="small-btn delete-btn"
                     onclick="deleteVehicle('${vehicle.id}')">
@@ -1133,8 +1175,10 @@ function renderTable(){
     const totalPages =
         Math.ceil(filteredVehicles.length / perPage);
 
+
     document.getElementById("pageInfo").innerText =
         `Page ${currentPage} of ${totalPages}`;
+
 
     document.getElementById("prevBtn").disabled =
         currentPage === 1;
@@ -1156,24 +1200,29 @@ function searchVehicle(){
         .trim();
 
 
-    filteredVehicles = allVehicles.filter(vehicle => {
+    filteredVehicles =
+        allVehicles.filter(vehicle => {
 
-        const vehicleNumber =
-            (vehicle.vehicle_number || "").toLowerCase();
+            const vehicleNumber =
+                String(vehicle.vehicle_number || "")
+                .toLowerCase();
 
-        const customerName =
-            (vehicle.customer_name || "").toLowerCase();
+            const customerName =
+                String(vehicle.customer_name || "")
+                .toLowerCase();
 
-        const mobile =
-            (vehicle.mobile || "").toLowerCase();
+            const mobile =
+                String(vehicle.mobile || "")
+                .toLowerCase();
 
-        return (
-            vehicleNumber.includes(query) ||
-            customerName.includes(query) ||
-            mobile.includes(query)
-        );
 
-    });
+            return (
+                vehicleNumber.includes(query) ||
+                customerName.includes(query) ||
+                mobile.includes(query)
+            );
+
+        });
 
 
     currentPage = 1;
@@ -1183,12 +1232,13 @@ function searchVehicle(){
 }
 
 
-/* NEXT PAGE */
+/* NEXT */
 
 function nextPage(){
 
     const totalPages =
         Math.ceil(filteredVehicles.length / perPage);
+
 
     if(currentPage < totalPages){
 
@@ -1206,7 +1256,7 @@ function nextPage(){
 }
 
 
-/* PREVIOUS PAGE */
+/* PREVIOUS */
 
 function previousPage(){
 
@@ -1226,16 +1276,17 @@ function previousPage(){
 }
 
 
-/* GO TO UPLOAD */
+/* UPLOAD PAGE */
 
 function goToUpload(){
 
-    window.location.href = "upload.html";
+    window.location.href =
+        "upload.html";
 
 }
 
 
-/* EDIT VEHICLE */
+/* EDIT */
 
 function editVehicle(id){
 
@@ -1245,18 +1296,23 @@ function editVehicle(id){
 }
 
 
-/* DELETE VEHICLE */
+/* DELETE */
 
 async function deleteVehicle(id){
 
     const confirmDelete =
-        confirm("Are you sure you want to delete this vehicle?");
+        confirm(
+            "Are you sure you want to delete this vehicle?"
+        );
+
 
     if(!confirmDelete) return;
 
 
     const vehicle =
-        allVehicles.find(item => String(item.id) === String(id));
+        allVehicles.find(
+            item => String(item.id) === String(id)
+        );
 
 
     if(vehicle && vehicle.photo_path){
@@ -1267,8 +1323,14 @@ async function deleteVehicle(id){
             .from("vehicle-photos")
             .remove([vehicle.photo_path]);
 
+
         if(storageError){
-            console.log("Photo delete error:", storageError);
+
+            console.log(
+                "Photo delete error:",
+                storageError
+            );
+
         }
 
     }
@@ -1283,20 +1345,27 @@ async function deleteVehicle(id){
 
     if(error){
 
-        alert("Delete failed: " + error.message);
+        alert(
+            "Delete failed: " +
+            error.message
+        );
 
         return;
+
     }
 
 
-    alert("Vehicle deleted successfully");
+    alert(
+        "Vehicle deleted successfully"
+    );
+
 
     loadVehicles();
 
 }
 
 
-/* INITIAL LOAD */
+/* START */
 
 loadVehicles();
 
