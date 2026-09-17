@@ -14,7 +14,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <style>
 
 /* =========================================================
@@ -430,16 +429,14 @@ body{
 }
 
 
-.expiring-card
-.summary-count{
+.expiring-card .summary-count{
 
   color:#f39c12;
 
 }
 
 
-.expired-card
-.summary-count{
+.expired-card .summary-count{
 
   color:#d92d20;
 
@@ -536,6 +533,46 @@ body{
 
 
 /* =========================================================
+   VEHICLE LIST
+   HORIZONTAL LEFT ↔ RIGHT SWIPE
+========================================================= */
+
+#vehicleList{
+
+  display:flex;
+
+  flex-direction:row;
+
+  gap:14px;
+
+  overflow-x:auto;
+
+  overflow-y:hidden;
+
+  scroll-snap-type:x mandatory;
+
+  -webkit-overflow-scrolling:touch;
+
+  touch-action:pan-x;
+
+  padding:
+    4px
+    3px
+    14px;
+
+  scrollbar-width:none;
+
+}
+
+
+#vehicleList::-webkit-scrollbar{
+
+  display:none;
+
+}
+
+
+/* =========================================================
    VEHICLE CARD
 ========================================================= */
 
@@ -548,14 +585,27 @@ body{
 
   padding:17px;
 
-  margin-bottom:13px;
+  margin-bottom:0;
 
   box-shadow:
     0 5px 22px
     rgba(0,0,0,.10);
 
+  flex:
+    0 0 88%;
+
+  width:88%;
+
+  scroll-snap-align:start;
+
+  scroll-snap-stop:always;
+
 }
 
+
+/* =========================================================
+   VEHICLE HEADER
+========================================================= */
 
 .vehicle-header{
 
@@ -842,6 +892,8 @@ body{
     0 5px 22px
     rgba(0,0,0,.10);
 
+  min-width:100%;
+
 }
 
 
@@ -932,6 +984,8 @@ body{
   color:#061a3a;
 
   font-weight:700;
+
+  min-width:100%;
 
 }
 
@@ -1075,7 +1129,9 @@ body{
 
   .summary-card{
 
-    padding:13px 8px;
+    padding:
+      13px
+      8px;
 
   }
 
@@ -1115,6 +1171,35 @@ body{
   }
 
 
+  /*
+    MOBILE HORIZONTAL CARD
+  */
+
+  #vehicleList{
+
+    gap:12px;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    scroll-snap-type:x mandatory;
+
+    padding-bottom:14px;
+
+  }
+
+
+  #vehicleList .vehicle-card{
+
+    flex:
+      0 0 88%;
+
+    width:88%;
+
+  }
+
+
   .details-grid{
 
     grid-template-columns:
@@ -1124,6 +1209,10 @@ body{
 
 }
 
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
 
 @media(max-width:390px){
 
@@ -1175,6 +1264,16 @@ body{
 
   }
 
+
+  #vehicleList .vehicle-card{
+
+    flex:
+      0 0 92%;
+
+    width:92%;
+
+  }
+
 }
 
 
@@ -1183,6 +1282,20 @@ body{
 ========================================================= */
 
 @media(min-width:900px){
+
+  /*
+    Desktop પર બે cards side-by-side
+  */
+
+  #vehicleList .vehicle-card{
+
+    flex:
+      0 0 48%;
+
+    width:48%;
+
+  }
+
 
   .vehicle-card{
 
@@ -1214,13 +1327,16 @@ body{
 
 <header class="header">
 
+
   <div class="brand">
+
 
     <img
       src="./assets/logo.png"
       class="logo"
       alt="RV Vehicle Reminder Logo"
     >
+
 
     <div class="brand-text">
 
@@ -1247,12 +1363,17 @@ body{
 
     </div>
 
+
   </div>
 
 
-  <!-- EXPIRY MENU -->
+
+  <!-- =====================================================
+       EXPIRY MENU
+  ====================================================== -->
 
   <div class="expiry-menu">
+
 
     <div class="expiry-item">
 
@@ -1333,10 +1454,14 @@ body{
 
     </div>
 
+
   </div>
 
 
-  <!-- LANGUAGE -->
+
+  <!-- =====================================================
+       LANGUAGE
+  ====================================================== -->
 
   <div class="language-buttons">
 
@@ -1354,6 +1479,7 @@ body{
 
   </div>
 
+
 </header>
 
 
@@ -1365,9 +1491,12 @@ body{
 <div class="container">
 
 
-  <!-- TOP ACTIONS -->
+  <!-- =====================================================
+       TOP ACTIONS
+  ====================================================== -->
 
   <div class="top-actions">
+
 
     <button
       class="add-btn"
@@ -1384,11 +1513,14 @@ body{
       ↻ Refresh
     </button>
 
+
   </div>
 
 
 
-  <!-- SUMMARY -->
+  <!-- =====================================================
+       SUMMARY
+  ====================================================== -->
 
   <div class="summary-grid">
 
@@ -1424,13 +1556,17 @@ body{
 
     </div>
 
+
   </div>
 
 
 
-  <!-- SEARCH -->
+  <!-- =====================================================
+       SEARCH
+  ====================================================== -->
 
   <div class="search-box">
+
 
     <input
       type="text"
@@ -1439,27 +1575,35 @@ body{
       oninput="searchVehicle()"
     >
 
+
   </div>
 
 
 
-  <!-- LIST TITLE -->
+  <!-- =====================================================
+       LIST TITLE
+  ====================================================== -->
 
   <div class="list-title">
+
 
     <h2>
       Vehicle List
     </h2>
 
+
     <p id="listInfo">
       Loading vehicles...
     </p>
+
 
   </div>
 
 
 
-  <!-- VEHICLES -->
+  <!-- =====================================================
+       VEHICLE LIST
+  ====================================================== -->
 
   <div id="vehicleList">
 
@@ -1471,13 +1615,16 @@ body{
 
 
 
-  <!-- PAGINATION -->
+  <!-- =====================================================
+       PAGINATION
+  ====================================================== -->
 
   <div
     class="pagination"
     id="pagination"
     style="display:none;"
   >
+
 
     <button
       id="previousBtn"
@@ -1502,7 +1649,9 @@ body{
       Next
     </button>
 
+
   </div>
+
 
 </div>
 
@@ -1516,6 +1665,7 @@ body{
 
 const SUPABASE_URL =
 "https://lqbhafspabtlqeubqxjg.supabase.co";
+
 
 const SUPABASE_KEY =
 "sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
@@ -1619,7 +1769,7 @@ function parseDate(value){
 
 
   const date =
-  new Date(value);
+    new Date(value);
 
 
   if(
@@ -1643,7 +1793,7 @@ function parseDate(value){
 function getDaysDifference(value){
 
   const date =
-  parseDate(value);
+    parseDate(value);
 
 
   if(!date){
@@ -1654,16 +1804,22 @@ function getDaysDifference(value){
 
 
   const today =
-  new Date();
+    new Date();
 
 
   today.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
   date.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
@@ -1687,13 +1843,17 @@ function getDaysDifference(value){
 function isExpiringSoon(value){
 
   const days =
-  getDaysDifference(value);
+    getDaysDifference(value);
 
 
   return (
+
     days !== null &&
+
     days >= 0 &&
+
     days <= 10
+
   );
 
 }
@@ -1706,12 +1866,15 @@ function isExpiringSoon(value){
 function isExpired(value){
 
   const days =
-  getDaysDifference(value);
+    getDaysDifference(value);
 
 
   return (
+
     days !== null &&
+
     days < 0
+
   );
 
 }
@@ -1741,7 +1904,7 @@ function formatDate(value){
 
 
   const date =
-  new Date(value);
+    new Date(value);
 
 
   if(
@@ -1756,13 +1919,19 @@ function formatDate(value){
   const day =
     String(
       date.getDate()
-    ).padStart(2,"0");
+    ).padStart(
+      2,
+      "0"
+    );
 
 
   const month =
     String(
-      date.getMonth()+1
-    ).padStart(2,"0");
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
 
 
   const year =
@@ -1770,11 +1939,13 @@ function formatDate(value){
 
 
   return (
+
     day +
     "/" +
     month +
     "/" +
     year
+
   );
 
 }
@@ -1816,10 +1987,13 @@ function getDateClass(value){
 function vehicleIsExpiring(vehicle){
 
   return expiryFields.some(
+
     field =>
-    isExpiringSoon(
-      vehicle[field]
-    )
+
+      isExpiringSoon(
+        vehicle[field]
+      )
+
   );
 
 }
@@ -1832,10 +2006,13 @@ function vehicleIsExpiring(vehicle){
 function vehicleIsExpired(vehicle){
 
   return expiryFields.some(
+
     field =>
-    isExpired(
-      vehicle[field]
-    )
+
+      isExpired(
+        vehicle[field]
+      )
+
   );
 
 }
@@ -1854,21 +2031,27 @@ async function loadVehicles(){
 
 
   vehicleList.innerHTML = `
+
     <div class="loading">
       Loading vehicles...
     </div>
+
   `;
 
 
   try{
+
 
     const {
       data,
       error
     } =
     await supabaseClient
+
       .from("vehicles")
+
       .select("*")
+
       .order(
         "created_at",
         {
@@ -1903,17 +2086,29 @@ async function loadVehicles(){
 
   }catch(error){
 
-    console.error(error);
+
+    console.error(
+      error
+    );
 
 
     vehicleList.innerHTML = `
+
       <div class="empty-box">
-        <h3>Error Loading Vehicles</h3>
-        <p>${escapeHTML(
-          error.message ||
-          String(error)
-        )}</p>
+
+        <h3>
+          Error Loading Vehicles
+        </h3>
+
+        <p>
+          ${escapeHTML(
+            error.message ||
+            String(error)
+          )}
+        </p>
+
       </div>
+
     `;
 
   }
@@ -1937,7 +2132,9 @@ function updateSummary(){
 
 
   allVehicles.forEach(
+
     vehicle => {
+
 
       if(
         vehicleIsExpiring(
@@ -1961,6 +2158,7 @@ function updateSummary(){
       }
 
     }
+
   );
 
 
@@ -1982,78 +2180,93 @@ function updateSummary(){
     expired;
 
 
-  /*
-    HEADER FITNESS
-  */
+
+  /* FITNESS */
 
   document.getElementById(
     "headerFitnessCount"
   ).textContent =
+
     allVehicles.filter(
-      v =>
-      isExpiringSoon(
-        v.fitness_expiry
-      )
+
+      vehicle =>
+
+        isExpiringSoon(
+          vehicle.fitness_expiry
+        )
+
     ).length;
 
 
-  /*
-    HEADER INSURANCE
-  */
+
+  /* INSURANCE */
 
   document.getElementById(
     "headerInsuranceCount"
   ).textContent =
+
     allVehicles.filter(
-      v =>
-      isExpiringSoon(
-        v.insurance_expiry
-      )
+
+      vehicle =>
+
+        isExpiringSoon(
+          vehicle.insurance_expiry
+        )
+
     ).length;
 
 
-  /*
-    HEADER PUC
-  */
+
+  /* PUC */
 
   document.getElementById(
     "headerPucCount"
   ).textContent =
+
     allVehicles.filter(
-      v =>
-      isExpiringSoon(
-        v.pucc_expiry
-      )
+
+      vehicle =>
+
+        isExpiringSoon(
+          vehicle.pucc_expiry
+        )
+
     ).length;
 
 
-  /*
-    HEADER TAX
-  */
+
+  /* TAX */
 
   document.getElementById(
     "headerTaxCount"
   ).textContent =
+
     allVehicles.filter(
-      v =>
-      isExpiringSoon(
-        v.tax_expiry
-      )
+
+      vehicle =>
+
+        isExpiringSoon(
+          vehicle.tax_expiry
+        )
+
     ).length;
 
 
-  /*
-    HEADER PERMIT
-  */
+
+  /* PERMIT */
 
   document.getElementById(
     "headerPermitCount"
   ).textContent =
+
     allVehicles.filter(
-      v =>
-      isExpiringSoon(
-        v.permit_expiry
-      )
+
+      vehicle =>
+
+        isExpiringSoon(
+          vehicle.permit_expiry
+        )
+
     ).length;
 
 }
@@ -2088,12 +2301,19 @@ function renderVehicles(){
   ){
 
     vehicleList.innerHTML = `
+
       <div class="empty-box">
-        <h3>No Vehicles Found</h3>
+
+        <h3>
+          No Vehicles Found
+        </h3>
+
         <p>
           Add a vehicle to start monitoring expiry dates.
         </p>
+
       </div>
+
     `;
 
 
@@ -2112,8 +2332,10 @@ function renderVehicles(){
 
   const totalPages =
     Math.ceil(
+
       filteredVehicles.length /
       recordsPerPage
+
     );
 
 
@@ -2128,16 +2350,19 @@ function renderVehicles(){
 
 
   const startIndex =
+
     (currentPage - 1) *
     recordsPerPage;
 
 
   const endIndex =
+
     startIndex +
     recordsPerPage;
 
 
   const pageVehicles =
+
     filteredVehicles.slice(
       startIndex,
       endIndex
@@ -2145,21 +2370,26 @@ function renderVehicles(){
 
 
   vehicleList.innerHTML =
+
     pageVehicles
+
       .map(
         vehicle =>
-        createVehicleCard(
-          vehicle
-        )
+          createVehicleCard(
+            vehicle
+          )
       )
+
       .join("");
 
 
   listInfo.textContent =
+
     `${filteredVehicles.length} vehicle(s) • Showing ${startIndex + 1}-${Math.min(endIndex, filteredVehicles.length)}`;
 
 
   pagination.style.display =
+
     totalPages > 1
       ? "flex"
       : "none";
@@ -2168,18 +2398,21 @@ function renderVehicles(){
   document.getElementById(
     "pageInfo"
   ).textContent =
+
     `Page ${currentPage} of ${totalPages}`;
 
 
   document.getElementById(
     "previousBtn"
   ).disabled =
+
     currentPage <= 1;
 
 
   document.getElementById(
     "nextBtn"
   ).disabled =
+
     currentPage >= totalPages;
 
 }
@@ -2196,6 +2429,7 @@ function createVehicleCard(
   let statusText =
     "ACTIVE";
 
+
   let statusClass =
     "status-normal";
 
@@ -2208,6 +2442,7 @@ function createVehicleCard(
 
     statusText =
       "EXPIRED";
+
 
     statusClass =
       "status-expired";
@@ -2222,6 +2457,7 @@ function createVehicleCard(
     statusText =
       "EXPIRING SOON";
 
+
     statusClass =
       "status-expiring";
 
@@ -2234,6 +2470,7 @@ function createVehicleCard(
 
 
       <div class="vehicle-header">
+
 
         <div class="vehicle-number">
 
@@ -2253,10 +2490,13 @@ function createVehicleCard(
 
         </div>
 
+
       </div>
 
 
+
       <div class="customer-info">
+
 
         <div class="customer-row">
 
@@ -2293,10 +2533,13 @@ function createVehicleCard(
 
         </div>
 
+
       </div>
 
 
+
       <div class="details-grid">
+
 
         ${detailHTML(
           "Registration",
@@ -2333,10 +2576,13 @@ function createVehicleCard(
           vehicle.permit_expiry
         )}
 
+
       </div>
 
 
+
       <div class="card-actions">
+
 
         <button
           class="edit-btn"
@@ -2353,7 +2599,9 @@ function createVehicleCard(
           Delete
         </button>
 
+
       </div>
+
 
     </div>
 
@@ -2383,11 +2631,13 @@ function detailHTML(
 
     <div class="detail-box">
 
+
       <div class="detail-label">
 
         ${label}
 
       </div>
+
 
       <div
         class="detail-value ${dateClass}"
@@ -2398,6 +2648,7 @@ function detailHTML(
         )}
 
       </div>
+
 
     </div>
 
@@ -2423,22 +2674,27 @@ function escapeHTML(value){
 
 
   return String(value)
+
     .replace(
       /&/g,
       "&amp;"
     )
+
     .replace(
       /</g,
       "&lt;"
     )
+
     .replace(
       />/g,
       "&gt;"
     )
+
     .replace(
       /"/g,
       "&quot;"
     )
+
     .replace(
       /'/g,
       "&#039;"
@@ -2470,42 +2726,56 @@ function searchVehicle(){
     filteredVehicles =
       [...allVehicles];
 
-  }else{
+  }
+  else{
 
     filteredVehicles =
+
       allVehicles.filter(
+
         vehicle => {
 
+
           const vehicleNumber =
+
             String(
               vehicle.vehicle_number ||
               ""
-            ).toLowerCase();
+            )
+            .toLowerCase();
 
 
           const customerName =
+
             String(
               vehicle.customer_name ||
               ""
-            ).toLowerCase();
+            )
+            .toLowerCase();
 
 
           const mobile =
+
             String(
               vehicle.mobile ||
               ""
-            ).toLowerCase();
+            )
+            .toLowerCase();
 
 
           return (
 
             vehicleNumber.includes(
               query
-            ) ||
+            )
+
+            ||
 
             customerName.includes(
               query
-            ) ||
+            )
+
+            ||
 
             mobile.includes(
               query
@@ -2514,6 +2784,7 @@ function searchVehicle(){
           );
 
         }
+
       );
 
   }
@@ -2554,9 +2825,12 @@ function previousPage(){
 function nextPage(){
 
   const totalPages =
+
     Math.ceil(
+
       filteredVehicles.length /
       recordsPerPage
+
     );
 
 
@@ -2621,15 +2895,22 @@ async function deleteStoragePhoto(
 
   try{
 
+
     const {
       error
     } =
-    await supabaseClient
-      .storage
-      .from("vehicle-photos")
-      .remove([
-        path
-      ]);
+
+      await supabaseClient
+
+        .storage
+
+        .from(
+          "vehicle-photos"
+        )
+
+        .remove([
+          path
+        ]);
 
 
     if(error){
@@ -2640,6 +2921,7 @@ async function deleteStoragePhoto(
       );
 
     }
+
 
   }catch(error){
 
@@ -2660,10 +2942,13 @@ async function deleteStoragePhoto(
 async function deleteVehicle(id){
 
   const vehicle =
+
     allVehicles.find(
+
       v =>
-      String(v.id) ===
-      String(id)
+        String(v.id) ===
+        String(id)
+
     );
 
 
@@ -2675,6 +2960,7 @@ async function deleteVehicle(id){
 
 
   const confirmed =
+
     confirm(
       "Are you sure you want to delete this vehicle?"
     );
@@ -2689,8 +2975,9 @@ async function deleteVehicle(id){
 
   try{
 
+
     /*
-      Delete photo first
+      Delete photo
     */
 
     if(
@@ -2711,13 +2998,17 @@ async function deleteVehicle(id){
     const {
       error
     } =
-    await supabaseClient
-      .from("vehicles")
-      .delete()
-      .eq(
-        "id",
-        id
-      );
+
+      await supabaseClient
+
+        .from("vehicles")
+
+        .delete()
+
+        .eq(
+          "id",
+          id
+        );
 
 
     if(error){
@@ -2737,15 +3028,21 @@ async function deleteVehicle(id){
 
   }catch(error){
 
-    console.error(error);
+
+    console.error(
+      error
+    );
 
 
     alert(
+
       "Error deleting vehicle:\n" +
+
       (
         error.message ||
         String(error)
       )
+
     );
 
   }
