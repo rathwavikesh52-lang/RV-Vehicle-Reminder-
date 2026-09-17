@@ -181,6 +181,43 @@ header{
     box-shadow:0 7px 18px rgba(30,66,104,.25);
 }
 
+/* =========================
+   TODAY EXPIRY BOXES
+========================= */
+
+.today-expiry-row{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.today-expiry-box{
+    background:rgba(255,255,255,.93);
+    border:1px solid #e0e7ef;
+    border-radius:14px;
+    padding:13px 8px;
+    text-align:center;
+    box-shadow:0 6px 18px rgba(28,57,84,.10);
+    user-select:none;
+    cursor:default;
+}
+
+.today-expiry-box .expiry-label{
+    display:block;
+    font-size:12px;
+    font-weight:800;
+    color:#536477;
+    letter-spacing:.3px;
+}
+
+.today-expiry-box strong{
+    display:block;
+    margin-top:4px;
+    font-size:25px;
+    color:#123f72;
+}
+
 /* SEARCH */
 .search-box{
     background:rgba(255,255,255,.88);
@@ -410,6 +447,26 @@ footer{
         flex:1;
     }
 
+    /* 5 boxes on mobile */
+    .today-expiry-row{
+        grid-template-columns:repeat(5,1fr);
+        gap:5px;
+    }
+
+    .today-expiry-box{
+        padding:10px 3px;
+        border-radius:10px;
+    }
+
+    .today-expiry-box .expiry-label{
+        font-size:9px;
+        letter-spacing:0;
+    }
+
+    .today-expiry-box strong{
+        font-size:20px;
+    }
+
     .vehicle-list-box{
         padding:13px;
     }
@@ -531,6 +588,40 @@ footer{
                 + Add Vehicle
             </button>
 
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         TODAY EXPIRY COUNTS
+    ========================== -->
+
+    <div class="today-expiry-row">
+
+        <div class="today-expiry-box">
+            <span class="expiry-label">FITNESS</span>
+            <strong id="fitnessToday">0</strong>
+        </div>
+
+        <div class="today-expiry-box">
+            <span class="expiry-label">INSURANCE</span>
+            <strong id="insuranceToday">0</strong>
+        </div>
+
+        <div class="today-expiry-box">
+            <span class="expiry-label">PUC</span>
+            <strong id="pucToday">0</strong>
+        </div>
+
+        <div class="today-expiry-box">
+            <span class="expiry-label">TAX</span>
+            <strong id="taxToday">0</strong>
+        </div>
+
+        <div class="today-expiry-box">
+            <span class="expiry-label">PERMIT</span>
+            <strong id="permitToday">0</strong>
         </div>
 
     </div>
@@ -715,6 +806,8 @@ async function loadVehicles(){
 
     updateCounts();
 
+    updateTodayExpiryCounts();
+
     renderTable();
 }
 
@@ -737,7 +830,7 @@ function parseDate(value){
     String(value).trim();
 
 
-    if(!text || text === "LTT")
+    if(!text || text.toUpperCase() === "LTT")
         return null;
 
 
@@ -951,6 +1044,91 @@ function updateCounts(){
 
     document.getElementById("expiredCount").innerText =
     expired;
+}
+
+
+/* =========================
+   TODAY EXPIRY COUNTS
+========================= */
+
+function isToday(value){
+
+    const date =
+    parseDate(value);
+
+    if(!date)
+        return false;
+
+    const today =
+    new Date();
+
+    return (
+        date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate()
+    );
+}
+
+
+function updateTodayExpiryCounts(){
+
+    let fitness = 0;
+    let insurance = 0;
+    let puc = 0;
+    let tax = 0;
+    let permit = 0;
+
+
+    allVehicles.forEach(vehicle => {
+
+        /* FITNESS */
+        if(isToday(vehicle.fitness_expiry)){
+            fitness++;
+        }
+
+
+        /* INSURANCE */
+        if(isToday(vehicle.insurance_expiry)){
+            insurance++;
+        }
+
+
+        /* PUC */
+        if(isToday(vehicle.pucc_expiry)){
+            puc++;
+        }
+
+
+        /* TAX
+           LTT is automatically ignored
+           because parseDate() returns null */
+        if(isToday(vehicle.tax_expiry)){
+            tax++;
+        }
+
+
+        /* PERMIT */
+        if(isToday(vehicle.permit_expiry)){
+            permit++;
+        }
+
+    });
+
+
+    document.getElementById("fitnessToday").innerText =
+    fitness;
+
+    document.getElementById("insuranceToday").innerText =
+    insurance;
+
+    document.getElementById("pucToday").innerText =
+    puc;
+
+    document.getElementById("taxToday").innerText =
+    tax;
+
+    document.getElementById("permitToday").innerText =
+    permit;
 }
 
 
