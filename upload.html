@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -196,13 +197,15 @@ input[type="file"]{
 }
 
 
-/* VEHICLE CLASS PREVIEW */
+/* =====================================================
+   VEHICLE CLASS PREVIEW
+===================================================== */
 
 .class-preview-box{
 
   margin-top:15px;
 
-  padding:15px;
+  padding:18px;
 
   border-radius:14px;
 
@@ -212,14 +215,18 @@ input[type="file"]{
 
   display:none;
 
+  border:1px solid #dbe3ee;
+
 }
 
 
 .class-preview{
 
-  width:180px;
+  width:220px;
 
-  height:120px;
+  height:150px;
+
+  max-width:100%;
 
   object-fit:contain;
 
@@ -227,14 +234,18 @@ input[type="file"]{
 
   background:white;
 
+  display:block;
+
+  margin:auto;
+
 }
 
 
 .class-name{
 
-  margin-top:8px;
+  margin-top:10px;
 
-  font-size:16px;
+  font-size:17px;
 
   font-weight:700;
 
@@ -242,6 +253,27 @@ input[type="file"]{
 
 }
 
+
+/* =====================================================
+   CUSTOMER DETAILS
+===================================================== */
+
+.customer-info{
+
+  background:#f8fbff;
+
+  padding:14px;
+
+  border-radius:12px;
+
+  margin-top:5px;
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 .buttons{
 
@@ -313,6 +345,10 @@ button:disabled{
 }
 
 
+/* =====================================================
+   STATUS
+===================================================== */
+
 .status{
 
   margin-top:15px;
@@ -350,6 +386,28 @@ button:disabled{
 }
 
 
+@media(max-width:500px){
+
+  .logo{
+
+    font-size:23px;
+
+  }
+
+  .card{
+
+    padding:16px;
+
+  }
+
+  .buttons{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
+
 </style>
 
 </head>
@@ -357,6 +415,10 @@ button:disabled{
 
 <body>
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
 <div class="header">
 
@@ -381,34 +443,43 @@ button:disabled{
 
 <div class="card">
 
-  <h2>Customer Details</h2>
+  <h2>
+    Customer Details
+  </h2>
 
 
-  <label>
-    Customer Name
-  </label>
+  <div class="customer-info">
 
-  <input
-    id="customerName"
-    type="text"
-    placeholder="Example: Patel Dipakbhai"
-  >
+    <label>
+      Customer Name
+    </label>
+
+    <input
+      id="customerName"
+      type="text"
+      placeholder="Example: Patel Dipakbhai"
+      autocomplete="name"
+    >
 
 
-  <label>
-    Mobile Number
-  </label>
+    <label>
+      Mobile Number
+    </label>
 
-  <input
-    id="mobile"
-    type="tel"
-    inputmode="numeric"
-    maxlength="10"
-    placeholder="Example: 9956633522"
-  >
+    <input
+      id="mobile"
+      type="tel"
+      inputmode="numeric"
+      maxlength="10"
+      placeholder="Example: 9956633522"
+      autocomplete="tel"
+    >
 
-  <div class="small">
-    Enter the mobile number on which WhatsApp reminder will be sent.
+
+    <div class="small">
+      Enter the mobile number on which WhatsApp reminder will be sent.
+    </div>
+
   </div>
 
 </div>
@@ -421,7 +492,9 @@ button:disabled{
 
 <div class="card">
 
-  <h2>Upload Vehicle Photo</h2>
+  <h2>
+    Upload Vehicle Photo
+  </h2>
 
 
   <input
@@ -475,7 +548,9 @@ button:disabled{
 
 <div class="card">
 
-  <h2>Vehicle Details</h2>
+  <h2>
+    Vehicle Details
+  </h2>
 
 
   <!-- VEHICLE NUMBER -->
@@ -488,6 +563,7 @@ button:disabled{
     id="vehicleNumber"
     type="text"
     placeholder="Example: GJ06PC4883"
+    autocomplete="off"
   >
 
 
@@ -536,7 +612,9 @@ button:disabled{
   </select>
 
 
-  <!-- CLASS PHOTO PREVIEW -->
+  <!-- =================================================
+       CLASS PHOTO
+  ================================================= -->
 
   <div
     id="classPreviewBox"
@@ -671,6 +749,10 @@ button:disabled{
 
 
 
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
 <button
   class="dashboard-btn"
   onclick="goDashboard()"
@@ -707,34 +789,53 @@ supabase.createClient(
 
 
 /* =========================================================
+   GITHUB VEHICLE CLASS PHOTO LOCATION
+========================================================= */
+
+const VEHICLE_CLASS_ASSET_BASE =
+"https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/vehicle-classes/";
+
+
+/* =========================================================
    VEHICLE CLASS PHOTOS
 ========================================================= */
 
 const vehicleClassPhotos = {
 
   HGV:
-    "./assets/vehicle-classes/hgv.png",
+    VEHICLE_CLASS_ASSET_BASE +
+    "hgv.png",
 
   LGV:
-    "./assets/vehicle-classes/lgv.png",
+    VEHICLE_CLASS_ASSET_BASE +
+    "lgv.png",
 
   LMV:
-    "./assets/vehicle-classes/lmv.png",
+    VEHICLE_CLASS_ASSET_BASE +
+    "lmv.png",
 
   LPV:
-    "./assets/vehicle-classes/lpv.png",
+    VEHICLE_CLASS_ASSET_BASE +
+    "lpv.png",
 
   HPV:
-    "./assets/vehicle-classes/hpv.png",
+    VEHICLE_CLASS_ASSET_BASE +
+    "hpv.png",
 
   "2WN":
-    "./assets/vehicle-classes/2wn.png",
+    VEHICLE_CLASS_ASSET_BASE +
+    "2wn.png",
 
   "3WT":
-    "./assets/vehicle-classes/3wt.png"
+    VEHICLE_CLASS_ASSET_BASE +
+    "3wt.png"
 
 };
 
+
+/* =========================================================
+   VEHICLE CLASS NAMES
+========================================================= */
 
 const vehicleClassNames = {
 
@@ -768,79 +869,117 @@ const vehicleClassNames = {
 ========================================================= */
 
 const photoInput =
-document.getElementById("photoInput");
+document.getElementById(
+  "photoInput"
+);
 
 
 const preview =
-document.getElementById("preview");
+document.getElementById(
+  "preview"
+);
 
 
 const readBtn =
-document.getElementById("readBtn");
+document.getElementById(
+  "readBtn"
+);
 
 
 const saveBtn =
-document.getElementById("saveBtn");
+document.getElementById(
+  "saveBtn"
+);
 
 
 const statusBox =
-document.getElementById("status");
+document.getElementById(
+  "status"
+);
 
 
 const customerName =
-document.getElementById("customerName");
+document.getElementById(
+  "customerName"
+);
 
 
 const mobile =
-document.getElementById("mobile");
+document.getElementById(
+  "mobile"
+);
 
 
 const vehicleNumber =
-document.getElementById("vehicleNumber");
+document.getElementById(
+  "vehicleNumber"
+);
 
 
 const vehicleClass =
-document.getElementById("vehicleClass");
+document.getElementById(
+  "vehicleClass"
+);
 
 
 const classPreviewBox =
-document.getElementById("classPreviewBox");
+document.getElementById(
+  "classPreviewBox"
+);
 
 
 const classPreview =
-document.getElementById("classPreview");
+document.getElementById(
+  "classPreview"
+);
 
 
 const className =
-document.getElementById("className");
+document.getElementById(
+  "className"
+);
 
 
 const registrationDate =
-document.getElementById("registrationDate");
+document.getElementById(
+  "registrationDate"
+);
 
 
 const fitnessExpiry =
-document.getElementById("fitnessExpiry");
+document.getElementById(
+  "fitnessExpiry"
+);
 
 
 const insuranceExpiry =
-document.getElementById("insuranceExpiry");
+document.getElementById(
+  "insuranceExpiry"
+);
 
 
 const taxExpiry =
-document.getElementById("taxExpiry");
+document.getElementById(
+  "taxExpiry"
+);
 
 
 const puccExpiry =
-document.getElementById("puccExpiry");
+document.getElementById(
+  "puccExpiry"
+);
 
 
 const permitExpiry =
-document.getElementById("permitExpiry");
+document.getElementById(
+  "permitExpiry"
+);
 
 
 const ocrText =
-document.getElementById("ocrText");
+document.getElementById(
+  "ocrText"
+);
 
 
 
@@ -876,8 +1015,12 @@ function showVehicleClassPhoto(){
   }
 
 
-  classPreview.src =
+  const imageURL =
     vehicleClassPhotos[selected];
+
+
+  classPreview.src =
+    imageURL;
 
 
   classPreview.alt =
@@ -922,7 +1065,16 @@ classPreview.addEventListener(
       "block";
 
     className.textContent =
-      "Vehicle class photo not found on GitHub.";
+      vehicleClassNames[
+        vehicleClass.value
+      ] +
+      " - Photo loading error";
+
+
+    console.error(
+      "Class photo failed:",
+      classPreview.src
+    );
 
   }
 );
@@ -945,6 +1097,10 @@ photoInput.addEventListener(
 
       preview.style.display =
         "none";
+
+      preview.removeAttribute(
+        "src"
+      );
 
       return;
 
@@ -1037,11 +1193,20 @@ function normalizeText(text){
 
   return text
 
-    .replace(/\r/g,"\n")
+    .replace(
+      /\r/g,
+      "\n"
+    )
 
-    .replace(/[ \t]+/g," ")
+    .replace(
+      /[ \t]+/g,
+      " "
+    )
 
-    .replace(/\n+/g,"\n")
+    .replace(
+      /\n+/g,
+      "\n"
+    )
 
     .trim();
 
@@ -1079,7 +1244,6 @@ function convertOCRDate(value){
     DEC:"12"
 
   };
-
 
 
   /* DD-MMM-YYYY */
@@ -1124,7 +1288,6 @@ function convertOCRDate(value){
   }
 
 
-
   /* YYYY-MM-DD */
 
   m =
@@ -1160,7 +1323,6 @@ function convertOCRDate(value){
     );
 
   }
-
 
 
   /* DD/MM/YYYY */
@@ -1302,7 +1464,6 @@ function findDateAfterKeyword(
       continue;
 
 
-
     /* Same line */
 
     const sameLine =
@@ -1316,7 +1477,6 @@ function findDateAfterKeyword(
       return sameLine;
 
     }
-
 
 
     /* Next two lines */
@@ -1507,7 +1667,6 @@ function findTax(text){
     }
 
 
-
     /* LTT */
 
     if(
@@ -1519,7 +1678,6 @@ function findTax(text){
       return "LTT";
 
     }
-
 
 
     /* OCR LTT mistakes */
@@ -1535,7 +1693,6 @@ function findTax(text){
     }
 
 
-
     /* Same line date */
 
     const sameDate =
@@ -1549,7 +1706,6 @@ function findTax(text){
       return sameDate;
 
     }
-
 
 
     /* Next line */
@@ -1627,7 +1783,6 @@ function cleanVehicleNumberOCR(
       );
 
 
-
   /* GJO6 -> GJ06 */
 
   if(
@@ -1650,7 +1805,6 @@ function cleanVehicleNumberOCR(
       v.substring(3);
 
   }
-
 
 
   /* RTO numeric correction */
@@ -1771,12 +1925,6 @@ function smartVehicleCorrection(
     );
 
 
-
-  /*
-    GJ06AZ5038
-    possible OCR Z
-  */
-
   if(
     /^GJ\d{2}[A-Z]Z\d{4}$/.test(v)
   ){
@@ -1818,7 +1966,6 @@ function extractVehicleCandidates(
   let candidates = [];
 
 
-
   const patterns = [
 
     /GJ[\s\-]?\d{2}[\s\-]?[A-Z0-9]{1,3}[\s\-]?\d{3,5}/g,
@@ -1828,15 +1975,12 @@ function extractVehicleCandidates(
   ];
 
 
-
   for(
     const pattern of patterns
   ){
 
     const matches =
-      t.match(
-        pattern
-      );
+      t.match(pattern);
 
 
     if(matches){
@@ -1864,7 +2008,6 @@ function extractVehicleCandidates(
     }
 
   }
-
 
 
   /* Compact OCR */
@@ -2064,8 +2207,7 @@ function findVehicleClass(text){
   ];
 
 
-
-  /* First search around Vehicle Class */
+  /* Search around Vehicle Class */
 
   for(
     let i=0;
@@ -2142,8 +2284,7 @@ function findVehicleClass(text){
   }
 
 
-
-  /* Fallback entire OCR */
+  /* Fallback */
 
   const upperText =
     text.toUpperCase();
@@ -2187,7 +2328,6 @@ async function highAccuracyVehicleOCR(
 ){
 
   let candidates = [];
-
 
 
   /* PASS 1 */
@@ -2409,7 +2549,6 @@ async function readPhoto(){
   }
 
 
-
   clearOCRFields();
 
 
@@ -2421,13 +2560,11 @@ async function readPhoto(){
     true;
 
 
-
   try{
 
     showStatus(
       "Reading photo...\nPlease wait."
     );
-
 
 
     /* MAIN OCR */
@@ -2464,7 +2601,6 @@ async function readPhoto(){
 
         }
       );
-
 
 
     const rawText =
@@ -2511,7 +2647,6 @@ async function readPhoto(){
 
       vehicleClass.value =
         detectedClass;
-
 
       showVehicleClassPhoto();
 
@@ -2720,7 +2855,6 @@ async function readPhoto(){
   }
 
 
-
   readBtn.disabled =
     false;
 
@@ -2805,7 +2939,7 @@ function cleanMobileNumber(
 
 
 /* =========================================================
-   UPLOAD PHOTO
+   UPLOAD PHOTO TO SUPABASE
 ========================================================= */
 
 async function uploadPhoto(
@@ -2830,7 +2964,6 @@ async function uploadPhoto(
     "_" +
     Date.now() +
     ".jpg";
-
 
 
   const {
@@ -2863,13 +2996,11 @@ async function uploadPhoto(
       );
 
 
-
   if(uploadError){
 
     throw uploadError;
 
   }
-
 
 
   const {
@@ -2971,7 +3102,7 @@ function loadEditVehicle(){
 
 
 
-    /* CUSTOMER */
+    /* CUSTOMER NAME */
 
     customerName.value =
       vehicle.customer_name ||
@@ -3044,7 +3175,6 @@ function loadEditVehicle(){
       );
 
 
-
     showStatus(
       "Vehicle details loaded for editing.\n\n" +
       "You can change the name, mobile number, class or document details."
@@ -3065,7 +3195,7 @@ function loadEditVehicle(){
 
 
 /* =========================================================
-   EXISTING DATABASE DATE TO DISPLAY
+   FORMAT EXISTING DATABASE DATE
 ========================================================= */
 
 function formatExistingDate(
@@ -3150,10 +3280,8 @@ async function saveVehicle(){
     );
 
 
-
   saveBtn.disabled =
     true;
-
 
 
   try{
@@ -3163,8 +3291,7 @@ async function saveVehicle(){
     );
 
 
-
-    /* FIND EXISTING */
+    /* FIND EXISTING VEHICLE */
 
     const {
       data:existing,
@@ -3186,7 +3313,6 @@ async function saveVehicle(){
         .maybeSingle();
 
 
-
     if(findError){
 
       throw findError;
@@ -3195,7 +3321,7 @@ async function saveVehicle(){
 
 
 
-    /* CLASS */
+    /* VEHICLE CLASS */
 
     const selectedClass =
       vehicleClass.value
@@ -3276,7 +3402,6 @@ async function saveVehicle(){
       null;
 
 
-
     if(file){
 
       showStatus(
@@ -3300,7 +3425,7 @@ async function saveVehicle(){
 
     if(existing){
 
-      /* New photo */
+      /* Replace old uploaded photo */
 
       if(uploadedPhoto){
 
@@ -3345,7 +3470,6 @@ async function saveVehicle(){
           );
 
 
-
       if(updateError){
 
         if(uploadedPhoto){
@@ -3362,7 +3486,6 @@ async function saveVehicle(){
       }
 
 
-
       showStatus(
         "Vehicle updated successfully."
       );
@@ -3371,7 +3494,6 @@ async function saveVehicle(){
       alert(
         "Vehicle updated successfully."
       );
-
 
 
     }else{
@@ -3393,7 +3515,6 @@ async function saveVehicle(){
       }
 
 
-
       const {
         error:insertError
       } =
@@ -3406,8 +3527,6 @@ async function saveVehicle(){
           .insert([
             vehicleData
           ]);
-
-
 
 
       if(insertError){
@@ -3426,7 +3545,6 @@ async function saveVehicle(){
       }
 
 
-
       showStatus(
         "Vehicle saved successfully."
       );
@@ -3440,7 +3558,7 @@ async function saveVehicle(){
 
 
 
-    /* Remove edit mode */
+    /* EXIT EDIT MODE */
 
     localStorage.removeItem(
       "editVehicle"
@@ -3472,7 +3590,6 @@ async function saveVehicle(){
     );
 
   }
-
 
 
   saveBtn.disabled =
@@ -3507,7 +3624,6 @@ window.addEventListener(
 
   }
 );
-
 
 </script>
 
