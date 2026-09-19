@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,709 +9,438 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
   box-sizing:border-box;
 }
 
-html{
-  scroll-behavior:smooth;
-}
-
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  color:#092754;
-
+  font-family:Arial,sans-serif;
   background-image:url("./assets/background.png");
   background-size:cover;
   background-position:center center;
   background-repeat:no-repeat;
   background-attachment:fixed;
-
-  min-height:100vh;
+  color:#172033;
 }
 
-.page{
-  width:100%;
-  max-width:1380px;
-  margin:0 auto;
-  padding:24px 22px 35px;
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-.top-header{
+.header{
+  background:linear-gradient(135deg,#061a3a,#123b70);
+  color:white;
+  padding:16px 18px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  gap:25px;
-  margin-bottom:25px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:18px;
-  min-width:0;
+  justify-content:center;
+  gap:14px;
+  box-shadow:0 3px 15px rgba(0,0,0,.20);
 }
 
 .logo{
-  width:205px;
-  height:145px;
+  width:58px;
+  height:58px;
   object-fit:contain;
-  filter:drop-shadow(0 3px 4px rgba(0,0,0,.12));
-}
-
-.brand-text{
-  min-width:0;
+  border-radius:12px;
 }
 
 .brand-text h1{
   margin:0;
-  font-size:42px;
+  font-size:25px;
   font-weight:800;
-  color:#0b315f;
-  letter-spacing:-1px;
 }
 
 .brand-text p{
-  margin:7px 0 0;
-  font-size:22px;
-  color:#21466e;
+  margin:3px 0 2px;
+  font-size:13px;
+  opacity:.92;
 }
 
 .tagline{
-  margin-top:14px;
-  font-size:19px;
-  font-style:italic;
-  color:#173d64;
-  font-weight:600;
+  font-size:12px;
+  opacity:.85;
 }
 
-.tagline span{
-  color:#e59a1c;
-  margin:0 7px;
+.container{
+  max-width:1250px;
+  margin:20px auto;
+  padding:0 14px;
 }
 
-
-/* =====================================================
-   TOTAL VEHICLES
-===================================================== */
+.card{
+  background:rgba(255,255,255,.96);
+  border-radius:18px;
+  box-shadow:0 5px 25px rgba(0,0,0,.12);
+}
 
 .total-card{
-  background:rgba(255,255,255,.95);
-  border-radius:20px;
-  min-width:285px;
-  padding:22px 28px;
-
+  padding:18px 20px;
+  margin-bottom:16px;
   display:flex;
   align-items:center;
-  gap:18px;
-
-  box-shadow:0 5px 20px rgba(0,0,0,.13);
+  gap:15px;
 }
 
 .total-icon{
-  width:72px;
-  height:72px;
-  border-radius:50%;
-  background:#1478df;
-
+  width:52px;
+  height:52px;
+  border-radius:14px;
+  background:#eaf2ff;
   display:flex;
   align-items:center;
   justify-content:center;
-
-  color:white;
-  flex-shrink:0;
 }
 
 .total-icon svg{
-  width:47px;
-  height:47px;
+  width:30px;
+  height:30px;
+  stroke:#123b70;
 }
 
-.total-label{
-  font-size:20px;
-  font-weight:700;
-  color:#102f56;
+.total-title{
+  font-size:13px;
+  color:#667085;
 }
 
 .total-number{
-  margin-top:3px;
-  font-size:44px;
-  line-height:1;
-  color:#1265c7;
-  font-weight:800;
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-.dashboard{
-  background:rgba(255,255,255,.94);
-  border-radius:22px;
-  padding:20px;
-
-  box-shadow:0 8px 30px rgba(0,0,0,.14);
-}
-
-
-/* =====================================================
-   TODAY EXPIRY
-===================================================== */
-
-.today-expiry-section{
-  background:rgba(255,255,255,.97);
-  border:1px solid #dce6f1;
-  border-radius:17px;
-
-  padding:14px 16px;
-  margin-bottom:18px;
-
-  box-shadow:0 3px 12px rgba(20,55,90,.08);
-}
-
-.today-expiry-title{
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  font-size:19px;
+  font-size:28px;
   font-weight:800;
   color:#092754;
-
-  margin-bottom:12px;
+  margin-top:2px;
 }
 
-.today-expiry-title small{
-  margin-left:auto;
+.status{
+  display:none;
+  background:#eef4ff;
+  color:#173d72;
+  padding:12px 15px;
+  border-radius:10px;
+  margin-bottom:16px;
+  white-space:pre-wrap;
+}
+
+/* TODAY EXPIRY */
+
+.today-section{
+  margin-bottom:18px;
+}
+
+.today-title{
+  color:white;
+  font-size:20px;
+  font-weight:800;
+  margin:0 0 10px 3px;
+  text-shadow:0 1px 4px rgba(0,0,0,.45);
+}
+
+.today-title span{
   font-size:14px;
-  color:#667d94;
   font-weight:600;
 }
 
-.today-expiry-grid{
+.today-grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
   gap:10px;
 }
 
-.today-expiry-box{
-  min-height:90px;
-  border-radius:12px;
-  padding:10px 12px;
-
-  border:1px solid;
-
+.today-box{
+  background:white;
+  border-radius:15px;
+  padding:14px 10px;
   text-align:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+}
 
+.today-icon{
+  width:35px;
+  height:35px;
+  margin:0 auto 6px;
+  border-radius:10px;
   display:flex;
-  flex-direction:column;
+  align-items:center;
   justify-content:center;
+  background:#eef4ff;
 }
 
-.expiry-box-title{
-  font-size:13px;
+.today-icon svg{
+  width:21px;
+  height:21px;
+}
+
+.today-name{
+  font-size:12px;
+  font-weight:700;
+  color:#667085;
+}
+
+.today-count{
+  font-size:25px;
   font-weight:800;
-  margin-bottom:6px;
+  margin-top:2px;
+  color:#092754;
 }
 
-.expiry-count-number{
-  font-size:34px;
-  line-height:1;
-  font-weight:900;
+/* MAIN PANEL */
+
+.main-card{
+  padding:18px;
 }
-
-.fitness-alert{
-  background:#fff3df;
-  border-color:#ffd79b;
-  color:#d97800;
-}
-
-.insurance-alert{
-  background:#fff0df;
-  border-color:#ffc987;
-  color:#d56c00;
-}
-
-.puc-alert{
-  background:#ffe7ea;
-  border-color:#ffb9c1;
-  color:#df2635;
-}
-
-.tax-alert{
-  background:#eee8ff;
-  border-color:#d2c3ff;
-  color:#6844b4;
-}
-
-.permit-alert{
-  background:#def7f3;
-  border-color:#b5e8df;
-  color:#108579;
-}
-
-
-/* =====================================================
-   LIST HEADER
-===================================================== */
 
 .list-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-
-  gap:15px;
-  margin-bottom:14px;
+  gap:12px;
+  margin-bottom:15px;
 }
 
 .list-title{
   display:flex;
   align-items:center;
-  gap:13px;
-
-  font-size:27px;
-  font-weight:800;
+  gap:9px;
   color:#092754;
-  white-space:nowrap;
+  font-size:21px;
+  font-weight:800;
 }
 
 .list-title svg{
-  width:42px;
-  height:42px;
-  flex-shrink:0;
+  width:27px;
+  height:27px;
+  stroke:#123b70;
 }
 
-
-/* =====================================================
-   SEARCH + ADD
-===================================================== */
-
-.list-tools{
+.controls{
   display:flex;
-  align-items:center;
-  gap:12px;
+  gap:10px;
 }
 
-.search-box{
-  width:430px;
-  height:45px;
-
-  border:1px solid #cbd8e8;
-  border-radius:12px;
-
-  background:white;
-
-  display:flex;
-  align-items:center;
-
-  padding:0 14px;
-}
-
-.search-box svg{
-  width:21px;
-  height:21px;
-  color:#55718f;
-  flex-shrink:0;
-}
-
-.search-box input{
-  width:100%;
-  border:0;
-  outline:0;
-
+.search{
+  width:300px;
+  padding:11px 13px;
+  border:1px solid #ccd3dd;
+  border-radius:10px;
   font-size:15px;
-  margin-left:9px;
-  color:#183b60;
+  outline:none;
 }
 
-.search-box input::placeholder{
-  color:#6d8095;
+.search:focus{
+  border-color:#1d5fa7;
 }
 
 .add-btn{
-  height:45px;
   border:0;
-  border-radius:11px;
-
-  background:#1675db;
+  border-radius:10px;
+  padding:11px 16px;
+  background:#123b70;
   color:white;
-
-  padding:0 19px;
-
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  font-size:15px;
   font-weight:700;
-
   cursor:pointer;
-
-  box-shadow:0 3px 8px rgba(22,117,219,.25);
 }
 
-.add-btn:hover{
-  background:#0964c7;
-}
+/* VEHICLE CARD */
 
-.add-btn svg{
-  width:20px;
-  height:20px;
-}
-
-
-/* =====================================================
-   VEHICLE LIST
-===================================================== */
-
-#vehicleList{
+.vehicle-list{
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:10px;
 }
-
-
-/* =====================================================
-   VEHICLE CARD
-===================================================== */
 
 .vehicle-card{
-  width:100%;
-  min-height:160px;
-
-  background:rgba(255,255,255,.97);
-
-  border:1px solid #dce6f1;
-  border-radius:15px;
-
-  display:grid;
-
-  grid-template-columns:
-    330px
-    minmax(270px,1fr)
-    minmax(270px,1fr)
-    80px;
-
-  align-items:stretch;
+  background:#fff;
+  border:1px solid #e0e5ec;
+  border-radius:14px;
   overflow:hidden;
-
-  box-shadow:0 3px 12px rgba(20,55,90,.07);
-
-  transition:.2s ease;
+  display:grid;
+  grid-template-columns:330px 1fr 1fr 80px;
+  min-height:145px;
 }
-
-.vehicle-card:hover{
-  box-shadow:0 5px 18px rgba(20,55,90,.13);
-  transform:translateY(-1px);
-}
-
-
-/* =====================================================
-   VEHICLE MAIN
-===================================================== */
 
 .vehicle-main{
+  padding:13px;
   display:flex;
+  gap:12px;
   align-items:center;
-
-  gap:18px;
-  padding:18px;
-
-  min-width:0;
+  border-right:1px solid #edf0f4;
 }
 
 .vehicle-photo{
-  width:116px;
-  height:116px;
-
+  width:105px;
+  height:115px;
   object-fit:cover;
-
-  border-radius:10px;
-
-  background:#e8f0f7;
-
-  flex-shrink:0;
+  border-radius:11px;
+  background:#eef1f5;
+  border:1px solid #e1e5eb;
 }
 
-.vehicle-photo.no-photo{
-  object-fit:contain;
-  padding:18px;
-}
-
-.vehicle-basic{
+.vehicle-info{
   min-width:0;
 }
 
 .vehicle-number{
-  font-size:24px;
+  font-size:19px;
   font-weight:800;
-
-  color:#0a315f;
-  letter-spacing:.3px;
-
+  color:#092754;
   word-break:break-word;
 }
 
 .vehicle-type{
-  display:inline-block;
-
-  margin-top:9px;
-  padding:6px 13px;
-
-  border-radius:20px;
-
-  background:#dff0ff;
-  color:#1162a9;
-
-  font-size:14px;
-  font-weight:700;
-}
-
-.customer-name{
-  margin-top:8px;
-
-  font-size:13px;
-  color:#60758c;
-
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-
-  max-width:170px;
-}
-
-.mobile-number{
-  margin-top:4px;
-
   font-size:12px;
-  color:#788da3;
+  color:#667085;
+  margin-top:4px;
 }
 
+.customer{
+  font-size:13px;
+  font-weight:700;
+  margin-top:10px;
+}
 
-/* =====================================================
-   DETAILS
-===================================================== */
+.mobile{
+  font-size:12px;
+  color:#667085;
+  margin-top:3px;
+}
 
 .detail-column{
-  padding:17px 20px;
-
-  border-left:1px solid #d8e2ec;
-
+  padding:11px 13px;
+  border-right:1px solid #edf0f4;
   display:flex;
   flex-direction:column;
-
   justify-content:center;
-
-  gap:15px;
+  gap:10px;
 }
 
 .detail-item{
-  display:grid;
-
-  grid-template-columns:
-    24px
-    minmax(100px,1fr)
-    auto;
-
+  display:flex;
   align-items:center;
-
-  gap:7px;
+  gap:8px;
   min-width:0;
 }
 
 .detail-icon{
-  width:21px;
-  height:21px;
-  color:#0867be;
+  width:27px;
+  height:27px;
+  flex:0 0 27px;
+  border-radius:8px;
+  background:#f1f5fa;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.detail-icon svg{
+  width:16px;
+  height:16px;
+}
+
+.detail-text{
+  min-width:0;
 }
 
 .detail-label{
-  font-size:14px;
-  color:#355573;
-
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  font-size:10px;
+  color:#667085;
+  font-weight:700;
+  text-transform:uppercase;
 }
 
-.date-badge{
-  padding:7px 13px;
-
-  border-radius:16px;
-
+.detail-value{
+  margin-top:2px;
   font-size:13px;
+  font-weight:700;
+  color:#172033;
+  word-break:break-word;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 7px;
+  border-radius:6px;
+  font-size:11px;
   font-weight:800;
-
-  white-space:nowrap;
-
-  text-align:center;
-
-  min-width:105px;
 }
 
-
-/* =====================================================
-   BADGES
-===================================================== */
-
-.badge-blue{
-  background:#dff0ff;
-  color:#0961af;
+.badge-normal{
+  background:#edf7f1;
+  color:#08743d;
 }
 
-.badge-green{
-  background:#dff7e9;
-  color:#168044;
+.badge-soon{
+  background:#fff4df;
+  color:#b76a00;
 }
 
-.badge-purple{
-  background:#eee5ff;
-  color:#6542ad;
+.badge-expired{
+  background:#ffe7e7;
+  color:#c62828;
 }
 
-.badge-orange{
-  background:#fff0d7;
-  color:#db7710;
+.badge-ltt{
+  background:#f0e8ff;
+  color:#673ab7;
 }
 
-.badge-red{
-  background:#ffe1e5;
-  color:#e32735;
-}
-
-.badge-teal{
-  background:#dcf7f3;
-  color:#118b81;
-}
-
-
-/* =====================================================
-   ACTION ICONS
-===================================================== */
-
-.card-actions{
-  border-left:1px solid #d8e2ec;
-
+.actions{
+  padding:10px;
   display:flex;
   flex-direction:column;
-
   align-items:center;
   justify-content:center;
-
   gap:10px;
-
-  background:rgba(249,252,255,.75);
 }
 
-.icon-btn{
-  width:42px;
-  height:42px;
-
+.action-btn{
+  width:38px;
+  height:38px;
   border:0;
-  border-radius:50%;
-
+  border-radius:10px;
   display:flex;
   align-items:center;
   justify-content:center;
-
   cursor:pointer;
-
-  transition:.2s ease;
-
-  color:white;
 }
 
-.icon-btn svg{
-  width:21px;
-  height:21px;
+.action-btn svg{
+  width:19px;
+  height:19px;
+  stroke:white;
 }
 
-.icon-btn:hover{
-  transform:scale(1.08);
+.edit-btn{
+  background:#1769aa;
 }
 
-.edit-icon{
-  background:#1478df;
+.delete-btn{
+  background:#d93636;
 }
 
-.delete-icon{
-  background:#ef3039;
+.whatsapp-btn{
+  background:#159447;
 }
 
-.whatsapp-icon{
-  background:#12b76a;
-}
-
-
-/* =====================================================
-   EXPIRY PRIORITY MARK
-===================================================== */
-
-.vehicle-card.expiry-priority{
-  border:2px solid #f0a020;
-}
-
-.vehicle-card.expiry-priority .vehicle-number{
-  color:#c66d00;
-}
-
-
-/* =====================================================
-   EMPTY
-===================================================== */
-
-.empty{
-  padding:55px 20px;
-
-  text-align:center;
-
-  color:#637a91;
-
-  font-size:17px;
-}
-
-
-/* =====================================================
-   PAGINATION
-===================================================== */
+/* PAGINATION */
 
 .pagination{
   display:flex;
-
-  align-items:center;
   justify-content:center;
-
-  gap:28px;
-
-  padding:18px 0 4px;
+  align-items:center;
+  gap:8px;
+  margin-top:16px;
 }
 
 .page-btn{
-  min-width:105px;
-  height:40px;
-
-  border:0;
-  border-radius:10px;
-
-  background:#0d427e;
-  color:white;
-
-  font-size:14px;
-  font-weight:700;
-
+  border:1px solid #ccd3dd;
+  background:white;
+  color:#173d72;
+  padding:8px 12px;
+  border-radius:8px;
   cursor:pointer;
+  font-weight:700;
 }
 
-.page-btn:hover:not(:disabled){
-  background:#082f5d;
+.page-btn.active{
+  background:#123b70;
+  color:white;
+  border-color:#123b70;
 }
 
 .page-btn:disabled{
@@ -721,575 +449,242 @@ body{
 }
 
 .page-info{
-  font-size:15px;
-  font-weight:700;
-  color:#153e68;
+  font-size:13px;
+  color:#667085;
+  margin:0 5px;
 }
 
+/* BOTTOM SUMMARY */
 
-/* =====================================================
-   BOTTOM SUMMARY
-===================================================== */
-
-.bottom-summary{
+.summary-grid{
   display:grid;
-
   grid-template-columns:1fr 1fr;
-
-  gap:55px;
-
-  margin-top:16px;
-
-  padding:0 10px 4px;
+  gap:12px;
+  margin-top:18px;
 }
 
-.summary-box{
-  min-height:80px;
-
+.summary-card{
+  background:white;
   border-radius:15px;
-
+  padding:16px;
+  box-shadow:0 4px 15px rgba(0,0,0,.10);
   display:flex;
-
   align-items:center;
   justify-content:space-between;
-
-  padding:14px 22px;
-
-  border:1px solid transparent;
-}
-
-.summary-left{
-  display:flex;
-  align-items:center;
-
-  gap:17px;
-}
-
-.summary-icon{
-  width:43px;
-  height:43px;
 }
 
 .summary-title{
-  font-size:20px;
-  font-weight:800;
-}
-
-.summary-count{
-  font-size:37px;
-  font-weight:800;
-}
-
-.expiring-box{
-  background:#fff6df;
-  border-color:#f7dfad;
-  color:#ef8d08;
-}
-
-.expiring-box .summary-title{
-  color:#112f52;
-}
-
-.expired-box{
-  background:#fff0f2;
-  border-color:#f4d2d7;
-  color:#e52c38;
-}
-
-.expired-box .summary-title{
-  color:#112f52;
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-.status-message{
-  display:none;
-
-  margin:12px 0;
-
-  padding:11px 14px;
-
-  border-radius:10px;
-
-  background:#eef6ff;
-  color:#174a7d;
-
   font-size:14px;
+  font-weight:700;
 }
 
+.summary-number{
+  font-size:27px;
+  font-weight:800;
+}
 
-/* =====================================================
-   TABLET
-===================================================== */
+.summary-soon .summary-number{
+  color:#d98200;
+}
 
-@media(max-width:1100px){
+.summary-expired .summary-number{
+  color:#d32f2f;
+}
 
-  .page{
-    padding:15px 12px 25px;
-  }
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  color:#667085;
+  background:#f8fafc;
+  border-radius:12px;
+}
 
-  .logo{
-    width:150px;
-    height:110px;
-  }
+/* TABLET */
 
-  .brand-text h1{
-    font-size:30px;
-  }
-
-  .brand-text p{
-    font-size:17px;
-  }
-
-  .tagline{
-    font-size:14px;
-  }
-
-  .total-card{
-    min-width:230px;
-    padding:16px;
-  }
+@media(max-width:1050px){
 
   .vehicle-card{
-    grid-template-columns:
-      285px
-      minmax(250px,1fr)
-      minmax(250px,1fr)
-      75px;
+    grid-template-columns:280px 1fr 1fr 70px;
   }
 
-  .vehicle-main{
-    min-width:285px;
-  }
-
-  .detail-column{
-    min-width:250px;
-  }
-
-  .card-actions{
-    min-width:75px;
+  .vehicle-photo{
+    width:90px;
+    height:105px;
   }
 
 }
 
+/* MOBILE */
 
-/* =====================================================
-   MOBILE
-===================================================== */
+@media(max-width:750px){
 
-@media(max-width:700px){
-
-  body{
-    background-attachment:scroll;
-  }
-
-  .page{
-    padding:10px 8px 20px;
-  }
-
-  .top-header{
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .brand{
-    width:100%;
-    gap:10px;
+  .header{
+    padding:13px;
   }
 
   .logo{
-    width:100px;
-    height:80px;
-  }
-
-  .brand-text h1{
-    font-size:23px;
-    letter-spacing:-.5px;
-  }
-
-  .brand-text p{
-    font-size:13px;
-    margin-top:4px;
-  }
-
-  .tagline{
-    font-size:12px;
-    margin-top:6px;
-  }
-
-  .total-card{
-    width:100%;
-    min-width:0;
-
-    padding:12px 18px;
-
-    border-radius:15px;
-  }
-
-  .total-icon{
     width:48px;
     height:48px;
   }
 
-  .total-icon svg{
-    width:32px;
-    height:32px;
+  .brand-text h1{
+    font-size:19px;
   }
 
-  .total-label{
-    font-size:14px;
-  }
-
-  .total-number{
-    font-size:29px;
-  }
-
-  .dashboard{
-    padding:12px;
-    border-radius:17px;
-  }
-
-
-  /* TODAY EXPIRY MOBILE */
-
-  .today-expiry-section{
-    padding:11px;
-    overflow:hidden;
-  }
-
-  .today-expiry-title{
-    font-size:16px;
-  }
-
-  .today-expiry-title small{
+  .brand-text p{
     font-size:11px;
   }
 
-  .today-expiry-grid{
-    display:flex;
+  .tagline{
+    font-size:10px;
+  }
 
+  .today-grid{
+    grid-template-columns:repeat(5,145px);
     overflow-x:auto;
-
-    gap:8px;
-
-    scrollbar-width:none;
+    padding-bottom:5px;
   }
 
-  .today-expiry-grid::-webkit-scrollbar{
-    display:none;
+  .today-box{
+    min-width:145px;
   }
-
-  .today-expiry-box{
-    flex:0 0 125px;
-    min-width:125px;
-  }
-
 
   .list-header{
     flex-direction:column;
     align-items:stretch;
   }
 
-  .list-title{
-    font-size:21px;
-  }
-
-  .list-title svg{
-    width:32px;
-    height:32px;
-  }
-
-  .list-tools{
+  .controls{
     width:100%;
   }
 
-  .search-box{
-    flex:1;
-    width:auto;
+  .search{
+    width:100%;
   }
 
   .add-btn{
-    padding:0 13px;
+    white-space:nowrap;
   }
 
-
-  /* MOBILE SWIPE */
-
-  #vehicleList{
-    display:flex;
-
-    flex-direction:row;
-
+  .vehicle-list{
     overflow-x:auto;
-    overflow-y:hidden;
-
-    gap:12px;
-
-    scroll-snap-type:x mandatory;
-
-    -webkit-overflow-scrolling:touch;
-
-    scrollbar-width:none;
-
-    padding:2px 2px 12px;
-
-    touch-action:pan-x;
   }
 
-  #vehicleList::-webkit-scrollbar{
+  .vehicle-card{
+    min-width:920px;
+    grid-template-columns:280px 1fr 1fr 70px;
+  }
+
+  .main-card{
+    padding:13px;
+  }
+
+  .summary-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+/* SMALL MOBILE */
+
+@media(max-width:450px){
+
+  .container{
+    padding:0 9px;
+  }
+
+  .brand-text h1{
+    font-size:17px;
+  }
+
+  .brand-text p{
     display:none;
   }
 
-  .vehicle-card{
-    flex:0 0 94%;
-
-    width:94%;
-    min-width:94%;
-
-    display:grid;
-
-    grid-template-columns:
-      260px
-      250px
-      250px
-      70px;
-
-    scroll-snap-align:start;
-    scroll-snap-stop:always;
-
-    min-height:150px;
-
-    overflow:hidden;
+  .today-title{
+    font-size:17px;
   }
 
-  .vehicle-main{
-    min-width:260px;
-  }
-
-  .vehicle-photo{
-    width:90px;
-    height:90px;
-  }
-
-  .vehicle-number{
-    font-size:20px;
-  }
-
-  .detail-column{
-    min-width:250px;
-
-    padding:14px 15px;
-  }
-
-  .detail-label{
-    font-size:12px;
-  }
-
-  .date-badge{
-    font-size:11px;
-    min-width:90px;
-    padding:6px 8px;
-  }
-
-  .icon-btn{
-    width:38px;
-    height:38px;
-  }
-
-  .pagination{
-    gap:13px;
-  }
-
-  .page-btn{
-    min-width:85px;
-  }
-
-  .bottom-summary{
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    padding:0;
-  }
-
-  .summary-box{
-    min-height:70px;
-    padding:10px;
-  }
-
-  .summary-left{
-    gap:7px;
-  }
-
-  .summary-icon{
-    width:31px;
-    height:31px;
-  }
-
-  .summary-title{
-    font-size:13px;
-  }
-
-  .summary-count{
-    font-size:27px;
-  }
-
-}
-
-
-/* =====================================================
-   SMALL MOBILE
-===================================================== */
-
-@media(max-width:390px){
-
-  .vehicle-card{
-    flex:0 0 96%;
-    width:96%;
-    min-width:96%;
-  }
-
-  .bottom-summary{
-    gap:5px;
+  .summary-card{
+    padding:12px 10px;
   }
 
   .summary-title{
     font-size:12px;
   }
 
-  .summary-count{
-    font-size:24px;
+  .summary-number{
+    font-size:23px;
   }
 
 }
-
 </style>
 </head>
 
-
 <body>
 
-<div class="page">
+<!-- HEADER -->
 
+<div class="header">
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+  <img
+    src="./assets/logo.png"
+    class="logo"
+    alt="RV Vehicle Reminder"
+  >
 
-<header class="top-header">
+  <div class="brand-text">
 
-  <div class="brand">
+    <h1>RV Vehicle Reminder</h1>
 
-    <img
-      src="./assets/logo.png"
-      class="logo"
-      alt="RV Vehicle Reminder"
-    >
+    <p>
+      Vehicle Expiry Management System
+    </p>
 
-    <div class="brand-text">
-
-      <h1>
-        RV Vehicle Reminder
-      </h1>
-
-      <p>
-        Vehicle Expiry Management System
-      </p>
-
-      <div class="tagline">
-
-        Stay Alert
-
-        <span>•</span>
-
-        Stay Legal
-
-        <span>•</span>
-
-        Drive Safe
-
-      </div>
-
+    <div class="tagline">
+      Stay Alert • Stay Legal • Drive Safe
     </div>
 
   </div>
 
+</div>
+
+
+<div class="container">
+
 
   <!-- TOTAL VEHICLES -->
 
-  <div class="total-card">
+  <div class="card total-card">
 
     <div class="total-icon">
 
       <svg
-        viewBox="0 0 64 64"
+        viewBox="0 0 24 24"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-
-        <path
-          d="M15 38L19 25C19.8 22.2 22.4 20 25.3 20H38.7C41.6 20 44.2 22.2 45 25L49 38"
-          stroke="white"
-          stroke-width="4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-
-        <rect
-          x="11"
-          y="35"
-          width="42"
-          height="15"
-          rx="4"
-          fill="white"
-        />
-
-        <rect
-          x="16"
-          y="39"
-          width="9"
-          height="5"
-          rx="2"
-          fill="#1478df"
-        />
-
-        <rect
-          x="39"
-          y="39"
-          width="9"
-          height="5"
-          rx="2"
-          fill="#1478df"
-        />
-
-        <circle
-          cx="19"
-          cy="51"
-          r="4"
-          fill="white"
-        />
-
-        <circle
-          cx="45"
-          cy="51"
-          r="4"
-          fill="white"
-        />
-
+        <path d="M5 17h14"/>
+        <path d="M6 17l1-5h10l1 5"/>
+        <path d="M7 12l1.5-4h7L17 12"/>
+        <circle cx="8" cy="17" r="2"/>
+        <circle cx="16" cy="17" r="2"/>
       </svg>
 
     </div>
 
     <div>
 
-      <div class="total-label">
+      <div class="total-title">
         Total Vehicles
       </div>
 
       <div
-        class="total-number"
         id="headerTotalVehicles"
+        class="total-number"
       >
         0
       </div>
@@ -1298,53 +693,68 @@ body{
 
   </div>
 
-</header>
 
-
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
-
-<main class="dashboard">
-
+  <!-- STATUS -->
 
   <div
-    id="statusMessage"
-    class="status-message"
+    id="status"
+    class="status"
   ></div>
 
 
-  <!-- ===================================================
-       TODAY'S EXPIRY
-  ==================================================== -->
+  <!-- TODAY EXPIRY -->
 
-  <div class="today-expiry-section">
+  <div class="today-section">
 
-    <div class="today-expiry-title">
-
-      <span>⚠️</span>
+    <div class="today-title">
 
       Today's Expiry
 
-      <small id="todayExpiryDate">
-        (00/00/0000)
-      </small>
+      <span id="todayExpiryDate">
+        (DD/MM/YYYY)
+      </span>
 
     </div>
 
 
-    <div class="today-expiry-grid">
+    <div class="today-grid">
 
 
-      <div class="today-expiry-box fitness-alert">
+      <!-- FITNESS -->
 
-        <div class="expiry-box-title">
+      <div class="today-box">
+
+        <div class="today-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#1769aa"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect
+              x="3"
+              y="4"
+              width="18"
+              height="17"
+              rx="2"
+            />
+            <path d="M8 2v4"/>
+            <path d="M16 2v4"/>
+            <path d="M3 10h18"/>
+          </svg>
+
+        </div>
+
+        <div class="today-name">
           FITNESS
         </div>
 
         <div
           id="todayFitness"
-          class="expiry-count-number"
+          class="today-count"
         >
           0
         </div>
@@ -1352,15 +762,33 @@ body{
       </div>
 
 
-      <div class="today-expiry-box insurance-alert">
+      <!-- INSURANCE -->
 
-        <div class="expiry-box-title">
+      <div class="today-box">
+
+        <div class="today-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#08743d"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+
+        </div>
+
+        <div class="today-name">
           INSURANCE
         </div>
 
         <div
           id="todayInsurance"
-          class="expiry-count-number"
+          class="today-count"
         >
           0
         </div>
@@ -1368,15 +796,36 @@ body{
       </div>
 
 
-      <div class="today-expiry-box puc-alert">
+      <!-- PUC -->
 
-        <div class="expiry-box-title">
-          PUC
+      <div class="today-box">
+
+        <div class="today-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#7b4bb7"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 19h16"/>
+            <path d="M6 19V7h12v12"/>
+            <path d="M9 7V4h6v3"/>
+            <path d="M9 11h6"/>
+            <path d="M9 15h6"/>
+          </svg>
+
+        </div>
+
+        <div class="today-name">
+          PUCC
         </div>
 
         <div
           id="todayPuc"
-          class="expiry-count-number"
+          class="today-count"
         >
           0
         </div>
@@ -1384,15 +833,41 @@ body{
       </div>
 
 
-      <div class="today-expiry-box tax-alert">
+      <!-- TAX -->
 
-        <div class="expiry-box-title">
+      <div class="today-box">
+
+        <div class="today-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#d98200"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect
+              x="3"
+              y="5"
+              width="18"
+              height="14"
+              rx="2"
+            />
+            <path d="M7 9h10"/>
+            <path d="M7 13h3"/>
+            <path d="M14 13h3"/>
+          </svg>
+
+        </div>
+
+        <div class="today-name">
           TAX
         </div>
 
         <div
           id="todayTax"
-          class="expiry-count-number"
+          class="today-count"
         >
           0
         </div>
@@ -1400,15 +875,42 @@ body{
       </div>
 
 
-      <div class="today-expiry-box permit-alert">
+      <!-- PERMIT -->
 
-        <div class="expiry-box-title">
+      <div class="today-box">
+
+        <div class="today-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#c62828"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 7h16"/>
+            <path d="M6 4h12"/>
+            <rect
+              x="4"
+              y="7"
+              width="16"
+              height="13"
+              rx="2"
+            />
+            <path d="M8 11h8"/>
+            <path d="M8 15h5"/>
+          </svg>
+
+        </div>
+
+        <div class="today-name">
           PERMIT
         </div>
 
         <div
           id="todayPermit"
-          class="expiry-count-number"
+          class="today-count"
         >
           0
         </div>
@@ -1421,79 +923,14 @@ body{
   </div>
 
 
-  <!-- ===================================================
-       LIST HEADER
-  ==================================================== -->
+  <!-- MAIN VEHICLE LIST -->
 
-  <div class="list-header">
-
-    <div class="list-title">
-
-      <svg
-        viewBox="0 0 64 64"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-
-        <path
-          d="M14 38L18 25C18.8 22.2 21.4 20 24.3 20H39.7C42.6 20 45.2 22.2 46 25L50 38"
-          stroke="#092754"
-          stroke-width="4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-
-        <rect
-          x="10"
-          y="34"
-          width="44"
-          height="16"
-          rx="4"
-          fill="#092754"
-        />
-
-        <rect
-          x="16"
-          y="38"
-          width="10"
-          height="5"
-          rx="2"
-          fill="white"
-        />
-
-        <rect
-          x="38"
-          y="38"
-          width="10"
-          height="5"
-          rx="2"
-          fill="white"
-        />
-
-        <circle
-          cx="19"
-          cy="51"
-          r="4"
-          fill="#092754"
-        />
-
-        <circle
-          cx="45"
-          cy="51"
-          r="4"
-          fill="#092754"
-        />
-
-      </svg>
-
-      VEHICLE LIST
-
-    </div>
+  <div class="card main-card">
 
 
-    <div class="list-tools">
+    <div class="list-header">
 
-      <div class="search-box">
+      <div class="list-title">
 
         <svg
           viewBox="0 0 24 24"
@@ -1503,146 +940,68 @@ body{
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-
-          <circle
-            cx="11"
-            cy="11"
-            r="7"
-          />
-
-          <path
-            d="M20 20l-4-4"
-          />
-
+          <path d="M5 17h14"/>
+          <path d="M6 17l1-5h10l1 5"/>
+          <path d="M7 12l1.5-4h7L17 12"/>
+          <circle cx="8" cy="17" r="2"/>
+          <circle cx="16" cy="17" r="2"/>
         </svg>
 
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search by Vehicle Number..."
-          oninput="handleSearch()"
-        >
+        Vehicle List
 
       </div>
 
 
-      <button
-        class="add-btn"
-        onclick="goUpload()"
-      >
+      <div class="controls">
 
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
+        <input
+          id="searchInput"
+          class="search"
+          type="text"
+          placeholder="Search vehicle number, customer, mobile..."
         >
 
-          <path d="M12 5v14"/>
+        <button
+          class="add-btn"
+          onclick="goUpload()"
+        >
+          + Add Vehicle
+        </button>
 
-          <path d="M5 12h14"/>
-
-        </svg>
-
-        Add Vehicle
-
-      </button>
+      </div>
 
     </div>
 
-  </div>
-
-
-  <!-- ===================================================
-       VEHICLE LIST
-  ==================================================== -->
-
-  <div id="vehicleList"></div>
-
-
-  <!-- ===================================================
-       PAGINATION
-  ==================================================== -->
-
-  <div class="pagination">
-
-    <button
-      id="previousBtn"
-      class="page-btn"
-      onclick="previousPage()"
-    >
-      Previous
-    </button>
 
     <div
-      id="pageInfo"
-      class="page-info"
-    >
-      Page 1 of 1
-    </div>
+      id="vehicleList"
+      class="vehicle-list"
+    ></div>
 
-    <button
-      id="nextBtn"
-      class="page-btn"
-      onclick="nextPage()"
-    >
-      Next
-    </button>
+
+    <div
+      id="pagination"
+      class="pagination"
+    ></div>
+
 
   </div>
 
 
-  <!-- ===================================================
-       BOTTOM SUMMARY
-  ==================================================== -->
+  <!-- SUMMARY -->
 
-  <div class="bottom-summary">
+  <div class="summary-grid">
 
 
-    <div class="summary-box expiring-box">
+    <div class="summary-card summary-soon">
 
-      <div class="summary-left">
-
-        <svg
-          class="summary-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-
-          <circle
-            cx="12"
-            cy="13"
-            r="7"
-          />
-
-          <path
-            d="M12 9v4l2 2"
-          />
-
-          <path
-            d="M8 3l-2 2"
-          />
-
-          <path
-            d="M16 3l2 2"
-          />
-
-        </svg>
-
-        <div class="summary-title">
-          Expiring Soon
-        </div>
-
+      <div class="summary-title">
+        Expiring Soon
       </div>
 
       <div
-        id="expiringCount"
-        class="summary-count"
+        id="expiringSoonCount"
+        class="summary-number"
       >
         0
       </div>
@@ -1650,66 +1009,33 @@ body{
     </div>
 
 
-    <div class="summary-box expired-box">
+    <div class="summary-card summary-expired">
 
-      <div class="summary-left">
-
-        <svg
-          class="summary-icon"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-
-          <path
-            d="M12 2L22 20H2L12 2z"
-          />
-
-          <rect
-            x="11"
-            y="8"
-            width="2"
-            height="6"
-            rx="1"
-            fill="white"
-          />
-
-          <circle
-            cx="12"
-            cy="17"
-            r="1.2"
-            fill="white"
-          />
-
-        </svg>
-
-        <div class="summary-title">
-          Expired Vehicles
-        </div>
-
+      <div class="summary-title">
+        Expired Vehicles
       </div>
 
       <div
         id="expiredCount"
-        class="summary-count"
+        class="summary-number"
       >
         0
       </div>
 
     </div>
 
+
   </div>
 
-
-</main>
 
 </div>
 
 
 <script>
 
-/* =====================================================
+/* =========================================================
    SUPABASE
-===================================================== */
+========================================================= */
 
 const SUPABASE_URL =
 "https://lqbhafspabtlqeubqxjg.supabase.co";
@@ -1724,9 +1050,9 @@ supabase.createClient(
 );
 
 
-/* =====================================================
-   VARIABLES
-===================================================== */
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
 
 let allVehicles = [];
 
@@ -1737,133 +1063,100 @@ let currentPage = 1;
 const recordsPerPage = 10;
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const vehicleList =
-document.getElementById(
-  "vehicleList"
-);
-
-const searchInput =
-document.getElementById(
-  "searchInput"
-);
-
-const headerTotalVehicles =
-document.getElementById(
-  "headerTotalVehicles"
-);
-
-const expiringCount =
-document.getElementById(
-  "expiringCount"
-);
-
-const expiredCount =
-document.getElementById(
-  "expiredCount"
-);
-
-const pageInfo =
-document.getElementById(
-  "pageInfo"
-);
-
-const previousBtn =
-document.getElementById(
-  "previousBtn"
-);
-
-const nextBtn =
-document.getElementById(
-  "nextBtn"
-);
-
-const statusMessage =
-document.getElementById(
-  "statusMessage"
-);
-
-
-/* =====================================================
+/* =========================================================
    STATUS
-===================================================== */
+========================================================= */
 
 function showStatus(message){
 
-  statusMessage.style.display =
-    "block";
+  const box =
+  document.getElementById("status");
 
-  statusMessage.textContent =
-    message;
+  if(!box) return;
+
+  box.style.display =
+  "block";
+
+  box.textContent =
+  message;
+
 }
 
-function hideStatus(){
 
-  statusMessage.style.display =
-    "none";
-}
-
-
-/* =====================================================
+/* =========================================================
    TODAY DATE
-===================================================== */
+========================================================= */
 
 function getTodayDateString(){
 
   const today =
-    new Date();
+  new Date();
 
   const y =
-    today.getFullYear();
+  today.getFullYear();
 
   const m =
-    String(
-      today.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
+  String(
+    today.getMonth()+1
+  ).padStart(2,"0");
 
   const d =
-    String(
-      today.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
+  String(
+    today.getDate()
+  ).padStart(2,"0");
 
-  return `${y}-${m}-${d}`;
+  return (
+    y +
+    "-" +
+    m +
+    "-" +
+    d
+  );
+
 }
 
 
-/* =====================================================
+/* =========================================================
+   TODAY DATE DISPLAY
+========================================================= */
+
+function updateTodayExpiryDate(){
+
+  const todayString =
+  getTodayDateString();
+
+  const parts =
+  todayString.split("-");
+
+  const element =
+  document.getElementById(
+    "todayExpiryDate"
+  );
+
+  if(element){
+
+    element.textContent =
+      "(" +
+      parts[2] +
+      "/" +
+      parts[1] +
+      "/" +
+      parts[0] +
+      ")";
+
+  }
+
+}
+
+
+/* =========================================================
    TODAY EXPIRY COUNTS
-===================================================== */
+========================================================= */
 
 function updateTodayExpiryCounts(){
 
   const todayString =
-    getTodayDateString();
-
-
-  const dateElement =
-    document.getElementById(
-      "todayExpiryDate"
-    );
-
-
-  if(dateElement){
-
-    const parts =
-      todayString.split("-");
-
-    dateElement.textContent =
-      `(${parts[2]}/${parts[1]}/${parts[0]})`;
-
-  }
+  getTodayDateString();
 
 
   const fields = {
@@ -1886,55 +1179,61 @@ function updateTodayExpiryCounts(){
   };
 
 
-  Object.entries(
-    fields
-  ).forEach(
+  Object.entries(fields)
+  .forEach(
     ([field,id]) => {
 
 
       const count =
-        allVehicles.filter(
-          vehicle => {
-
-            if(
-              !vehicle[field]
-            ){
-
-              return false;
-
-            }
+      allVehicles.filter(
+        vehicle => {
 
 
-            if(
-              String(
-                vehicle[field]
-              ).toUpperCase() ===
-              "LTT"
-            ){
+          if(
+            !vehicle[field]
+          ){
 
-              return false;
-
-            }
-
-
-            return (
-              String(
-                vehicle[field]
-              ).slice(
-                0,
-                10
-              ) ===
-              todayString
-            );
+            return false;
 
           }
-        ).length;
+
+
+          const value =
+          String(
+            vehicle[field]
+          ).trim();
+
+
+          /*
+            LTT is not a date.
+          */
+
+          if(
+            value.toUpperCase()
+            === "LTT"
+          ){
+
+            return false;
+
+          }
+
+
+          /*
+            Exact today's date only.
+          */
+
+          return (
+            value.slice(0,10)
+            ===
+            todayString
+          );
+
+        }
+      ).length;
 
 
       const element =
-        document.getElementById(
-          id
-        );
+      document.getElementById(id);
 
 
       if(element){
@@ -1950,22 +1249,21 @@ function updateTodayExpiryCounts(){
 }
 
 
-/* =====================================================
-   DATE PARSE
-===================================================== */
+/* =========================================================
+   PARSE DATE
+========================================================= */
 
 function parseDate(value){
 
-  if(!value){
+  if(!value) return null;
 
-    return null;
-
-  }
+  const stringValue =
+  String(value).trim();
 
 
   if(
-    typeof value !==
-    "string"
+    stringValue.toUpperCase()
+    === "LTT"
   ){
 
     return null;
@@ -1973,49 +1271,82 @@ function parseDate(value){
   }
 
 
-  if(
-    value
-      .toUpperCase() ===
-    "LTT"
-  ){
+  /*
+    YYYY-MM-DD
+  */
 
-    return null;
+  let match =
+  stringValue.match(
+    /^(\d{4})-(\d{2})-(\d{2})/
+  );
 
-  }
 
+  if(match){
 
-  const date =
-    new Date(
-      value +
-      "T00:00:00"
+    return new Date(
+      Number(match[1]),
+      Number(match[2])-1,
+      Number(match[3])
     );
 
+  }
 
-  if(
-    isNaN(
-      date.getTime()
-    )
-  ){
 
-    return null;
+  /*
+    DD/MM/YYYY
+  */
+
+  match =
+  stringValue.match(
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+  );
+
+
+  if(match){
+
+    return new Date(
+      Number(match[3]),
+      Number(match[2])-1,
+      Number(match[1])
+    );
 
   }
 
 
-  return date;
+  /*
+    DD-MM-YYYY
+  */
+
+  match =
+  stringValue.match(
+    /^(\d{1,2})-(\d{1,2})-(\d{4})$/
+  );
+
+
+  if(match){
+
+    return new Date(
+      Number(match[3]),
+      Number(match[2])-1,
+      Number(match[1])
+    );
+
+  }
+
+
+  return null;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    DAYS LEFT
-===================================================== */
+========================================================= */
 
 function daysLeft(value){
 
   const date =
-    parseDate(value);
-
+  parseDate(value);
 
   if(!date){
 
@@ -2025,44 +1356,53 @@ function daysLeft(value){
 
 
   const today =
-    new Date();
-
+  new Date();
 
   today.setHours(
-    0,
-    0,
-    0,
-    0
+    0,0,0,0
+  );
+
+  date.setHours(
+    0,0,0,0
   );
 
 
-  const difference =
-    date.getTime() -
-    today.getTime();
-
-
   return Math.ceil(
-    difference /
     (
-      1000 *
-      60 *
-      60 *
-      24
-    )
+      date.getTime() -
+      today.getTime()
+    ) /
+    86400000
   );
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   EXPIRED
+========================================================= */
+
+function isExpired(value){
+
+  const days =
+  daysLeft(value);
+
+  return (
+    days !== null &&
+    days < 0
+  );
+
+}
+
+
+/* =========================================================
    EXPIRING SOON
-===================================================== */
+========================================================= */
 
 function isExpiringSoon(value){
 
   const days =
-    daysLeft(value);
-
+  daysLeft(value);
 
   return (
     days !== null &&
@@ -2073,108 +1413,10 @@ function isExpiringSoon(value){
 }
 
 
-/* =====================================================
-   EXPIRED
-===================================================== */
-
-function isExpired(value){
-
-  const days =
-    daysLeft(value);
-
-
-  return (
-    days !== null &&
-    days < 0
-  );
-
-}
-
-
-/* =====================================================
-   VEHICLE HAS ACTIVE EXPIRY
-===================================================== */
-
-function vehicleHasActiveExpiry(
-  vehicle
-){
-
-  const fields = [
-
-    vehicle.fitness_expiry,
-
-    vehicle.insurance_expiry,
-
-    vehicle.tax_expiry,
-
-    vehicle.pucc_expiry,
-
-    vehicle.permit_expiry
-
-  ];
-
-
-  return fields.some(
-    value =>
-      isExpiringSoon(value)
-  );
-
-}
-
-
-/* =====================================================
-   VEHICLE EXPIRY PRIORITY
-===================================================== */
-
-function vehicleExpiryPriority(
-  vehicle
-){
-
-  const fields = [
-
-    vehicle.fitness_expiry,
-
-    vehicle.insurance_expiry,
-
-    vehicle.tax_expiry,
-
-    vehicle.pucc_expiry,
-
-    vehicle.permit_expiry
-
-  ];
-
-
-  const days = fields
-    .map(
-      value =>
-        daysLeft(value)
-    )
-    .filter(
-      value =>
-        value !== null &&
-        value >= 0 &&
-        value <= 10
-    );
-
-
-  if(!days.length){
-
-    return 999;
-
-  }
-
-
-  return Math.min(
-    ...days
-  );
-
-}
-
-
-/* =====================================================
+/* =========================================================
    FORMAT DATE
-===================================================== */
+   ALWAYS DD/MM/YYYY
+========================================================= */
 
 function formatDate(value){
 
@@ -2187,8 +1429,10 @@ function formatDate(value){
 
   if(
     String(value)
-      .toUpperCase() ===
-    "LTT"
+      .trim()
+      .toUpperCase()
+      ===
+      "LTT"
   ){
 
     return "LTT";
@@ -2196,92 +1440,166 @@ function formatDate(value){
   }
 
 
-  const date =
-    parseDate(value);
+  const valueString =
+  String(value).trim();
 
 
-  if(!date){
+  /*
+    YYYY-MM-DD
+  */
 
-    return value;
+  let match =
+  valueString.match(
+    /^(\d{4})-(\d{2})-(\d{2})/
+  );
+
+
+  if(match){
+
+    return (
+      match[3] +
+      "/" +
+      match[2] +
+      "/" +
+      match[1]
+    );
 
   }
 
 
-  const months = [
+  /*
+    DD/MM/YYYY
+    DD-MM-YYYY
+    DD.MM.YYYY
+  */
 
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-
-  ];
-
-
-  return (
-
-    String(
-      date.getDate()
-    ).padStart(
-      2,
-      "0"
-    )
-
-    +
-
-    "-"
-
-    +
-
-    months[
-      date.getMonth()
-    ]
-
-    +
-
-    "-"
-
-    +
-
-    date.getFullYear()
-
+  match =
+  valueString.match(
+    /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/
   );
+
+
+  if(match){
+
+    return (
+      String(match[1]).padStart(2,"0") +
+      "/" +
+      String(match[2]).padStart(2,"0") +
+      "/" +
+      match[3]
+    );
+
+  }
+
+
+  /*
+    DD-MMM-YYYY
+  */
+
+  const months = {
+
+    JAN:"01",
+    FEB:"02",
+    MAR:"03",
+    APR:"04",
+    MAY:"05",
+    JUN:"06",
+    JUL:"07",
+    AUG:"08",
+    SEP:"09",
+    OCT:"10",
+    NOV:"11",
+    DEC:"12"
+
+  };
+
+
+  match =
+  valueString.match(
+    /^(\d{1,2})[-\/.\s]([A-Za-z]{3,9})[-\/.\s](\d{4})$/i
+  );
+
+
+  if(match){
+
+    const day =
+    String(match[1])
+      .padStart(2,"0");
+
+    const month =
+    months[
+      match[2]
+        .substring(0,3)
+        .toUpperCase()
+    ];
+
+    const year =
+    match[3];
+
+
+    if(month){
+
+      return (
+        day +
+        "/" +
+        month +
+        "/" +
+        year
+      );
+
+    }
+
+  }
+
+
+  return valueString;
 
 }
 
 
-/* =====================================================
-   BADGE CLASS
-===================================================== */
+/* =========================================================
+   BADGE
+========================================================= */
 
-function getDateBadgeClass(
-  value,
-  type
-){
+function getDateBadge(value){
 
-  if(
-    String(value || "")
-      .toUpperCase() ===
-    "LTT"
-  ){
+  if(!value){
 
-    return "badge-purple";
+    return `<span class="detail-value">-</span>`;
 
   }
+
+
+  if(
+    String(value)
+      .trim()
+      .toUpperCase()
+      ===
+      "LTT"
+  ){
+
+    return `
+      <span class="badge badge-ltt">
+        LTT
+      </span>
+    `;
+
+  }
+
+
+  const formatted =
+  formatDate(value);
 
 
   if(
     isExpired(value)
   ){
 
-    return "badge-red";
+    return `
+      <span class="badge badge-expired">
+        ${formatted}
+      </span>
+    `;
 
   }
 
@@ -2290,313 +1608,133 @@ function getDateBadgeClass(
     isExpiringSoon(value)
   ){
 
-    return "badge-orange";
+    return `
+      <span class="badge badge-soon">
+        ${formatted}
+      </span>
+    `;
 
   }
 
 
-  if(
-    type ===
-    "registration"
-  ){
-
-    return "badge-blue";
-
-  }
-
-
-  if(
-    type ===
-    "fitness"
-  ){
-
-    return "badge-green";
-
-  }
-
-
-  if(
-    type ===
-    "tax"
-  ){
-
-    return "badge-purple";
-
-  }
-
-
-  if(
-    type ===
-    "insurance"
-  ){
-
-    return "badge-orange";
-
-  }
-
-
-  if(
-    type ===
-    "pucc"
-  ){
-
-    return "badge-red";
-
-  }
-
-
-  if(
-    type ===
-    "permit"
-  ){
-
-    return "badge-teal";
-
-  }
-
-
-  return "badge-blue";
+  return `
+    <span class="badge badge-normal">
+      ${formatted}
+    </span>
+  `;
 
 }
 
 
-/* =====================================================
-   DETAIL ICONS
-===================================================== */
+/* =========================================================
+   SVG ICONS
+========================================================= */
 
-const icons = {
-
-  registration: `
-
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-
-      <rect
-        x="4"
-        y="5"
-        width="16"
-        height="15"
-        rx="2"
-      />
-
-      <path d="M8 3v4"/>
-
-      <path d="M16 3v4"/>
-
-      <path d="M4 10h16"/>
-
-      <path d="M8 14h2"/>
-
-      <path d="M14 14h2"/>
-
-    </svg>
-
-  `,
-
-
-  fitness: `
-
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-
-      <path
-        d="M12 3l8 3v5c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-3z"
-      />
-
-      <path
-        d="M9 12l2 2 4-5"
-      />
-
-    </svg>
-
-  `,
-
-
-  tax: `
-
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-
-      <circle cx="8" cy="7" r="3"/>
-
-      <circle cx="16" cy="7" r="3"/>
-
-      <circle cx="8" cy="14" r="3"/>
-
-      <circle cx="16" cy="14" r="3"/>
-
-      <circle cx="8" cy="21" r="3"/>
-
-      <circle cx="16" cy="21" r="3"/>
-
-    </svg>
-
-  `,
-
-
-  insurance: `
-
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-
-      <path
-        d="M12 3l8 3v5c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-3z"
-      />
-
-      <path d="M12 8v5"/>
-
-      <circle
-        cx="12"
-        cy="16"
-        r=".8"
-        fill="currentColor"
-      />
-
-    </svg>
-
-  `,
-
-
-  pucc: `
-
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-
-      <path
-        d="M5 3h10l4 4v14H5z"
-      />
-
-      <path
-        d="M15 3v5h5"
-      />
-
-      <path
-        d="M8 13h8"
-      />
-
-      <path
-        d="M8 17h5"
-      />
-
-    </svg>
-
-  `,
-
-
-  permit: `
-
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-
-      <rect
-        x="3"
-        y="5"
-        width="18"
-        height="14"
-        rx="2"
-      />
-
-      <path d="M7 9h3"/>
-
-      <path d="M7 13h5"/>
-
-      <circle
-        cx="17"
-        cy="12"
-        r="2"
-      />
-
-    </svg>
-
-  `
-
-};
-
-
-/* =====================================================
-   DETAIL ITEM
-===================================================== */
-
-function detailItem(
-  icon,
-  label,
-  value,
-  type
-){
-
-  const formatted =
-    formatDate(value);
-
-
-  const badge =
-    getDateBadgeClass(
-      value,
-      type
-    );
-
+function calendarIcon(){
 
   return `
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#1769aa"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <rect
+        x="3"
+        y="4"
+        width="18"
+        height="17"
+        rx="2"
+      />
+      <path d="M8 2v4"/>
+      <path d="M16 2v4"/>
+      <path d="M3 10h18"/>
+    </svg>
+  `;
 
+}
+
+
+function shieldIcon(){
+
+  return `
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#08743d"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/>
+      <path d="M9 12l2 2 4-4"/>
+    </svg>
+  `;
+
+}
+
+
+function documentIcon(){
+
+  return `
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#7b4bb7"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M6 3h9l4 4v14H6z"/>
+      <path d="M14 3v5h5"/>
+      <path d="M9 13h6"/>
+      <path d="M9 17h6"/>
+    </svg>
+  `;
+
+}
+
+
+/* =========================================================
+   DETAIL ITEM
+========================================================= */
+
+function detailItem(
+  label,
+  value,
+  icon
+){
+
+  return `
     <div class="detail-item">
 
       <div class="detail-icon">
         ${icon}
       </div>
 
-      <div class="detail-label">
-        ${label}
-      </div>
+      <div class="detail-text">
 
-      <div class="date-badge ${badge}">
-        ${formatted}
+        <div class="detail-label">
+          ${label}
+        </div>
+
+        ${getDateBadge(value)}
+
       </div>
 
     </div>
-
   `;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    VEHICLE TYPE
-===================================================== */
+========================================================= */
 
-function getVehicleType(
-  vehicle
-){
+function getVehicleType(vehicle){
 
   if(
     vehicle.vehicle_type
@@ -2606,269 +1744,178 @@ function getVehicleType(
 
   }
 
-
-  if(
-    vehicle.class_of_vehicle
-  ){
-
-    return vehicle.class_of_vehicle;
-
-  }
-
-
-  if(
-    vehicle.vehicle_class
-  ){
-
-    return vehicle.vehicle_class;
-
-  }
-
-
   return "Vehicle";
 
 }
 
 
-/* =====================================================
+/* =========================================================
    VEHICLE PHOTO
-===================================================== */
+========================================================= */
 
-function getVehiclePhoto(
-  vehicle
-){
+function getVehiclePhoto(vehicle){
 
   if(
-    vehicle.photo_url &&
-    vehicle.photo_url.trim()
+    vehicle.photo_url
   ){
 
-    return `
-
-      <img
-        class="vehicle-photo"
-        src="${vehicle.photo_url}"
-        alt="${
-          vehicle.vehicle_number ||
-          "Vehicle"
-        }"
-        onerror="
-          this.style.display='none'
-        "
-      >
-
-    `;
+    return vehicle.photo_url;
 
   }
 
-
-  return `
-
-    <div
-      class="vehicle-photo no-photo"
-      style="
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        color:#9bb0c5;
-      "
-    >
-
-      <svg
-        width="55"
-        height="55"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-
-        <path
-          d="M5 16l1-5h12l1 5"
-        />
-
-        <path
-          d="M4 16h16v4H4z"
-        />
-
-        <circle
-          cx="7.5"
-          cy="17.5"
-          r="1"
-        />
-
-        <circle
-          cx="16.5"
-          cy="17.5"
-          r="1"
-        />
-
-      </svg>
-
-    </div>
-
-  `;
+  return "./assets/vehicle-placeholder.png";
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   ACTIVE EXPIRY PRIORITY
+========================================================= */
+
+function getVehicleExpiryPriority(vehicle){
+
+  const fields = [
+
+    "fitness_expiry",
+    "insurance_expiry",
+    "pucc_expiry",
+    "tax_expiry",
+    "permit_expiry"
+
+  ];
+
+
+  let best =
+  999999;
+
+
+  fields.forEach(
+    field => {
+
+      const days =
+      daysLeft(
+        vehicle[field]
+      );
+
+
+      if(
+        days !== null &&
+        days < best
+      ){
+
+        best = days;
+
+      }
+
+    }
+  );
+
+
+  return best;
+
+}
+
+
+/* =========================================================
    RENDER VEHICLE
-===================================================== */
+========================================================= */
 
-function renderVehicle(
-  vehicle
-){
+function renderVehicle(vehicle){
 
-  const customer =
-    vehicle.customer_name ||
-    "";
+  const customerName =
+  vehicle.customer_name ||
+  "-";
+
 
   const mobile =
-    vehicle.mobile ||
-    "";
-
-  const priority =
-    vehicleHasActiveExpiry(
-      vehicle
-    );
+  vehicle.mobile ||
+  "-";
 
 
   return `
 
-    <div
-      class="vehicle-card ${
-        priority
-        ? "expiry-priority"
-        : ""
-      }"
-    >
+    <div class="vehicle-card">
 
 
-      <!-- VEHICLE -->
+      <!-- MAIN -->
 
       <div class="vehicle-main">
 
-        ${getVehiclePhoto(
-          vehicle
-        )}
+        <img
+          class="vehicle-photo"
+          src="${getVehiclePhoto(vehicle)}"
+          alt="Vehicle Photo"
+          onerror="this.src='./assets/vehicle-placeholder.png'"
+        >
 
-        <div class="vehicle-basic">
+        <div class="vehicle-info">
 
           <div class="vehicle-number">
-
-            ${
-              vehicle.vehicle_number ||
-              "-"
-            }
-
+            ${vehicle.vehicle_number || "-"}
           </div>
-
 
           <div class="vehicle-type">
-
-            ${
-              getVehicleType(
-                vehicle
-              )
-            }
-
+            ${getVehicleType(vehicle)}
           </div>
 
+          <div class="customer">
+            ${customerName}
+          </div>
 
-          ${
-            customer
-            ?
-            `
-
-              <div
-                class="customer-name"
-              >
-
-                ${customer}
-
-              </div>
-
-            `
-            :
-            ""
-          }
-
-
-          ${
-            mobile
-            ?
-            `
-
-              <div
-                class="mobile-number"
-              >
-
-                ${mobile}
-
-              </div>
-
-            `
-            :
-            ""
-          }
+          <div class="mobile">
+            ${mobile}
+          </div>
 
         </div>
 
       </div>
 
 
-      <!-- FIRST COLUMN -->
+      <!-- DETAILS COLUMN 1 -->
 
       <div class="detail-column">
 
         ${detailItem(
-          icons.registration,
           "Registration Date",
           vehicle.registration_date,
-          "registration"
+          calendarIcon()
         )}
 
         ${detailItem(
-          icons.fitness,
           "Fitness Valid UpTo",
           vehicle.fitness_expiry,
-          "fitness"
+          shieldIcon()
         )}
 
         ${detailItem(
-          icons.tax,
           "Tax Valid UpTo",
           vehicle.tax_expiry,
-          "tax"
+          documentIcon()
         )}
 
       </div>
 
 
-      <!-- SECOND COLUMN -->
+      <!-- DETAILS COLUMN 2 -->
 
       <div class="detail-column">
 
         ${detailItem(
-          icons.insurance,
           "Insurance Valid UpTo",
           vehicle.insurance_expiry,
-          "insurance"
+          shieldIcon()
         )}
 
         ${detailItem(
-          icons.pucc,
           "PUCC Valid UpTo",
           vehicle.pucc_expiry,
-          "pucc"
+          documentIcon()
         )}
 
         ${detailItem(
-          icons.permit,
           "Permit Valid UpTo",
           vehicle.permit_expiry,
-          "permit"
+          documentIcon()
         )}
 
       </div>
@@ -2876,20 +1923,15 @@ function renderVehicle(
 
       <!-- ACTIONS -->
 
-      <div class="card-actions">
+      <div class="actions">
 
 
         <!-- EDIT -->
 
         <button
-          class="icon-btn edit-icon"
+          class="action-btn edit-btn"
           title="Edit"
-          aria-label="Edit"
-          onclick="
-            editVehicle(
-              '${vehicle.id}'
-            )
-          "
+          onclick="editVehicle('${vehicle.id}')"
         >
 
           <svg
@@ -2900,22 +1942,8 @@ function renderVehicle(
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-
-            <path
-              d="M12 20h9"
-            />
-
-            <path
-              d="
-                M16.5 3.5
-                a2.1 2.1 0 013 3
-                L8 18
-                l-4 1
-                1-4
-                L16.5 3.5z
-              "
-            />
-
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/>
           </svg>
 
         </button>
@@ -2924,14 +1952,9 @@ function renderVehicle(
         <!-- DELETE -->
 
         <button
-          class="icon-btn delete-icon"
+          class="action-btn delete-btn"
           title="Delete"
-          aria-label="Delete"
-          onclick="
-            deleteVehicle(
-              '${vehicle.id}'
-            )
-          "
+          onclick="deleteVehicle('${vehicle.id}')"
         >
 
           <svg
@@ -2942,32 +1965,11 @@ function renderVehicle(
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-
-            <polyline
-              points="
-                3 6
-                5 6
-                21 6
-              "
-            />
-
-            <path
-              d="M8 6V4h8v2"
-            />
-
-            <path
-              d="
-                M19 6
-                l-1 15
-                H6
-                L5 6
-              "
-            />
-
-            <path d="M10 11v6"/>
-
-            <path d="M14 11v6"/>
-
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14H6L5 6"/>
+            <path d="M10 11v5"/>
+            <path d="M14 11v5"/>
+            <path d="M9 6V4h6v2"/>
           </svg>
 
         </button>
@@ -2976,66 +1978,29 @@ function renderVehicle(
         <!-- WHATSAPP -->
 
         <button
-          class="
-            icon-btn
-            whatsapp-icon
-          "
-          title="WhatsApp Reminder"
-          aria-label="WhatsApp Reminder"
-          onclick="
-            whatsappReminder(
-              '${vehicle.id}'
-            )
-          "
+          class="action-btn whatsapp-btn"
+          title="WhatsApp"
+          onclick="sendWhatsApp('${vehicle.id}')"
         >
 
           <svg
             viewBox="0 0 24 24"
-            fill="white"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           >
-
-            <path
-              d="
-                M12 2.5
-                a9.5 9.5 0 00-8.2 14.3
-                L2.5 21.5
-                l4.9-1.3
-                A9.5 9.5 0 1012 2.5zm0 17
-                a7.4 7.4 0 01-3.8-1l-.3-.2
-                -2.9.8
-                .8-2.8
-                -.2-.3
-                A7.4 7.4 0 1112 19.5zm4.1-5.5
-                c-.2-.1-1.4-.7-1.6-.8
-                -.2-.1-.4-.1-.5.1
-                -.2.2-.6.8-.7.9
-                -.1.2-.3.2-.5.1
-                -.2-.1-.9-.3-1.7-1
-                -.6-.5-1-1.1-1.1-1.3
-                -.1-.2 0-.3.1-.4
-                l.4-.4
-                c.1-.1.2-.3.2-.4
-                0-.1-.1-.3-.1-.4
-                -.1-.1-.5-1.2-.7-1.6
-                -.2-.4-.4-.4-.5-.4
-                h-.4
-                c-.2 0-.4.1-.6.3
-                -.2.2-.8.8-.8 1.9
-                s.8 2.2.9 2.3
-                c.1.2 1.6 2.5 3.5 3.5
-                .5.2.9.4 1.2.5
-                .5.2 1 .2 1.4.1
-                .4-.1 1.4-.6 1.6-1.1
-                .2-.5.2-1 .1-1.1
-                -.1-.1-.3-.2-.5-.3z
-              "
-            />
-
+            <path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5z"/>
+            <path d="M8.5 8.5c.4 2 2 4 4 4.8"/>
+            <path d="M8.7 8.4l1.1-.2 1 1.8-.7.7"/>
           </svg>
 
         </button>
 
+
       </div>
+
 
     </div>
 
@@ -3044,60 +2009,51 @@ function renderVehicle(
 }
 
 
-/* =====================================================
-   SUMMARY
-===================================================== */
+/* =========================================================
+   UPDATE SUMMARY
+========================================================= */
 
 function updateSummary(){
 
-  const total =
-    allVehicles.length;
+  let expiringSoon =
+  0;
+
+  let expired =
+  0;
 
 
-  let expiring = 0;
+  const fields = [
 
-  let expired = 0;
+    "fitness_expiry",
+    "insurance_expiry",
+    "tax_expiry",
+    "pucc_expiry",
+    "permit_expiry"
+
+  ];
 
 
   allVehicles.forEach(
     vehicle => {
 
-      const fields = [
-
-        vehicle.fitness_expiry,
-
-        vehicle.insurance_expiry,
-
-        vehicle.tax_expiry,
-
-        vehicle.pucc_expiry,
-
-        vehicle.permit_expiry
-
-      ];
-
-
       fields.forEach(
-        date => {
+        field => {
 
-          if(
-            isExpiringSoon(
-              date
-            )
-          ){
-
-            expiring++;
-
-          }
+          const value =
+          vehicle[field];
 
 
           if(
-            isExpired(
-              date
-            )
+            isExpired(value)
           ){
 
             expired++;
+
+          }else if(
+            isExpiringSoon(value)
+          ){
+
+            expiringSoon++;
 
           }
 
@@ -3108,88 +2064,39 @@ function updateSummary(){
   );
 
 
-  headerTotalVehicles.textContent =
-    total;
+  document.getElementById(
+    "expiringSoonCount"
+  ).textContent =
+    expiringSoon;
 
-  expiringCount.textContent =
-    expiring;
 
-  expiredCount.textContent =
+  document.getElementById(
+    "expiredCount"
+  ).textContent =
     expired;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    SORT VEHICLES
-===================================================== */
+========================================================= */
 
-function sortVehiclesForDisplay(
-  vehicles
-){
+function sortVehiclesForDisplay(){
 
-  return [
-    ...vehicles
-  ].sort(
+  filteredVehicles.sort(
     (a,b) => {
 
       const aPriority =
-        vehicleExpiryPriority(
-          a
-        );
+      getVehicleExpiryPriority(a);
 
       const bPriority =
-        vehicleExpiryPriority(
-          b
-        );
-
-
-      /*
-        Active expiry vehicles
-        first.
-
-        Today = 0
-        Tomorrow = 1
-        ...
-        10 days = 10
-
-        Normal vehicles = 999
-      */
-
-      if(
-        aPriority !==
-        bPriority
-      ){
-
-        return (
-          aPriority -
-          bPriority
-        );
-
-      }
-
-
-      /*
-        If both have same
-        expiry priority,
-        keep newest vehicle first.
-      */
-
-      const aCreated =
-        new Date(
-          a.created_at || 0
-        ).getTime();
-
-
-      const bCreated =
-        new Date(
-          b.created_at || 0
-        ).getTime();
+      getVehicleExpiryPriority(b);
 
 
       return (
-        bCreated -
-        aCreated
+        aPriority -
+        bPriority
       );
 
     }
@@ -3198,35 +2105,51 @@ function sortVehiclesForDisplay(
 }
 
 
-/* =====================================================
+/* =========================================================
    RENDER LIST
-===================================================== */
+========================================================= */
 
 function renderList(){
 
-  const sortedVehicles =
-    sortVehiclesForDisplay(
-      filteredVehicles
-    );
+  const list =
+  document.getElementById(
+    "vehicleList"
+  );
 
 
-  const total =
-    sortedVehicles.length;
-
-
-  const totalPages =
-    Math.max(
-      1,
-      Math.ceil(
-        total /
-        recordsPerPage
-      )
-    );
+  const pagination =
+  document.getElementById(
+    "pagination"
+  );
 
 
   if(
-    currentPage >
-    totalPages
+    !filteredVehicles.length
+  ){
+
+    list.innerHTML = `
+      <div class="empty">
+        No vehicles found.
+      </div>
+    `;
+
+    pagination.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  const totalPages =
+  Math.ceil(
+    filteredVehicles.length /
+    recordsPerPage
+  );
+
+
+  if(
+    currentPage > totalPages
   ){
 
     currentPage =
@@ -3236,87 +2159,178 @@ function renderList(){
 
 
   const start =
-    (
-      currentPage -
-      1
-    ) *
-    recordsPerPage;
+  (
+    currentPage - 1
+  ) *
+  recordsPerPage;
 
 
   const end =
-    start +
-    recordsPerPage;
+  start +
+  recordsPerPage;
 
 
   const pageVehicles =
-    sortedVehicles.slice(
-      start,
-      end
-    );
+  filteredVehicles.slice(
+    start,
+    end
+  );
 
 
-  if(
-    !pageVehicles.length
-  ){
-
-    vehicleList.innerHTML = `
-
-      <div class="empty">
-
-        No vehicles found.
-
-      </div>
-
-    `;
-
-  }else{
-
-    vehicleList.innerHTML =
-
-      pageVehicles
-        .map(
-          vehicle =>
-            renderVehicle(
-              vehicle
-            )
-        )
-        .join("");
-
-  }
+  list.innerHTML =
+    pageVehicles
+      .map(
+        renderVehicle
+      )
+      .join("");
 
 
-  pageInfo.textContent =
-    `Page ${currentPage} of ${totalPages}`;
-
-
-  previousBtn.disabled =
-    currentPage <= 1;
-
-
-  nextBtn.disabled =
-    currentPage >= totalPages;
+  renderPagination(
+    totalPages
+  );
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+function renderPagination(
+  totalPages
+){
+
+  const pagination =
+  document.getElementById(
+    "pagination"
+  );
+
+
+  if(
+    totalPages <= 1
+  ){
+
+    pagination.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  let html = "";
+
+
+  html += `
+    <button
+      class="page-btn"
+      onclick="changePage(${currentPage-1})"
+      ${currentPage===1 ? "disabled" : ""}
+    >
+      Previous
+    </button>
+  `;
+
+
+  for(
+    let i=1;
+    i<=totalPages;
+    i++
+  ){
+
+    html += `
+      <button
+        class="page-btn ${i===currentPage ? "active" : ""}"
+        onclick="changePage(${i})"
+      >
+        ${i}
+      </button>
+    `;
+
+  }
+
+
+  html += `
+    <span class="page-info">
+      Page ${currentPage} of ${totalPages}
+    </span>
+  `;
+
+
+  html += `
+    <button
+      class="page-btn"
+      onclick="changePage(${currentPage+1})"
+      ${currentPage===totalPages ? "disabled" : ""}
+    >
+      Next
+    </button>
+  `;
+
+
+  pagination.innerHTML =
+    html;
+
+}
+
+
+/* =========================================================
+   CHANGE PAGE
+========================================================= */
+
+function changePage(page){
+
+  const totalPages =
+  Math.ceil(
+    filteredVehicles.length /
+    recordsPerPage
+  );
+
+
+  if(
+    page < 1 ||
+    page > totalPages
+  ){
+
+    return;
+
+  }
+
+
+  currentPage =
+    page;
+
+
+  renderList();
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =========================================================
    SEARCH
-===================================================== */
+========================================================= */
 
 function handleSearch(){
 
-  const query =
-    searchInput.value
-      .trim()
-      .toLowerCase();
+  const search =
+  document.getElementById(
+    "searchInput"
+  )
+  .value
+  .trim()
+  .toLowerCase();
 
 
-  if(!query){
+  if(!search){
 
     filteredVehicles =
-      [
-        ...allVehicles
-      ];
+      [...allVehicles];
 
   }else{
 
@@ -3325,44 +2339,25 @@ function handleSearch(){
         vehicle => {
 
           const number =
-            String(
-              vehicle.vehicle_number ||
-              ""
-            ).toLowerCase();
-
+          String(
+            vehicle.vehicle_number || ""
+          ).toLowerCase();
 
           const customer =
-            String(
-              vehicle.customer_name ||
-              ""
-            ).toLowerCase();
-
+          String(
+            vehicle.customer_name || ""
+          ).toLowerCase();
 
           const mobile =
-            String(
-              vehicle.mobile ||
-              ""
-            ).toLowerCase();
+          String(
+            vehicle.mobile || ""
+          ).toLowerCase();
 
 
           return (
-
-            number.includes(
-              query
-            )
-
-            ||
-
-            customer.includes(
-              query
-            )
-
-            ||
-
-            mobile.includes(
-              query
-            )
-
+            number.includes(search) ||
+            customer.includes(search) ||
+            mobile.includes(search)
           );
 
         }
@@ -3371,107 +2366,37 @@ function handleSearch(){
   }
 
 
-  currentPage = 1;
+  currentPage =
+    1;
+
+
+  sortVehiclesForDisplay();
 
   renderList();
 
 }
 
 
-/* =====================================================
-   PREVIOUS
-===================================================== */
-
-function previousPage(){
-
-  if(
-    currentPage > 1
-  ){
-
-    currentPage--;
-
-    renderList();
-
-
-    window.scrollTo({
-
-      top:0,
-
-      behavior:"smooth"
-
-    });
-
-  }
-
-}
-
-
-/* =====================================================
-   NEXT
-===================================================== */
-
-function nextPage(){
-
-  const totalPages =
-    Math.max(
-      1,
-      Math.ceil(
-        filteredVehicles.length /
-        recordsPerPage
-      )
-    );
-
-
-  if(
-    currentPage <
-    totalPages
-  ){
-
-    currentPage++;
-
-    renderList();
-
-
-    window.scrollTo({
-
-      top:0,
-
-      behavior:"smooth"
-
-    });
-
-  }
-
-}
-
-
-/* =====================================================
+/* =========================================================
    LOAD VEHICLES
-===================================================== */
+========================================================= */
 
 async function loadVehicles(){
 
-  showStatus(
-    "Loading vehicles..."
-  );
-
-
   try{
 
+    showStatus(
+      "Loading vehicles..."
+    );
+
+
     const {
-
       data,
-
       error
-
     } =
-
     await supabaseClient
-
       .from("vehicles")
-
       .select("*")
-
       .order(
         "created_at",
         {
@@ -3492,34 +2417,30 @@ async function loadVehicles(){
 
 
     filteredVehicles =
-      [
-        ...allVehicles
-      ];
+      [...allVehicles];
 
 
-    /*
-      Update all counts
-    */
+    document.getElementById(
+      "headerTotalVehicles"
+    ).textContent =
+      allVehicles.length;
 
-    updateSummary();
 
-
-    /*
-      Today's five expiry boxes
-    */
+    updateTodayExpiryDate();
 
     updateTodayExpiryCounts();
 
+    updateSummary();
 
-    /*
-      Render list with
-      expiry priority
-    */
+    sortVehiclesForDisplay();
 
     renderList();
 
 
-    hideStatus();
+    document.getElementById(
+      "status"
+    ).style.display =
+      "none";
 
 
   }catch(error){
@@ -3530,14 +2451,11 @@ async function loadVehicles(){
 
 
     showStatus(
-
-      "Error loading vehicles: " +
-
+      "Error loading vehicles:\n" +
       (
         error.message ||
         error
       )
-
     );
 
   }
@@ -3545,9 +2463,9 @@ async function loadVehicles(){
 }
 
 
-/* =====================================================
+/* =========================================================
    GO UPLOAD
-===================================================== */
+========================================================= */
 
 function goUpload(){
 
@@ -3557,15 +2475,40 @@ function goUpload(){
 }
 
 
-/* =====================================================
-   EDIT
-===================================================== */
+/* =========================================================
+   EDIT VEHICLE
+========================================================= */
 
 function editVehicle(id){
 
+  const vehicle =
+  allVehicles.find(
+    item =>
+    String(item.id)
+    ===
+    String(id)
+  );
+
+
+  if(!vehicle){
+
+    alert(
+      "Vehicle not found."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Store selected vehicle
+    for upload page.
+  */
+
   localStorage.setItem(
-    "editVehicleId",
-    id
+    "editVehicle",
+    JSON.stringify(vehicle)
   );
 
 
@@ -3575,9 +2518,9 @@ function editVehicle(id){
 }
 
 
-/* =====================================================
+/* =========================================================
    DELETE PHOTO
-===================================================== */
+========================================================= */
 
 async function deletePhoto(
   path
@@ -3593,19 +2536,11 @@ async function deletePhoto(
   try{
 
     const {
-
       error
-
     } =
-
     await supabaseClient
-
       .storage
-
-      .from(
-        "vehicle-photos"
-      )
-
+      .from("vehicle-photos")
       .remove([
         path
       ]);
@@ -3620,11 +2555,9 @@ async function deletePhoto(
 
     }
 
-
   }catch(error){
 
     console.warn(
-      "Photo delete error:",
       error
     );
 
@@ -3633,20 +2566,19 @@ async function deletePhoto(
 }
 
 
-/* =====================================================
+/* =========================================================
    DELETE VEHICLE
-===================================================== */
+========================================================= */
 
-async function deleteVehicle(
-  id
-){
+async function deleteVehicle(id){
 
   const vehicle =
-    allVehicles.find(
-      item =>
-        String(item.id) ===
-        String(id)
-    );
+  allVehicles.find(
+    item =>
+    String(item.id)
+    ===
+    String(id)
+  );
 
 
   if(!vehicle){
@@ -3656,24 +2588,18 @@ async function deleteVehicle(
   }
 
 
-  const confirmDelete =
-    confirm(
-
-      "Are you sure you want to delete vehicle " +
-
-      (
-        vehicle.vehicle_number ||
-        ""
-      )
-
-      +
-
-      "?"
-
-    );
+  const confirmed =
+  confirm(
+    "Are you sure you want to delete vehicle " +
+    (
+      vehicle.vehicle_number ||
+      ""
+    ) +
+    "?"
+  );
 
 
-  if(!confirmDelete){
+  if(!confirmed){
 
     return;
 
@@ -3687,6 +2613,10 @@ async function deleteVehicle(
     );
 
 
+    /*
+      Delete photo first.
+    */
+
     if(
       vehicle.photo_path
     ){
@@ -3698,18 +2628,16 @@ async function deleteVehicle(
     }
 
 
+    /*
+      Delete database record.
+    */
+
     const {
-
       error
-
     } =
-
     await supabaseClient
-
       .from("vehicles")
-
       .delete()
-
       .eq(
         "id",
         id
@@ -3723,35 +2651,12 @@ async function deleteVehicle(
     }
 
 
-    allVehicles =
-      allVehicles.filter(
-        item =>
-          String(item.id) !==
-          String(id)
-      );
-
-
-    filteredVehicles =
-      [
-        ...allVehicles
-      ];
-
-
-    updateSummary();
-
-
-    updateTodayExpiryCounts();
-
-
-    renderList();
-
-
-    hideStatus();
-
-
     alert(
       "Vehicle deleted successfully."
     );
+
+
+    await loadVehicles();
 
 
   }catch(error){
@@ -3762,14 +2667,11 @@ async function deleteVehicle(
 
 
     showStatus(
-
       "Delete Error:\n" +
-
       (
         error.message ||
         error
       )
-
     );
 
   }
@@ -3777,20 +2679,19 @@ async function deleteVehicle(
 }
 
 
-/* =====================================================
+/* =========================================================
    WHATSAPP
-===================================================== */
+========================================================= */
 
-function whatsappReminder(
-  id
-){
+function sendWhatsApp(id){
 
   const vehicle =
-    allVehicles.find(
-      item =>
-        String(item.id) ===
-        String(id)
-    );
+  allVehicles.find(
+    item =>
+    String(item.id)
+    ===
+    String(id)
+  );
 
 
   if(!vehicle){
@@ -3801,26 +2702,29 @@ function whatsappReminder(
 
 
   alert(
-
-    "WhatsApp Reminder will be added here for " +
-
-    (
-      vehicle.vehicle_number ||
-      "this vehicle"
-    )
-
-    +
-
-    "."
-
+    "WhatsApp reminder integration will be added later."
   );
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   SEARCH EVENT
+========================================================= */
+
+document
+  .getElementById(
+    "searchInput"
+  )
+  .addEventListener(
+    "input",
+    handleSearch
+  );
+
+
+/* =========================================================
    START
-===================================================== */
+========================================================= */
 
 loadVehicles();
 
