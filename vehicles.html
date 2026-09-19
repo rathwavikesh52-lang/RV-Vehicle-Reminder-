@@ -1,12 +1,18 @@
-
 <!DOCTYPE html>
-<html lang="gu">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>All Vehicles - RV Vehicle Reminder</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background: #f4f7fb;
@@ -21,6 +27,15 @@ body {
   border-radius: 0 0 25px 25px;
 }
 
+.header h2 {
+  margin: 0 0 6px;
+}
+
+.header p {
+  margin: 0;
+  opacity: .9;
+}
+
 .container {
   max-width: 700px;
   margin: auto;
@@ -28,17 +43,20 @@ body {
 }
 
 .topbar {
-  display: flex;
-  gap: 10px;
   margin-bottom: 18px;
 }
 
 input {
-  flex: 1;
-  padding: 13px;
+  width: 100%;
+  padding: 14px;
   border: 1px solid #d5dce8;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #087cf5;
 }
 
 .vehicle-card {
@@ -47,6 +65,17 @@ input {
   border-radius: 18px;
   margin-bottom: 16px;
   box-shadow: 0 4px 15px #dce5f0;
+  overflow: hidden;
+}
+
+.vehicle-photo {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 15px;
+  display: block;
+  background: #eef2f7;
 }
 
 .vehicle-title {
@@ -59,6 +88,7 @@ input {
 .row {
   display: flex;
   justify-content: space-between;
+  gap: 15px;
   padding: 9px 0;
   border-bottom: 1px solid #edf0f5;
   font-size: 14px;
@@ -70,6 +100,11 @@ input {
 
 .label {
   color: #687386;
+}
+
+.value {
+  text-align: right;
+  font-weight: 500;
 }
 
 .status {
@@ -98,6 +133,19 @@ button {
   color: white;
   font-size: 15px;
   font-weight: bold;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+.delete-btn {
+  background: #dc2626;
+}
+
+.back-btn {
+  background: #64748b;
 }
 
 .empty {
@@ -106,6 +154,36 @@ button {
   padding: 30px;
   border-radius: 18px;
   color: #687386;
+}
+
+.loading {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  color: #687386;
+}
+
+.error {
+  text-align: center;
+  background: #fff1f2;
+  padding: 20px;
+  border-radius: 15px;
+  color: #be123c;
+  margin-bottom: 15px;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 180px;
+  border-radius: 14px;
+  background: #eef2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #687386;
+  margin-bottom: 15px;
+  font-size: 15px;
 }
 </style>
 </head>
@@ -120,16 +198,27 @@ button {
 <div class="container">
 
   <div class="topbar">
-    <input type="text" id="search" placeholder="🔍 Vehicle Number Search" oninput="displayVehicles()">
+    <input
+      type="text"
+      id="search"
+      placeholder="🔍 Search Vehicle Number"
+      oninput="displayVehicles()"
+    >
   </div>
 
-  <div id="vehicleList"></div>
+  <div id="message"></div>
+
+  <div id="vehicleList">
+    <div class="loading">
+      ⏳ Loading vehicles...
+    </div>
+  </div>
 
   <button onclick="location.href='upload.html'">
     📸 Add New Vehicle
   </button>
 
-  <button onclick="history.back()" style="background:#64748b;">
+  <button onclick="history.back()" class="back-btn">
     ⬅️ Back
   </button>
 
@@ -137,131 +226,532 @@ button {
 
 <script>
 
+/* =========================================================
+   SUPABASE CONFIG
+   અહીં તમારા login.html વાળા SAME values મૂકો
+========================================================= */
+
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+
+/* =========================================================
+   GLOBAL VEHICLES
+========================================================= */
+
+let allVehicles = [];
+
+
+/* =========================================================
+   DATE FORMAT
+========================================================= */
+
 function formatDate(date) {
-  if (!date) return "Not Available";
 
-  const d = new Date(date + "T00:00:00");
+  if (!date) {
+    return "Not Available";
+  }
 
-  return d.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
+  try {
+
+    const d = new Date(date + "T00:00:00");
+
+    if (isNaN(d.getTime())) {
+      return date;
+    }
+
+    return d.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+
+  } catch (error) {
+
+    return date;
+
+  }
 }
 
+
+/* =========================================================
+   EXPIRY STATUS
+========================================================= */
+
 function getStatus(date) {
+
   if (!date) {
     return '<span class="status">—</span>';
   }
 
   const today = new Date();
+
   today.setHours(0,0,0,0);
 
   const expiry = new Date(date + "T00:00:00");
-  const diff = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+  if (isNaN(expiry.getTime())) {
+    return '<span class="status">—</span>';
+  }
+
+  const diff = Math.ceil(
+    (expiry - today) /
+    (1000 * 60 * 60 * 24)
+  );
 
   if (diff < 0) {
+
     return '<span class="status red">❌ Expired</span>';
+
+  }
+
+  if (diff === 0) {
+
+    return '<span class="status red">🔔 Expires Today</span>';
+
   }
 
   if (diff <= 10) {
-    return '<span class="status orange">🔔 ' + diff + ' Days Left</span>';
+
+    return '<span class="status orange">🔔 ' +
+      diff +
+      ' Days Left</span>';
+
   }
 
   return '<span class="status green">🟢 Valid</span>';
 }
 
+
+/* =========================================================
+   LOAD VEHICLES FROM SUPABASE
+========================================================= */
+
+async function loadVehicles() {
+
+  const list = document.getElementById("vehicleList");
+  const message = document.getElementById("message");
+
+  list.innerHTML = `
+    <div class="loading">
+      ⏳ Loading vehicles...
+    </div>
+  `;
+
+  message.innerHTML = "";
+
+  try {
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("vehicles")
+      .select(`
+        id,
+        created_at,
+        vehicle_number,
+        registration_date,
+        fitness_expiry,
+        insurance_expiry,
+        tax_expiry,
+        pucc_expiry,
+        permit_expiry,
+        photo_url,
+        photo_path,
+        customer_name,
+        customer_mobile,
+        mobile,
+        vehicle_class,
+        ocr_text
+      `)
+      .order("created_at", {
+        ascending: false
+      });
+
+
+    if (error) {
+
+      console.error("Supabase Error:", error);
+
+      message.innerHTML = `
+        <div class="error">
+          ❌ Vehicle load error:<br><br>
+          ${escapeHtml(error.message)}
+        </div>
+      `;
+
+      list.innerHTML = "";
+
+      return;
+    }
+
+
+    allVehicles = data || [];
+
+    displayVehicles();
+
+  } catch (error) {
+
+    console.error(error);
+
+    message.innerHTML = `
+      <div class="error">
+        ❌ Something went wrong.<br><br>
+        ${escapeHtml(error.message)}
+      </div>
+    `;
+
+    list.innerHTML = "";
+
+  }
+}
+
+
+/* =========================================================
+   DISPLAY VEHICLES
+========================================================= */
+
 function displayVehicles() {
 
   const list = document.getElementById("vehicleList");
-  const search = document.getElementById("search").value.toUpperCase();
 
-  let vehicles = JSON.parse(localStorage.getItem("vehicles")) || [];
+  const searchInput = document.getElementById("search");
 
-  vehicles = vehicles.filter(v =>
-    v.vehicleNumber.includes(search)
-  );
+  const search = searchInput.value
+    .trim()
+    .toUpperCase();
+
+
+  let vehicles = allVehicles.filter(v => {
+
+    const number = String(
+      v.vehicle_number || ""
+    ).toUpperCase();
+
+    return number.includes(search);
+
+  });
+
 
   list.innerHTML = "";
 
+
   if (vehicles.length === 0) {
+
     list.innerHTML = `
       <div class="empty">
         🚗<br><br>
-        કોઈ Vehicle Record મળ્યો નથી.
+        No Vehicle Record Found.
       </div>
     `;
+
     return;
   }
 
-  vehicles.forEach((v, index) => {
+
+  vehicles.forEach(v => {
+
+    const photoUrl = v.photo_url || "";
+
+    let photoHTML = "";
+
+    if (photoUrl) {
+
+      photoHTML = `
+        <img
+          class="vehicle-photo"
+          src="${escapeAttribute(photoUrl)}"
+          alt="Vehicle Photo"
+          loading="lazy"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
+
+        <div
+          class="photo-placeholder"
+          style="display:none;"
+        >
+          📷 Vehicle Photo Not Available
+        </div>
+      `;
+
+    } else {
+
+      photoHTML = `
+        <div class="photo-placeholder">
+          📷 Vehicle Photo Not Available
+        </div>
+      `;
+
+    }
+
 
     list.innerHTML += `
+
       <div class="vehicle-card">
 
+        ${photoHTML}
+
         <div class="vehicle-title">
-          🚘 ${v.vehicleNumber}
+          🚘 ${escapeHtml(v.vehicle_number || "Unknown Vehicle")}
         </div>
+
 
         <div class="row">
-          <span class="label">Registration Date</span>
-          <span>${formatDate(v.registrationDate)}</span>
+          <span class="label">
+            Registration Date
+          </span>
+
+          <span class="value">
+            ${formatDate(v.registration_date)}
+          </span>
         </div>
+
 
         <div class="row">
-          <span class="label">Fitness Expiry</span>
-          <span>${formatDate(v.fitness)}</span>
+          <span class="label">
+            Fitness Expiry
+          </span>
+
+          <span class="value">
+            ${formatDate(v.fitness_expiry)}
+          </span>
         </div>
+
 
         <div class="row">
-          <span class="label">Status</span>
-          <span>${getStatus(v.fitness)}</span>
+          <span class="label">
+            Status
+          </span>
+
+          <span class="value">
+            ${getStatus(v.fitness_expiry)}
+          </span>
         </div>
+
 
         <div class="row">
-          <span class="label">Insurance Expiry</span>
-          <span>${formatDate(v.insurance)}</span>
+          <span class="label">
+            Insurance Expiry
+          </span>
+
+          <span class="value">
+            ${formatDate(v.insurance_expiry)}
+          </span>
         </div>
+
 
         <div class="row">
-          <span class="label">Tax Expiry</span>
-          <span>${formatDate(v.tax)}</span>
+          <span class="label">
+            Tax Valid UpTo
+          </span>
+
+          <span class="value">
+            ${formatTax(v.tax_expiry)}
+          </span>
         </div>
+
 
         <div class="row">
-          <span class="label">PUCC Expiry</span>
-          <span>${formatDate(v.pucc)}</span>
+          <span class="label">
+            PUCC Expiry
+          </span>
+
+          <span class="value">
+            ${formatDate(v.pucc_expiry)}
+          </span>
         </div>
+
 
         <div class="row">
-          <span class="label">Permit Expiry</span>
-          <span>${formatDate(v.permit)}</span>
+          <span class="label">
+            Permit Expiry
+          </span>
+
+          <span class="value">
+            ${formatDate(v.permit_expiry)}
+          </span>
         </div>
 
-        <button onclick="deleteVehicle(${index})" style="background:#dc2626;">
+
+        ${
+          v.vehicle_class
+          ?
+          `
+          <div class="row">
+            <span class="label">
+              Vehicle Class
+            </span>
+
+            <span class="value">
+              ${escapeHtml(v.vehicle_class)}
+            </span>
+          </div>
+          `
+          :
+          ""
+        }
+
+
+        <button
+          class="delete-btn"
+          onclick="deleteVehicle('${escapeAttribute(v.id)}')"
+        >
           🗑️ Delete Vehicle
         </button>
 
       </div>
+
     `;
+
   });
+
 }
 
-function deleteVehicle(index) {
 
-  if (confirm("શું તમે આ Vehicle Delete કરવા માંગો છો?")) {
+/* =========================================================
+   TAX FORMAT
+========================================================= */
 
-    let vehicles = JSON.parse(localStorage.getItem("vehicles")) || [];
+function formatTax(value) {
 
-    vehicles.splice(index, 1);
-
-    localStorage.setItem("vehicles", JSON.stringify(vehicles));
-
-    displayVehicles();
+  if (!value) {
+    return "Not Available";
   }
+
+  const text = String(value).trim();
+
+  if (text.toUpperCase() === "LTT") {
+    return "LTT";
+  }
+
+  return formatDate(text);
 }
 
-displayVehicles();
+
+/* =========================================================
+   DELETE VEHICLE
+========================================================= */
+
+async function deleteVehicle(id) {
+
+  if (!confirm(
+    "શું તમે આ Vehicle Delete કરવા માંગો છો?"
+  )) {
+
+    return;
+  }
+
+
+  try {
+
+    const vehicle = allVehicles.find(
+      v => String(v.id) === String(id)
+    );
+
+
+    /* ---------------------------------------------
+       Delete Storage Photo if photo_path exists
+    --------------------------------------------- */
+
+    if (vehicle && vehicle.photo_path) {
+
+      try {
+
+        await supabaseClient
+          .storage
+          .from("vehicle-photos")
+          .remove([
+            vehicle.photo_path
+          ]);
+
+      } catch (storageError) {
+
+        console.warn(
+          "Storage photo delete failed:",
+          storageError
+        );
+
+      }
+
+    }
+
+
+    /* ---------------------------------------------
+       Delete Database Record
+    --------------------------------------------- */
+
+    const {
+      error
+    } = await supabaseClient
+      .from("vehicles")
+      .delete()
+      .eq("id", id);
+
+
+    if (error) {
+
+      alert(
+        "Delete Error:\n" +
+        error.message
+      );
+
+      return;
+    }
+
+
+    alert("Vehicle Deleted Successfully ✅");
+
+    await loadVehicles();
+
+  } catch (error) {
+
+    alert(
+      "Delete Error:\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SECURITY / HTML ESCAPE
+========================================================= */
+
+function escapeHtml(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+function escapeAttribute(value) {
+
+  return String(value || "")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadVehicles();
 
 </script>
 
