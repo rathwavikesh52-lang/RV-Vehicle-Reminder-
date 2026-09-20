@@ -228,7 +228,6 @@ button:active {
 
 /* =========================================================
    SUPABASE CONFIG
-   અહીં તમારા login.html વાળા SAME values મૂકો
 ========================================================= */
 
 const SUPABASE_URL = "YOUR_SUPABASE_URL";
@@ -503,6 +502,48 @@ function displayVehicles() {
         </div>
 
 
+        <!-- CUSTOMER DETAILS -->
+
+        ${
+          v.customer_name
+          ?
+          `
+          <div class="row">
+            <span class="label">
+              Customer Name
+            </span>
+
+            <span class="value">
+              ${escapeHtml(v.customer_name)}
+            </span>
+          </div>
+          `
+          :
+          ""
+        }
+
+
+        ${
+          (v.customer_mobile || v.mobile)
+          ?
+          `
+          <div class="row">
+            <span class="label">
+              Customer Mobile
+            </span>
+
+            <span class="value">
+              ${escapeHtml(
+                v.customer_mobile || v.mobile
+              )}
+            </span>
+          </div>
+          `
+          :
+          ""
+        }
+
+
         <div class="row">
           <span class="label">
             Registration Date
@@ -656,10 +697,6 @@ async function deleteVehicle(id) {
     );
 
 
-    /* ---------------------------------------------
-       Delete Storage Photo if photo_path exists
-    --------------------------------------------- */
-
     if (vehicle && vehicle.photo_path) {
 
       try {
@@ -682,10 +719,6 @@ async function deleteVehicle(id) {
 
     }
 
-
-    /* ---------------------------------------------
-       Delete Database Record
-    --------------------------------------------- */
 
     const {
       error
