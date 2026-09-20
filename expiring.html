@@ -1,285 +1,436 @@
 <!DOCTYPE html>
 <html lang="gu">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
 <title>Expiring Soon - RV Vehicle Reminder</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f7fb;
-  margin: 0;
-  color: #172033;
+
+*{
+  box-sizing:border-box;
 }
 
-.header {
-  background: linear-gradient(135deg,#dc2626,#f97316);
-  color: white;
-  padding: 22px;
-  border-radius: 0 0 25px 25px;
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  margin:0;
+  color:#172033;
 }
 
-.container {
-  max-width: 700px;
-  margin: auto;
-  padding: 20px;
+.header{
+  background:linear-gradient(135deg,#dc2626,#f97316);
+  color:white;
+  padding:22px;
+  border-radius:0 0 25px 25px;
 }
 
-.card {
-  background: white;
-  padding: 18px;
-  border-radius: 18px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 15px #dce5f0;
+.header h2{
+  margin:0 0 6px;
 }
 
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #dc2626;
-  margin-bottom: 12px;
+.header p{
+  margin:0;
+  opacity:.9;
 }
 
-.customer {
-  background: #f8fafc;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  line-height: 1.6;
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:20px;
 }
 
-.alert {
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 8px;
-  background: #fff7ed;
-  color: #c2410c;
-  font-weight: bold;
+.card{
+  background:white;
+  padding:18px;
+  border-radius:18px;
+  margin-bottom:16px;
+  box-shadow:0 4px 15px #dce5f0;
 }
 
-.expired {
-  background: #fee2e2;
-  color: #b91c1c;
+.title{
+  font-size:20px;
+  font-weight:bold;
+  color:#dc2626;
+  margin-bottom:14px;
 }
 
-button {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 11px;
-  margin-top: 15px;
-  background: #64748b;
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+.customer-box{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:12px;
+  line-height:1.7;
 }
 
-.reminder-btn {
-  background: #16a34a;
+.alert{
+  padding:12px;
+  border-radius:10px;
+  margin-top:8px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-weight:bold;
 }
 
-.empty {
-  text-align: center;
-  background: white;
-  padding: 30px;
-  border-radius: 18px;
-  color: #687386;
+.expired{
+  background:#fee2e2;
+  color:#b91c1c;
 }
 
-.loading {
-  text-align: center;
-  background: white;
-  padding: 30px;
-  border-radius: 18px;
-  color: #687386;
+.reminder-btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:11px;
+  margin-top:15px;
+  background:#16a34a;
+  color:white;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.error {
-  text-align: center;
-  background: #fee2e2;
-  padding: 20px;
-  border-radius: 15px;
-  color: #b91c1c;
+.back-btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:11px;
+  margin-top:15px;
+  background:#64748b;
+  color:white;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
 }
+
+.empty{
+  text-align:center;
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  color:#687386;
+}
+
+.loading{
+  text-align:center;
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  color:#687386;
+}
+
+.error{
+  text-align:center;
+  background:#fee2e2;
+  padding:20px;
+  border-radius:15px;
+  color:#b91c1c;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="header">
+
   <h2>🔴 Expiring Soon</h2>
-  <p>આવતા 10 દિવસમાં Expiry થનારા Documents</p>
+
+  <p>
+    આવતા 10 દિવસમાં Expiry થનારા Documents
+  </p>
+
 </div>
+
 
 <div class="container">
 
   <div id="list">
+
     <div class="loading">
       ⏳ Loading...
     </div>
+
   </div>
 
-  <button onclick="history.back()">⬅️ Back</button>
+
+  <button
+    class="back-btn"
+    onclick="history.back()"
+  >
+    ⬅️ Back
+  </button>
 
 </div>
 
+
 <script>
 
-/* =========================================================
-   SUPABASE CONFIG
-   તમારા upload.html / vehicles.html માં જે SAME values છે
-   તે જ અહીં રાખો
-========================================================= */
+/* =====================================================
+   SUPABASE
+===================================================== */
 
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_URL =
+"https://lqbhafspabtlqeubqxjg.supabase.co";
 
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_KEY =
+"sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
 
-const supabaseClient = window.supabase.createClient(
+
+const supabaseClient =
+supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_ANON_KEY
+  SUPABASE_KEY
 );
 
 
-/* =========================================================
+/* =====================================================
    ADVISOR DETAILS
-========================================================= */
+===================================================== */
 
-const ADVISOR_NAME = "સહકાર ઓટો એડવાઇઝર";
+const ADVISOR_NAME =
+"સહકાર ઓટો એડવાઇઝર";
 
-const ADVISOR_PERSON = "રમીઝભાઈ મેમણ";
+const ADVISOR_PERSON =
+"રમીઝભાઈ મેમણ";
 
 const ADVISOR_ADDRESS =
-  "એ.પી.એમ.સી. માર્કેટ યાર્ડ, નસવાડી";
-
-const ADVISOR_CONTACT =
-  "9714733501-8000033501";
+"એ.પી.એમ.સી. માર્કેટ યાર્ડ, નસવાડી";
 
 
-/* =========================================================
+/* =====================================================
    DOCUMENT FIELDS
-========================================================= */
+===================================================== */
 
 const fields = [
 
   {
-    key: "fitness_expiry",
-    name: "ફિટનેસ"
+    key:"fitness_expiry",
+    name:"ફિટનેસ"
   },
 
   {
-    key: "insurance_expiry",
-    name: "ઇન્શ્યોરન્સ"
+    key:"insurance_expiry",
+    name:"ઇન્શ્યોરન્સ"
   },
 
   {
-    key: "tax_expiry",
-    name: "ટેક્સ"
+    key:"tax_expiry",
+    name:"ટેક્સ"
   },
 
   {
-    key: "pucc_expiry",
-    name: "PUCC"
+    key:"pucc_expiry",
+    name:"PUCC"
   },
 
   {
-    key: "permit_expiry",
-    name: "પરમિટ"
+    key:"permit_expiry",
+    name:"પરમિટ"
   }
 
 ];
 
 
-/* =========================================================
+/* =====================================================
+   VEHICLE DATA
+===================================================== */
+
+let vehiclesData = {};
+
+
+/* =====================================================
    DATE FORMAT
-========================================================= */
+===================================================== */
 
-function formatDate(date) {
+function formatDate(date){
 
-  if (!date) {
+  if(!date){
     return "";
   }
 
-  const d = new Date(date + "T00:00:00");
+  const d =
+    new Date(
+      date + "T00:00:00"
+    );
 
-  if (isNaN(d.getTime())) {
+  if(
+    isNaN(
+      d.getTime()
+    )
+  ){
     return date;
   }
 
-  const day = String(d.getDate()).padStart(2, "0");
+  const day =
+    String(
+      d.getDate()
+    ).padStart(2,"0");
 
-  const month = String(
-    d.getMonth() + 1
-  ).padStart(2, "0");
+  const month =
+    String(
+      d.getMonth()+1
+    ).padStart(2,"0");
 
-  const year = d.getFullYear();
+  const year =
+    d.getFullYear();
 
-  return `${day}/${month}/${year}`;
-}
-
-
-/* =========================================================
-   DAYS LEFT
-========================================================= */
-
-function getDays(date) {
-
-  const today = new Date();
-
-  today.setHours(0,0,0,0);
-
-  const expiry =
-    new Date(date + "T00:00:00");
-
-  return Math.ceil(
-    (expiry - today) /
-    (1000 * 60 * 60 * 24)
+  return (
+    day +
+    "/" +
+    month +
+    "/" +
+    year
   );
 }
 
 
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
+/* =====================================================
+   DAYS
+===================================================== */
 
-function escapeHtml(value) {
+function getDays(date){
 
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  const today =
+    new Date();
+
+  today.setHours(
+    0,0,0,0
+  );
+
+  const expiry =
+    new Date(
+      date + "T00:00:00"
+    );
+
+  return Math.ceil(
+    (
+      expiry - today
+    ) /
+    (
+      1000 *
+      60 *
+      60 *
+      24
+    )
+  );
 }
 
 
-/* =========================================================
-   REMINDER
-========================================================= */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-function createReminder(vehicle, alerts) {
+function escapeHtml(value){
+
+  return String(
+    value || ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+}
+
+
+/* =====================================================
+   GET CUSTOMER MOBILE
+===================================================== */
+
+function getCustomerMobile(vehicle){
 
   /*
-     Customer mobile:
-     પહેલા customer_mobile
-     પછી mobile
+     Primary:
+     customer_mobile
+
+     Fallback:
+     mobile
   */
 
-  const customerMobile =
+  const number =
     String(
       vehicle.customer_mobile ||
       vehicle.mobile ||
       ""
     ).trim();
 
+  return number;
+}
+
+
+/* =====================================================
+   CLEAN MOBILE NUMBER
+===================================================== */
+
+function cleanMobileNumber(number){
+
+  let phone =
+    String(
+      number || ""
+    )
+    .replace(
+      /[^0-9]/g,
+      ""
+    );
+
 
   /*
-     Customer name
+     India 10 digit number
   */
+
+  if(
+    phone.length === 10
+  ){
+
+    phone =
+      "91" +
+      phone;
+
+  }
+
+
+  /*
+     Already 91 + 10 digits
+  */
+
+  return phone;
+}
+
+
+/* =====================================================
+   CREATE WHATSAPP MESSAGE
+===================================================== */
+
+function createReminder(
+  vehicle,
+  alerts
+){
 
   const customerName =
     String(
@@ -288,88 +439,109 @@ function createReminder(vehicle, alerts) {
     ).trim();
 
 
-  /*
-     જો Customer Mobile બન્ને columnમાં ન હોય
-  */
+  const customerMobile =
+    getCustomerMobile(
+      vehicle
+    );
 
-  if (!customerMobile) {
-
-    return null;
-
-  }
-
-
-  /*
-     Reminder text
-  */
 
   let message = "";
 
-  message += ADVISOR_NAME + "\n";
-
-  message += ADVISOR_PERSON + "\n";
-
-  message += ADVISOR_ADDRESS + "\n\n";
-
-  message += "તમારી ગાડી\n";
 
   message +=
-    "વાહન નંબર: " +
-    (vehicle.vehicle_number || "") +
-    "\nનું\n\n";
-
-
-  /*
-     Expiring documents
-  */
-
-  alerts.forEach(alert => {
-
-    if (alert.days < 0) {
-
-      message +=
-        "❌ " +
-        alert.name +
-        ": " +
-        formatDate(alert.date) +
-        " ના રોજ પૂર્ણ થઈ ગયું છે\n\n";
-
-    } else if (alert.days === 0) {
-
-      message +=
-        "⚠️ " +
-        alert.name +
-        ": આજે " +
-        formatDate(alert.date) +
-        " ના રોજ પૂરું થાય છે\n\n";
-
-    } else {
-
-      message +=
-        "⚠️ " +
-        alert.name +
-        ": " +
-        formatDate(alert.date) +
-        " ના રોજ પૂરું થાય છે\n\n";
-
-    }
-
-  });
-
-
-  /*
-     Contact details
-  */
-
-  message += "સંપર્ક કરો:\n";
+    ADVISOR_NAME +
+    "\n";
 
   message +=
-    (customerName || ADVISOR_PERSON) +
+    ADVISOR_PERSON +
     "\n";
 
   message +=
     ADVISOR_ADDRESS +
+    "\n\n";
+
+
+  message +=
+    "તમારી ગાડી\n";
+
+
+  message +=
+    "વાહન નંબર: " +
+    (
+      vehicle.vehicle_number ||
+      ""
+    ) +
+    "\nનું\n\n";
+
+
+  /*
+     ONLY EXPIRING DOCUMENTS
+  */
+
+  alerts.forEach(
+    function(alert){
+
+      if(
+        alert.days < 0
+      ){
+
+        message +=
+          "❌ " +
+          alert.name +
+          ": " +
+          formatDate(
+            alert.date
+          ) +
+          " ના રોજ પૂર્ણ થઈ ગયું છે\n\n";
+
+      }
+      else if(
+        alert.days === 0
+      ){
+
+        message +=
+          "⚠️ " +
+          alert.name +
+          ": આજે " +
+          formatDate(
+            alert.date
+          ) +
+          " ના રોજ પૂરું થાય છે\n\n";
+
+      }
+      else{
+
+        message +=
+          "⚠️ " +
+          alert.name +
+          ": " +
+          formatDate(
+            alert.date
+          ) +
+          " ના રોજ પૂરું થાય છે\n\n";
+
+      }
+
+    }
+  );
+
+
+  message +=
+    "સંપર્ક કરો:\n";
+
+
+  message +=
+    (
+      customerName ||
+      ADVISOR_PERSON
+    ) +
     "\n";
+
+
+  message +=
+    ADVISOR_ADDRESS +
+    "\n";
+
 
   message +=
     "મોબાઇલ નંબર: " +
@@ -380,30 +552,124 @@ function createReminder(vehicle, alerts) {
 }
 
 
-/* =========================================================
-   WHATSAPP
-========================================================= */
+/* =====================================================
+   SEND WHATSAPP REMINDER
+===================================================== */
 
-function sendReminder(vehicle, alerts) {
+function sendReminder(id){
+
+  const vehicle =
+    vehiclesData[id];
+
+
+  if(!vehicle){
+
+    alert(
+      "Vehicle data not found."
+    );
+
+    return;
+  }
+
 
   const customerMobile =
-    String(
-      vehicle.customer_mobile ||
-      vehicle.mobile ||
-      ""
-    ).trim();
+    getCustomerMobile(
+      vehicle
+    );
 
 
-  if (!customerMobile) {
+  /*
+     MOBILE CHECK
+  */
+
+  if(!customerMobile){
 
     alert(
       "Mobile number is not available for this vehicle."
     );
 
     return;
-
   }
 
+
+  /*
+     GET EXPIRING DOCUMENTS AGAIN
+  */
+
+  const alerts = [];
+
+
+  fields.forEach(
+    function(field){
+
+      const date =
+        vehicle[field.key];
+
+
+      if(!date){
+        return;
+      }
+
+
+      /*
+         LTT is NOT an expiry date
+      */
+
+      if(
+        field.key ===
+        "tax_expiry" &&
+        String(date)
+          .trim()
+          .toUpperCase() ===
+        "LTT"
+      ){
+
+        return;
+      }
+
+
+      const days =
+        getDays(date);
+
+
+      if(
+        days <= 10
+      ){
+
+        alerts.push({
+
+          name:
+            field.name,
+
+          date:
+            date,
+
+          days:
+            days
+
+        });
+
+      }
+
+    }
+  );
+
+
+  if(
+    alerts.length === 0
+  ){
+
+    alert(
+      "આગામી 10 દિવસમાં કોઈ દસ્તાવેજની મુદત પૂર્ણ થતી નથી."
+    );
+
+    return;
+  }
+
+
+  /*
+     CREATE MESSAGE
+  */
 
   const message =
     createReminder(
@@ -412,85 +678,88 @@ function sendReminder(vehicle, alerts) {
     );
 
 
-  if (!message) {
+  /*
+     CLEAN PHONE
+  */
+
+  const phone =
+    cleanMobileNumber(
+      customerMobile
+    );
+
+
+  if(
+    phone.length < 12
+  ){
 
     alert(
-      "Mobile number is not available for this vehicle."
+      "કૃપા કરીને Customer Mobile Number સાચો નાખો."
     );
 
     return;
-
   }
 
 
   /*
-     Remove spaces, -, brackets etc.
+     WHATSAPP URL
   */
 
-  let phone =
-    customerMobile.replace(
-      /[^0-9]/g,
-      ""
+  const whatsappUrl =
+    "https://wa.me/" +
+    phone +
+    "?text=" +
+    encodeURIComponent(
+      message
     );
 
 
   /*
-     Indian number handling
+     OPEN WHATSAPP
   */
 
-  if (
-    phone.length === 10 &&
-    !phone.startsWith("91")
-  ) {
-
-    phone = "91" + phone;
-
-  }
-
-
-  const url =
-    "https://wa.me/" +
-    phone +
-    "?text=" +
-    encodeURIComponent(message);
-
-
-  window.open(
-    url,
-    "_blank"
-  );
+  window.location.href =
+    whatsappUrl;
 
 }
 
 
-/* =========================================================
-   LOAD EXPIRING VEHICLES
-========================================================= */
+/* =====================================================
+   LOAD FROM SUPABASE
+===================================================== */
 
-async function displayExpiring() {
+async function displayExpiring(){
 
   const list =
-    document.getElementById("list");
+    document.getElementById(
+      "list"
+    );
 
 
   list.innerHTML = `
+
     <div class="loading">
+
       ⏳ Loading...
+
     </div>
+
   `;
 
 
-  try {
+  try{
 
     const {
       data,
       error
-    } = await supabaseClient
+    } =
+    await supabaseClient
 
       .from("vehicles")
 
       .select(`
+
         id,
+        created_at,
         vehicle_number,
         customer_name,
         customer_mobile,
@@ -500,30 +769,42 @@ async function displayExpiring() {
         tax_expiry,
         pucc_expiry,
         permit_expiry
+
       `)
 
       .order(
         "created_at",
         {
-          ascending: false
+          ascending:false
         }
       );
 
 
-    if (error) {
+    if(error){
 
-      console.error(error);
+      console.error(
+        "Supabase Error:",
+        error
+      );
+
 
       list.innerHTML = `
+
         <div class="error">
+
           ❌ Vehicle load error
+
           <br><br>
-          ${escapeHtml(error.message)}
+
+          ${escapeHtml(
+            error.message
+          )}
+
         </div>
+
       `;
 
       return;
-
     }
 
 
@@ -532,93 +813,141 @@ async function displayExpiring() {
     let found = false;
 
 
-    data.forEach(vehicle => {
+    /*
+       CLEAR OLD DATA
+    */
 
-      let alerts = [];
-
-
-      fields.forEach(field => {
-
-        const date =
-          vehicle[field.key];
+    vehiclesData = {};
 
 
-        if (!date) {
+    data.forEach(
+      function(vehicle){
+
+        const alerts = [];
+
+
+        /*
+           CHECK EACH DOCUMENT
+        */
+
+        fields.forEach(
+          function(field){
+
+            const date =
+              vehicle[field.key];
+
+
+            if(!date){
+              return;
+            }
+
+
+            /*
+               Tax = LTT
+               એટલે expiry નથી
+            */
+
+            if(
+              field.key ===
+              "tax_expiry" &&
+              String(date)
+                .trim()
+                .toUpperCase() ===
+              "LTT"
+            ){
+
+              return;
+            }
+
+
+            const days =
+              getDays(date);
+
+
+            /*
+               Expired OR
+               next 10 days
+            */
+
+            if(
+              days <= 10
+            ){
+
+              alerts.push({
+
+                name:
+                  field.name,
+
+                date:
+                  date,
+
+                days:
+                  days
+
+              });
+
+            }
+
+          }
+        );
+
+
+        /*
+           No expiry
+        */
+
+        if(
+          alerts.length === 0
+        ){
+
           return;
         }
 
 
-        const days =
-          getDays(date);
+        found = true;
 
 
         /*
-           માત્ર expired અથવા
-           આગામી 10 દિવસ
+           SAVE VEHICLE
+           FOR REMINDER BUTTON
         */
 
-        if (days <= 10) {
-
-          alerts.push({
-
-            name: field.name,
-
-            date: date,
-
-            days: days
-
-          });
-
-        }
-
-      });
+        const vehicleId =
+          String(
+            vehicle.id
+          );
 
 
-      /*
-         કોઈ expiry ન હોય તો
-         આ vehicle ન બતાવવી
-      */
-
-      if (alerts.length === 0) {
-
-        return;
-
-      }
+        vehiclesData[
+          vehicleId
+        ] = vehicle;
 
 
-      found = true;
+        /*
+           CUSTOMER MOBILE
+        */
+
+        const customerMobile =
+          getCustomerMobile(
+            vehicle
+          );
 
 
-      /*
-         Customer mobile
-         બન્નેમાંથી કોઈ એક
-      */
+        /*
+           CUSTOMER BOX
+        */
 
-      const customerMobile =
-        vehicle.customer_mobile ||
-        vehicle.mobile ||
-        "";
+        let customerHTML = "";
 
 
-      html += `
+        if(
+          vehicle.customer_name ||
+          customerMobile
+        ){
 
-        <div class="card">
+          customerHTML = `
 
-          <div class="title">
-            🚘
-            ${escapeHtml(
-              vehicle.vehicle_number ||
-              "Unknown Vehicle"
-            )}
-          </div>
-
-
-          ${
-            vehicle.customer_name ||
-            customerMobile
-            ?
-            `
-            <div class="customer">
+            <div class="customer-box">
 
               ${
                 vehicle.customer_name
@@ -628,6 +957,7 @@ async function displayExpiring() {
                 ${escapeHtml(
                   vehicle.customer_name
                 )}
+
                 <br>
                 `
                 :
@@ -635,122 +965,187 @@ async function displayExpiring() {
               }
 
 
+              <b>📱 Customer Mobile:</b>
+
               ${
                 customerMobile
                 ?
-                `
-                <b>📱 Customer Mobile:</b>
-                ${escapeHtml(
+                escapeHtml(
                   customerMobile
-                )}
-                `
+                )
                 :
-                `
-                <b>📱 Customer Mobile:</b>
-                Not Available
-                `
+                "Not Available"
               }
 
             </div>
-            `
-            :
-            ""
-          }
+
+          `;
+
+        }
 
 
-          ${
-            alerts.map(alert => {
+        /*
+           DOCUMENT ALERTS
+        */
 
-              if (alert.days < 0) {
-
-                return `
-
-                  <div class="alert expired">
-
-                    ❌
-                    ${escapeHtml(alert.name)}:
-
-                    ${formatDate(alert.date)}
-                    ના રોજ પૂર્ણ થઈ ગયું છે
-
-                  </div>
-
-                `;
-
-              }
+        let alertsHTML = "";
 
 
-              if (alert.days === 0) {
+        alerts.forEach(
+          function(alert){
 
-                return `
+            if(
+              alert.days < 0
+            ){
 
-                  <div class="alert">
+              alertsHTML += `
 
-                    ⚠️
-                    ${escapeHtml(alert.name)}:
+                <div class="alert expired">
 
-                    આજે
-                    ${formatDate(alert.date)}
-                    ના રોજ પૂરું થાય છે
+                  ❌
+                  ${escapeHtml(
+                    alert.name
+                  )}
 
-                  </div>
+                  :
+                  ${formatDate(
+                    alert.date
+                  )}
 
-                `;
+                  ના રોજ પૂર્ણ થઈ ગયું છે
 
-              }
+                </div>
 
+              `;
 
-              return `
+            }
+            else if(
+              alert.days === 0
+            ){
+
+              alertsHTML += `
 
                 <div class="alert">
 
                   ⚠️
-                  ${escapeHtml(alert.name)}:
+                  ${escapeHtml(
+                    alert.name
+                  )}
 
-                  ${formatDate(alert.date)}
+                  :
+                  આજે
+                  ${formatDate(
+                    alert.date
+                  )}
+
                   ના રોજ પૂરું થાય છે
 
                 </div>
 
               `;
 
-            }).join("")
+            }
+            else{
+
+              alertsHTML += `
+
+                <div class="alert">
+
+                  ⚠️
+                  ${escapeHtml(
+                    alert.name
+                  )}
+
+                  :
+                  ${formatDate(
+                    alert.date
+                  )}
+
+                  ના રોજ પૂરું થાય છે
+
+                </div>
+
+              `;
+
+            }
 
           }
+        );
 
 
-          ${
-            customerMobile
-            ?
-            `
-            <button
-              class="reminder-btn"
-              onclick="sendReminder(
-                ${JSON.stringify(vehicle).replace(/"/g, "&quot;")},
-                ${JSON.stringify(alerts).replace(/"/g, "&quot;")}
-              )"
-            >
-              📲 Reminder મોકલો
-            </button>
-            `
-            :
-            ""
-          }
+        /*
+           CARD
+        */
 
-        </div>
+        html += `
 
-      `;
+          <div class="card">
 
-    });
+            <div class="title">
+
+              🚘
+              ${escapeHtml(
+                vehicle.vehicle_number ||
+                "Unknown Vehicle"
+              )}
+
+            </div>
 
 
-    if (!found) {
+            ${customerHTML}
+
+
+            ${alertsHTML}
+
+
+            ${
+              customerMobile
+              ?
+              `
+
+              <button
+                class="reminder-btn"
+                onclick="sendReminder('${vehicleId}')"
+              >
+
+                📲 WhatsApp Reminder મોકલો
+
+              </button>
+
+              `
+              :
+              `
+              <div class="alert expired">
+
+                📱 Customer Mobile Number
+                ઉપલબ્ધ નથી.
+
+              </div>
+
+              `
+            }
+
+
+          </div>
+
+        `;
+
+      }
+    );
+
+
+    /*
+       NOTHING FOUND
+    */
+
+    if(!found){
 
       html = `
 
         <div class="empty">
 
           🟢
+
           <br><br>
 
           આગામી 10 દિવસમાં કોઈ
@@ -763,12 +1158,17 @@ async function displayExpiring() {
     }
 
 
-    list.innerHTML = html;
+    list.innerHTML =
+      html;
 
 
-  } catch (error) {
+  }
+  catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     list.innerHTML = `
 
@@ -778,7 +1178,9 @@ async function displayExpiring() {
 
         <br><br>
 
-        ${escapeHtml(error.message)}
+        ${escapeHtml(
+          error.message
+        )}
 
       </div>
 
@@ -789,9 +1191,9 @@ async function displayExpiring() {
 }
 
 
-/* =========================================================
+/* =====================================================
    START
-========================================================= */
+===================================================== */
 
 displayExpiring();
 
