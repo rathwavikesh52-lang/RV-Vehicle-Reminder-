@@ -144,6 +144,8 @@ body{
 .add-vehicle-btn{
   width:100%;
 
+  display:block;
+
   border:0;
 
   padding:15px;
@@ -164,6 +166,12 @@ body{
 
   box-shadow:
     0 4px 12px rgba(11,122,67,.25);
+
+  text-align:center;
+
+  text-decoration:none;
+
+  font-family:Arial,sans-serif;
 }
 
 .add-vehicle-btn:hover{
@@ -682,18 +690,22 @@ body{
   <div class="top-card">
 
 
-    <!-- ADD VEHICLE -->
+    <!-- =================================================
+         ADD VEHICLE
+    ================================================== -->
 
-    <button
+    <a
+      href="./upload.html"
       class="add-vehicle-btn"
       id="addVehicleBtn"
-      onclick="goToUpload()"
     >
       ＋ ADD VEHICLE
-    </button>
+    </a>
 
 
-    <!-- STATS -->
+    <!-- =================================================
+         STATS
+    ================================================== -->
 
     <div class="stats">
 
@@ -758,7 +770,9 @@ body{
     </div>
 
 
-    <!-- SEARCH -->
+    <!-- =================================================
+         SEARCH
+    ================================================== -->
 
     <input
       type="search"
@@ -894,6 +908,7 @@ body{
 const SUPABASE_URL =
 "https://lqbhafspabtlqeubqxjg.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
 
@@ -913,24 +928,10 @@ const ASSET_BASE =
 "https://raw.githubusercontent.com/rathwavikesh52-lang/RV-Vehicle-Reminder-/main/assets/";
 
 
-const BACKGROUND_URL =
-ASSET_BASE +
-"background.png";
-
-
-const LOGO_URL =
-ASSET_BASE +
-"logo.png";
-
-
 const VEHICLE_CLASS_ASSET_BASE =
 ASSET_BASE +
 "vehicle-classes/";
 
-
-/*
-  ACTUAL GITHUB FILES
-*/
 
 const vehicleClassPhotos = {
 
@@ -1158,18 +1159,6 @@ let currentPage =
 
 const vehiclesPerPage =
 10;
-
-
-/* =========================================================
-   GO TO UPLOAD
-========================================================= */
-
-function goToUpload(){
-
-  window.location.href =
-    "upload.html";
-
-}
 
 
 /* =========================================================
@@ -1401,11 +1390,15 @@ function parseDate(
 
   if(match){
 
-    return new Date(
-      Number(match[1]),
-      Number(match[2]) - 1,
-      Number(match[3])
-    );
+    const date =
+      new Date(
+        Number(match[1]),
+        Number(match[2]) - 1,
+        Number(match[3])
+      );
+
+
+    return date;
 
   }
 
@@ -2702,7 +2695,7 @@ function editVehicle(
 ){
 
   window.location.href =
-    "upload.html?id=" +
+    "./upload.html?id=" +
     encodeURIComponent(
       id
     );
