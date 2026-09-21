@@ -262,14 +262,6 @@ body{
   color:#092754;
 }
 
-.section-title.expiring{
-  border-left:6px solid #f39c12;
-}
-
-.section-title.expired{
-  border-left:6px solid #d62828;
-}
-
 .section-title.all{
   border-left:6px solid #123b70;
 }
@@ -710,6 +702,8 @@ body{
     <div class="stats">
 
 
+      <!-- TOTAL -->
+
       <div class="stat">
 
         <div
@@ -729,6 +723,8 @@ body{
       </div>
 
 
+      <!-- EXPIRING SOON -->
+
       <div class="stat">
 
         <div
@@ -747,6 +743,8 @@ body{
 
       </div>
 
+
+      <!-- EXPIRED -->
 
       <div class="stat">
 
@@ -786,43 +784,7 @@ body{
 
 
   <!-- =====================================================
-       EXPIRING SOON
-  ====================================================== -->
-
-  <div
-    class="section-title expiring"
-    id="expiringTitle"
-  >
-    Expiring Soon
-  </div>
-
-
-  <div
-    id="expiringGrid"
-    class="vehicle-grid"
-  ></div>
-
-
-  <!-- =====================================================
-       EXPIRED
-  ====================================================== -->
-
-  <div
-    class="section-title expired"
-    id="expiredTitle"
-  >
-    Expired Vehicles
-  </div>
-
-
-  <div
-    id="expiredGrid"
-    class="vehicle-grid"
-  ></div>
-
-
-  <!-- =====================================================
-       VEHICLE LIST
+       VEHICLE LIST ONLY
   ====================================================== -->
 
   <div
@@ -1002,12 +964,6 @@ const translations = {
     noVehicles:
       "No vehicles found.",
 
-    noExpiring:
-      "No vehicles expiring soon.",
-
-    noExpired:
-      "No expired vehicles.",
-
     previous:
       "Previous",
 
@@ -1068,7 +1024,7 @@ const translations = {
       "ટૂંક સમયમાં પૂર્ણ",
 
     expired:
-      "સમાપ્ત વાહનો",
+      "સમાપ્ત",
 
     vehicleList:
       "વાહન યાદી",
@@ -1084,12 +1040,6 @@ const translations = {
 
     noVehicles:
       "કોઈ વાહન મળ્યું નથી.",
-
-    noExpiring:
-      "ટૂંક સમયમાં પૂર્ણ થતું કોઈ વાહન નથી.",
-
-    noExpired:
-      "કોઈ સમાપ્ત વાહન નથી.",
 
     previous:
       "પાછળ",
@@ -1220,22 +1170,6 @@ function setLanguage(
   document
     .getElementById(
       "expiredLabel"
-    )
-    .textContent =
-    t.expired;
-
-
-  document
-    .getElementById(
-      "expiringTitle"
-    )
-    .textContent =
-    t.expiring;
-
-
-  document
-    .getElementById(
-      "expiredTitle"
     )
     .textContent =
     t.expired;
@@ -2319,123 +2253,7 @@ function renderAll(){
   }
 
 
-  renderExpiring();
-
-  renderExpired();
-
   renderVehicleList();
-
-}
-
-
-/* =========================================================
-   EXPIRING SECTION
-========================================================= */
-
-function renderExpiring(){
-
-  const grid =
-    document.getElementById(
-      "expiringGrid"
-    );
-
-
-  const vehicles =
-    allVehicles.filter(
-      isExpiring
-    );
-
-
-  if(
-    !vehicles.length
-  ){
-
-    grid.innerHTML = `
-
-      <div class="empty">
-
-        ${
-          translations[
-            currentLanguage
-          ].noExpiring
-        }
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  grid.innerHTML =
-    vehicles
-
-      .map(
-        vehicle =>
-          vehicleCard(
-            vehicle
-          )
-      )
-
-      .join("");
-
-}
-
-
-/* =========================================================
-   EXPIRED SECTION
-========================================================= */
-
-function renderExpired(){
-
-  const grid =
-    document.getElementById(
-      "expiredGrid"
-    );
-
-
-  const vehicles =
-    allVehicles.filter(
-      isExpired
-    );
-
-
-  if(
-    !vehicles.length
-  ){
-
-    grid.innerHTML = `
-
-      <div class="empty">
-
-        ${
-          translations[
-            currentLanguage
-          ].noExpired
-        }
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  grid.innerHTML =
-    vehicles
-
-      .map(
-        vehicle =>
-          vehicleCard(
-            vehicle
-          )
-      )
-
-      .join("");
 
 }
 
