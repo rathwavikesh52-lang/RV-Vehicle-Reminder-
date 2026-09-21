@@ -143,34 +143,25 @@ body{
 
 .add-vehicle-btn{
   width:100%;
-
   display:block;
-
   border:0;
-
   padding:15px;
-
   border-radius:12px;
 
   background:#0b7a43;
-
   color:white;
 
   font-size:17px;
-
   font-weight:800;
 
   cursor:pointer;
-
   margin-bottom:15px;
 
   box-shadow:
     0 4px 12px rgba(11,122,67,.25);
 
   text-align:center;
-
   text-decoration:none;
-
   font-family:Arial,sans-serif;
 }
 
@@ -185,12 +176,10 @@ body{
 
 .stats{
   display:grid;
-
   grid-template-columns:
     repeat(3,1fr);
 
   gap:10px;
-
   margin-bottom:15px;
 }
 
@@ -682,9 +671,7 @@ body{
   <div class="top-card">
 
 
-    <!-- =================================================
-         ADD VEHICLE
-    ================================================== -->
+    <!-- ADD VEHICLE -->
 
     <a
       href="./upload.html"
@@ -695,9 +682,7 @@ body{
     </a>
 
 
-    <!-- =================================================
-         STATS
-    ================================================== -->
+    <!-- STATS -->
 
     <div class="stats">
 
@@ -768,9 +753,7 @@ body{
     </div>
 
 
-    <!-- =================================================
-         SEARCH
-    ================================================== -->
+    <!-- SEARCH -->
 
     <input
       type="search"
@@ -784,7 +767,7 @@ body{
 
 
   <!-- =====================================================
-       VEHICLE LIST ONLY
+       VEHICLE LIST
   ====================================================== -->
 
   <div
@@ -819,9 +802,7 @@ body{
   </div>
 
 
-  <!-- =====================================================
-       PAGINATION
-  ====================================================== -->
+  <!-- PAGINATION -->
 
   <div
     id="pagination"
@@ -1060,19 +1041,19 @@ const translations = {
       "રજીસ્ટ્રેશન",
 
     fitness:
-      "ફિટનેસ",
+      "Fitness",
 
     insurance:
-      "ઇન્શ્યોરન્સ",
+      "Insurance",
 
     tax:
-      "ટેક્સ",
+      "Tax",
 
     pucc:
       "PUCC",
 
     permit:
-      "પરમિટ",
+      "Permit",
 
     status:
       "સ્થિતિ",
@@ -1841,7 +1822,10 @@ function vehicleCard(
 
 
       ${
-        vehicle.mobile
+        (
+          vehicle.customer_mobile ||
+          vehicle.mobile
+        )
         ?
         `
 
@@ -1850,7 +1834,9 @@ function vehicleCard(
           📞
 
           ${escapeHTML(
-            vehicle.mobile
+            vehicle.customer_mobile ||
+            vehicle.mobile ||
+            ""
           )}
 
         </div>
@@ -2221,6 +2207,7 @@ function renderAll(){
             ||
 
             String(
+              vehicle.customer_mobile ||
               vehicle.mobile ||
               ""
             )
@@ -2693,7 +2680,7 @@ async function deleteVehicle(
 
 
 /* =========================================================
-   WHATSAPP
+   WHATSAPP REMINDER
 ========================================================= */
 
 function sendWhatsApp(
@@ -2715,15 +2702,25 @@ function sendWhatsApp(
   }
 
 
-  const mobile =
-    String(
-      vehicle.mobile ||
-      ""
-    )
-    .replace(
-      /\D/g,
-      ""
-    );
+  /*
+    CUSTOMER MOBILE
+
+    First customer_mobile
+    Then mobile
+  */
+
+  let mobile =
+    vehicle.customer_mobile ||
+    vehicle.mobile ||
+    "";
+
+
+  mobile =
+    String(mobile)
+      .replace(
+        /\D/g,
+        ""
+      );
 
 
   if(!mobile){
@@ -2747,6 +2744,10 @@ function sendWhatsApp(
   }
 
 
+  /*
+    INDIA COUNTRY CODE
+  */
+
   let phone =
     mobile;
 
@@ -2762,192 +2763,326 @@ function sendWhatsApp(
   }
 
 
-  const customerName =
-    vehicle.customer_name ||
-    "";
+  /*
+    CUSTOMER NAME
+  */
 
+  const customerName =
+    String(
+      vehicle.customer_name ||
+      ""
+    )
+    .trim();
+
+
+  /*
+    VEHICLE NUMBER
+  */
 
   const vehicleNumber =
-    vehicle.vehicle_number ||
+    String(
+      vehicle.vehicle_number ||
+      ""
+    )
+    .trim();
+
+
+  /*
+    EXPIRY DOCUMENTS
+  */
+
+  const expiryDocuments =
+    [];
+
+
+  /*
+    FITNESS
+  */
+
+  if(
+    vehicle.fitness_expiry
+  ){
+
+    const days =
+      daysUntil(
+        vehicle.fitness_expiry
+      );
+
+
+    if(
+      days !== null
+    ){
+
+      expiryDocuments.push({
+
+        name:
+          "Fitness",
+
+        date:
+          vehicle.fitness_expiry,
+
+        days:
+          days
+
+      });
+
+    }
+
+  }
+
+
+  /*
+    INSURANCE
+  */
+
+  if(
+    vehicle.insurance_expiry
+  ){
+
+    const days =
+      daysUntil(
+        vehicle.insurance_expiry
+      );
+
+
+    if(
+      days !== null
+    ){
+
+      expiryDocuments.push({
+
+        name:
+          "Insurance",
+
+        date:
+          vehicle.insurance_expiry,
+
+        days:
+          days
+
+      });
+
+    }
+
+  }
+
+
+  /*
+    PUCC
+  */
+
+  if(
+    vehicle.pucc_expiry
+  ){
+
+    const days =
+      daysUntil(
+        vehicle.pucc_expiry
+      );
+
+
+    if(
+      days !== null
+    ){
+
+      expiryDocuments.push({
+
+        name:
+          "PUCC",
+
+        date:
+          vehicle.pucc_expiry,
+
+        days:
+          days
+
+      });
+
+    }
+
+  }
+
+
+  /*
+    PERMIT
+
+    LTT ignored
+  */
+
+  if(
+    vehicle.permit_expiry &&
+    String(
+      vehicle.permit_expiry
+    )
+    .toUpperCase()
+    .trim() !==
+    "LTT"
+  ){
+
+    const days =
+      daysUntil(
+        vehicle.permit_expiry
+      );
+
+
+    if(
+      days !== null
+    ){
+
+      expiryDocuments.push({
+
+        name:
+          "Permit",
+
+        date:
+          vehicle.permit_expiry,
+
+        days:
+          days
+
+      });
+
+    }
+
+  }
+
+
+  /*
+    NO VALID DATE
+  */
+
+  if(
+    !expiryDocuments.length
+  ){
+
+    alert(
+
+      currentLanguage === "gu"
+
+      ?
+
+      "આ વાહન માટે કોઈ valid expiry date ઉપલબ્ધ નથી."
+
+      :
+
+      "No valid expiry date is available for this vehicle."
+
+    );
+
+    return;
+
+  }
+
+
+  /*
+    SORT BY NEAREST EXPIRY
+  */
+
+  expiryDocuments.sort(
+
+    (a,b) =>
+      a.days - b.days
+
+  );
+
+
+  const nearest =
+    expiryDocuments[0];
+
+
+  const expiryDate =
+    displayDate(
+      nearest.date
+    );
+
+
+  const documentName =
+    nearest.name;
+
+
+  /*
+    CREATE MESSAGE
+  */
+
+  let message =
     "";
 
 
-  const lines =
-    [];
-
+  /*
+    GUJARATI MESSAGE
+  */
 
   if(
     currentLanguage === "gu"
   ){
 
-    lines.push(
-      "RV Vehicle Reminder"
-    );
+    message =
 
-    lines.push("");
+`*SAHKAR AUTO ADVISOR*
+*NASVADI*
 
-    lines.push(
-      "નમસ્તે " +
-      customerName
-    );
+નમસ્તે ${customerName || "ગ્રાહક"},
 
-    lines.push(
-      "તમારા વાહન " +
-      vehicleNumber +
-      " ના દસ્તાવેજની માન્યતા તપાસવા વિનંતી."
-    );
+તમારા વાહન *${vehicleNumber}* નું ${documentName}
+*${expiryDate}* ના રોજ expire થવાનું છે.
 
+કૃપા કરીને સમયસર renewal કરાવી લેશો.
 
-    if(
-      vehicle.fitness_expiry
-    ){
+📞 *Renewal માટે સંપર્ક કરો:*
+9714733501
+8000033501
 
-      lines.push(
-        "Fitness: " +
-        displayDate(
-          vehicle.fitness_expiry
-        )
-      );
-
-    }
-
-
-    if(
-      vehicle.insurance_expiry
-    ){
-
-      lines.push(
-        "Insurance: " +
-        displayDate(
-          vehicle.insurance_expiry
-        )
-      );
-
-    }
-
-
-    if(
-      vehicle.pucc_expiry
-    ){
-
-      lines.push(
-        "PUCC: " +
-        displayDate(
-          vehicle.pucc_expiry
-        )
-      );
-
-    }
-
-
-    if(
-      vehicle.permit_expiry
-    ){
-
-      lines.push(
-        "Permit: " +
-        displayDate(
-          vehicle.permit_expiry
-        )
-      );
-
-    }
+રમીઝભાઈ મેમણ
+નસવાડી`;
 
   }
+
+
+  /*
+    ENGLISH MESSAGE
+  */
 
   else{
 
-    lines.push(
-      "RV Vehicle Reminder"
-    );
+    message =
 
-    lines.push("");
+`*SAHKAR AUTO ADVISOR*
+*NASVADI*
 
-    lines.push(
-      "Hello " +
-      customerName
-    );
+Hello ${customerName || "Customer"},
 
-    lines.push(
-      "Please check the document validity of your vehicle " +
-      vehicleNumber +
-      "."
-    );
+The *${documentName}* of your vehicle
+*${vehicleNumber}* will expire on *${expiryDate}*.
 
+Please get the renewal done on time.
 
-    if(
-      vehicle.fitness_expiry
-    ){
+📞 *For renewal, contact:*
+9714733501
+8000033501
 
-      lines.push(
-        "Fitness: " +
-        displayDate(
-          vehicle.fitness_expiry
-        )
-      );
-
-    }
-
-
-    if(
-      vehicle.insurance_expiry
-    ){
-
-      lines.push(
-        "Insurance: " +
-        displayDate(
-          vehicle.insurance_expiry
-        )
-      );
-
-    }
-
-
-    if(
-      vehicle.pucc_expiry
-    ){
-
-      lines.push(
-        "PUCC: " +
-        displayDate(
-          vehicle.pucc_expiry
-        )
-      );
-
-    }
-
-
-    if(
-      vehicle.permit_expiry
-    ){
-
-      lines.push(
-        "Permit: " +
-        displayDate(
-          vehicle.permit_expiry
-        )
-      );
-
-    }
+Ramizbhai Memon
+Nasvadi`;
 
   }
 
 
-  const message =
-    encodeURIComponent(
-      lines.join("\n")
-    );
+  /*
+    OPEN WHATSAPP
+  */
 
-
-  window.open(
+  const whatsappURL =
 
     "https://wa.me/" +
     phone +
     "?text=" +
-    message,
+    encodeURIComponent(
+      message
+    );
 
+
+  window.open(
+    whatsappURL,
     "_blank"
-
   );
 
 }
