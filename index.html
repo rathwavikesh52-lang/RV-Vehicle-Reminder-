@@ -53,9 +53,7 @@ body{
   );
 
   color:white;
-
   padding:16px;
-
   text-align:center;
 
   box-shadow:
@@ -65,13 +63,9 @@ body{
 .app-logo{
   width:70px;
   height:70px;
-
   object-fit:contain;
-
   display:block;
-
   margin:0 auto 7px;
-
   border-radius:14px;
 }
 
@@ -96,25 +90,17 @@ body{
   display:flex;
   justify-content:center;
   gap:8px;
-
   margin-top:12px;
 }
 
 .language-btn{
   border:1px solid rgba(255,255,255,.55);
-
   background:rgba(255,255,255,.12);
-
   color:white;
-
   padding:7px 15px;
-
   border-radius:20px;
-
   cursor:pointer;
-
   font-weight:700;
-
   font-size:13px;
 }
 
@@ -130,22 +116,18 @@ body{
 
 .container{
   max-width:1100px;
-
   margin:20px auto;
-
   padding:0 14px;
 }
 
 
 /* =========================================================
-   TOP BAR
+   TOP CARD
 ========================================================= */
 
 .top-card{
   background:rgba(255,255,255,.95);
-
   border-radius:18px;
-
   padding:18px;
 
   box-shadow:
@@ -153,6 +135,45 @@ body{
 
   margin-bottom:18px;
 }
+
+
+/* =========================================================
+   ADD VEHICLE
+========================================================= */
+
+.add-vehicle-btn{
+  width:100%;
+
+  border:0;
+
+  padding:15px;
+
+  border-radius:12px;
+
+  background:#0b7a43;
+
+  color:white;
+
+  font-size:17px;
+
+  font-weight:800;
+
+  cursor:pointer;
+
+  margin-bottom:15px;
+
+  box-shadow:
+    0 4px 12px rgba(11,122,67,.25);
+}
+
+.add-vehicle-btn:hover{
+  background:#086637;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
 
 .stats{
   display:grid;
@@ -167,27 +188,20 @@ body{
 
 .stat{
   background:#f5f8fc;
-
   border-radius:14px;
-
   padding:14px;
-
   text-align:center;
 }
 
 .stat-number{
   font-size:25px;
-
   font-weight:800;
-
   color:#123b70;
 }
 
 .stat-label{
   font-size:12px;
-
   color:#667085;
-
   margin-top:4px;
 }
 
@@ -218,7 +232,7 @@ body{
 
 
 /* =========================================================
-   SECTION
+   SECTION TITLES
 ========================================================= */
 
 .section-title{
@@ -288,7 +302,6 @@ body{
 
 .vehicle-card:hover{
   transform:translateY(-2px);
-
   transition:.2s;
 }
 
@@ -348,7 +361,7 @@ body{
 
 
 /* =========================================================
-   CLASS
+   CLASS BADGE
 ========================================================= */
 
 .class-badge{
@@ -396,7 +409,6 @@ body{
 
 .detail-label{
   color:#667085;
-
   font-weight:600;
 }
 
@@ -410,7 +422,7 @@ body{
 
 
 /* =========================================================
-   EXPIRY COLORS
+   STATUS COLORS
 ========================================================= */
 
 .expiry-warning{
@@ -427,7 +439,7 @@ body{
 
 
 /* =========================================================
-   ACTIONS
+   ACTION BUTTONS
 ========================================================= */
 
 .actions{
@@ -524,13 +536,11 @@ body{
 
 .page-btn:disabled{
   opacity:.4;
-
   cursor:not-allowed;
 }
 
 .page-info{
   font-weight:700;
-
   color:#123b70;
 }
 
@@ -584,13 +594,14 @@ body{
 
 
 /* =========================================================
-   VERY SMALL MOBILE
+   SMALL MOBILE
 ========================================================= */
 
 @media(max-width:400px){
 
   .actions{
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:
+      1fr 1fr 1fr;
   }
 
   .action-btn{
@@ -664,11 +675,28 @@ body{
 <div class="container">
 
 
-  <!-- TOP STATS -->
+  <!-- =====================================================
+       TOP CARD
+  ====================================================== -->
 
   <div class="top-card">
 
+
+    <!-- ADD VEHICLE -->
+
+    <button
+      class="add-vehicle-btn"
+      id="addVehicleBtn"
+      onclick="goToUpload()"
+    >
+      ＋ ADD VEHICLE
+    </button>
+
+
+    <!-- STATS -->
+
     <div class="stats">
+
 
       <div class="stat">
 
@@ -726,8 +754,11 @@ body{
 
       </div>
 
+
     </div>
 
+
+    <!-- SEARCH -->
 
     <input
       type="search"
@@ -740,7 +771,9 @@ body{
   </div>
 
 
-  <!-- EXPIRING -->
+  <!-- =====================================================
+       EXPIRING SOON
+  ====================================================== -->
 
   <div
     class="section-title expiring"
@@ -749,13 +782,16 @@ body{
     Expiring Soon
   </div>
 
+
   <div
     id="expiringGrid"
     class="vehicle-grid"
   ></div>
 
 
-  <!-- EXPIRED -->
+  <!-- =====================================================
+       EXPIRED
+  ====================================================== -->
 
   <div
     class="section-title expired"
@@ -764,13 +800,16 @@ body{
     Expired Vehicles
   </div>
 
+
   <div
     id="expiredGrid"
     class="vehicle-grid"
   ></div>
 
 
-  <!-- ALL VEHICLES -->
+  <!-- =====================================================
+       VEHICLE LIST
+  ====================================================== -->
 
   <div
     class="section-title all"
@@ -779,12 +818,14 @@ body{
     Vehicle List
   </div>
 
+
   <div
     id="loading"
     class="loading"
   >
     Loading vehicles...
   </div>
+
 
   <div
     id="vehicleGrid"
@@ -802,7 +843,9 @@ body{
   </div>
 
 
-  <!-- PAGINATION -->
+  <!-- =====================================================
+       PAGINATION
+  ====================================================== -->
 
   <div
     id="pagination"
@@ -818,12 +861,14 @@ body{
       Previous
     </button>
 
+
     <div
       class="page-info"
       id="pageInfo"
     >
       Page 1
     </div>
+
 
     <button
       class="page-btn"
@@ -835,10 +880,12 @@ body{
 
   </div>
 
+
 </div>
 
 
 <script>
+
 
 /* =========================================================
    SUPABASE
@@ -849,6 +896,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
+
 
 const supabaseClient =
 supabase.createClient(
@@ -864,19 +912,24 @@ supabase.createClient(
 const ASSET_BASE =
 "https://raw.githubusercontent.com/rathwavikesh52-lang/RV-Vehicle-Reminder-/main/assets/";
 
+
 const BACKGROUND_URL =
-ASSET_BASE + "background.png";
+ASSET_BASE +
+"background.png";
+
 
 const LOGO_URL =
-ASSET_BASE + "logo.png";
+ASSET_BASE +
+"logo.png";
 
 
 const VEHICLE_CLASS_ASSET_BASE =
-ASSET_BASE + "vehicle-classes/";
+ASSET_BASE +
+"vehicle-classes/";
 
 
 /*
-  ACTUAL FILES IN GITHUB
+  ACTUAL GITHUB FILES
 */
 
 const vehicleClassPhotos = {
@@ -936,6 +989,9 @@ const translations = {
     vehicleList:
       "Vehicle List",
 
+    addVehicle:
+      "＋ ADD VEHICLE",
+
     search:
       "Search vehicle number, customer, mobile or class...",
 
@@ -984,6 +1040,18 @@ const translations = {
     permit:
       "Permit",
 
+    status:
+      "Status",
+
+    valid:
+      "Valid",
+
+    expiredStatus:
+      "Expired",
+
+    daysLeft:
+      "days left",
+
     page:
       "Page"
 
@@ -1003,6 +1071,9 @@ const translations = {
 
     vehicleList:
       "વાહન યાદી",
+
+    addVehicle:
+      "＋ વાહન ઉમેરો",
 
     search:
       "વાહન નંબર, ગ્રાહક, મોબાઇલ અથવા ક્લાસ શોધો...",
@@ -1052,6 +1123,18 @@ const translations = {
     permit:
       "પરમિટ",
 
+    status:
+      "સ્થિતિ",
+
+    valid:
+      "Valid",
+
+    expiredStatus:
+      "Expired",
+
+    daysLeft:
+      "દિવસ બાકી",
+
     page:
       "પેજ"
 
@@ -1078,24 +1161,44 @@ const vehiclesPerPage =
 
 
 /* =========================================================
+   GO TO UPLOAD
+========================================================= */
+
+function goToUpload(){
+
+  window.location.href =
+    "upload.html";
+
+}
+
+
+/* =========================================================
    LANGUAGE
 ========================================================= */
 
-function setLanguage(language){
+function setLanguage(
+  language
+){
 
   currentLanguage =
-  language;
+    language;
+
 
   document
-    .getElementById("englishBtn")
+    .getElementById(
+      "englishBtn"
+    )
     .classList
     .toggle(
       "active",
       language === "en"
     );
 
+
   document
-    .getElementById("gujaratiBtn")
+    .getElementById(
+      "gujaratiBtn"
+    )
     .classList
     .toggle(
       "active",
@@ -1104,51 +1207,87 @@ function setLanguage(language){
 
 
   const t =
-  translations[language];
+    translations[
+      language
+    ];
 
 
   document
-    .getElementById("totalLabel")
+    .getElementById(
+      "totalLabel"
+    )
     .textContent =
     t.total;
 
+
   document
-    .getElementById("expiringLabel")
+    .getElementById(
+      "expiringLabel"
+    )
     .textContent =
     t.expiring;
 
+
   document
-    .getElementById("expiredLabel")
+    .getElementById(
+      "expiredLabel"
+    )
     .textContent =
     t.expired;
 
+
   document
-    .getElementById("expiringTitle")
+    .getElementById(
+      "expiringTitle"
+    )
     .textContent =
     t.expiring;
 
+
   document
-    .getElementById("expiredTitle")
+    .getElementById(
+      "expiredTitle"
+    )
     .textContent =
     t.expired;
 
+
   document
-    .getElementById("allTitle")
+    .getElementById(
+      "allTitle"
+    )
     .textContent =
     t.vehicleList;
 
+
   document
-    .getElementById("searchBox")
+    .getElementById(
+      "addVehicleBtn"
+    )
+    .textContent =
+    t.addVehicle;
+
+
+  document
+    .getElementById(
+      "searchBox"
+    )
     .placeholder =
     t.search;
 
+
   document
-    .getElementById("prevBtn")
+    .getElementById(
+      "prevBtn"
+    )
     .textContent =
     t.previous;
 
+
   document
-    .getElementById("nextBtn")
+    .getElementById(
+      "nextBtn"
+    )
     .textContent =
     t.next;
 
@@ -1159,7 +1298,7 @@ function setLanguage(language){
 
 
 /* =========================================================
-   VEHICLE CLASS IMAGE
+   VEHICLE CLASS PHOTO
 ========================================================= */
 
 function getVehicleClassPhoto(
@@ -1168,7 +1307,8 @@ function getVehicleClassPhoto(
 
   const cls =
     String(
-      vehicle.vehicle_class || ""
+      vehicle.vehicle_class ||
+      ""
     )
     .trim()
     .toUpperCase();
@@ -1191,14 +1331,17 @@ function parseDate(
 ){
 
   if(!value){
+
     return null;
+
   }
 
 
   if(
     String(value)
       .toUpperCase()
-      .trim() === "LTT"
+      .trim() ===
+      "LTT"
   ){
 
     return null;
@@ -1206,13 +1349,13 @@ function parseDate(
   }
 
 
-  const valueString =
+  const text =
     String(value)
       .trim();
 
 
   let match =
-    valueString.match(
+    text.match(
       /^(\d{2})\/(\d{2})\/(\d{4})$/
     );
 
@@ -1250,27 +1393,19 @@ function parseDate(
   }
 
 
-  /*
-    Supabase DATE:
-    YYYY-MM-DD
-  */
-
   match =
-    valueString.match(
+    text.match(
       /^(\d{4})-(\d{2})-(\d{2})$/
     );
 
 
   if(match){
 
-    const date =
-      new Date(
-        Number(match[1]),
-        Number(match[2]) - 1,
-        Number(match[3])
-      );
-
-    return date;
+    return new Date(
+      Number(match[1]),
+      Number(match[2]) - 1,
+      Number(match[3])
+    );
 
   }
 
@@ -1281,7 +1416,7 @@ function parseDate(
 
 
 /* =========================================================
-   DATE DISPLAY
+   DISPLAY DATE
 ========================================================= */
 
 function displayDate(
@@ -1289,14 +1424,17 @@ function displayDate(
 ){
 
   if(!value){
+
     return "";
+
   }
 
 
   if(
     String(value)
       .toUpperCase()
-      .trim() === "LTT"
+      .trim() ===
+      "LTT"
   ){
 
     return "LTT";
@@ -1309,31 +1447,43 @@ function displayDate(
 
 
   if(!date){
+
     return value;
+
   }
 
 
   return (
+
     String(
       date.getDate()
     ).padStart(2,"0")
+
     +
+
     "/"
+
     +
+
     String(
       date.getMonth() + 1
     ).padStart(2,"0")
+
     +
+
     "/"
+
     +
+
     date.getFullYear()
+
   );
 
 }
 
 
 /* =========================================================
-   DAYS DIFFERENCE
+   DAYS UNTIL
 ========================================================= */
 
 function daysUntil(
@@ -1345,35 +1495,48 @@ function daysUntil(
 
 
   if(!date){
+
     return null;
+
   }
 
 
   const today =
     new Date();
 
+
   today.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
   date.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
   return Math.ceil(
+
     (
       date.getTime() -
       today.getTime()
     )
+
     /
+
     (
       1000 *
       60 *
       60 *
       24
     )
+
   );
 
 }
@@ -1411,8 +1574,12 @@ function getExpiryStatus(
         daysUntil(field);
 
 
-      if(days === null){
+      if(
+        days === null
+      ){
+
         return;
+
       }
 
 
@@ -1430,7 +1597,9 @@ function getExpiryStatus(
   );
 
 
-  if(minimum === null){
+  if(
+    minimum === null
+  ){
 
     return {
       type:"normal",
@@ -1440,7 +1609,9 @@ function getExpiryStatus(
   }
 
 
-  if(minimum < 0){
+  if(
+    minimum < 0
+  ){
 
     return {
       type:"expired",
@@ -1450,7 +1621,9 @@ function getExpiryStatus(
   }
 
 
-  if(minimum <= 10){
+  if(
+    minimum <= 10
+  ){
 
     return {
       type:"expiring",
@@ -1469,19 +1642,15 @@ function getExpiryStatus(
 
 
 /* =========================================================
-   EXPIRING CHECK
+   EXPIRING
 ========================================================= */
 
 function isExpiring(
   vehicle
 ){
 
-  const status =
-    getExpiryStatus(vehicle);
-
-
   return (
-    status.type ===
+    getExpiryStatus(vehicle).type ===
     "expiring"
   );
 
@@ -1489,20 +1658,61 @@ function isExpiring(
 
 
 /* =========================================================
-   EXPIRED CHECK
+   EXPIRED
 ========================================================= */
 
 function isExpired(
   vehicle
 ){
 
-  const status =
-    getExpiryStatus(vehicle);
-
-
   return (
-    status.type ===
+    getExpiryStatus(vehicle).type ===
     "expired"
+  );
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(
+  value
+){
+
+  return String(
+    value === undefined ||
+    value === null
+      ?
+      ""
+      :
+      value
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
   );
 
 }
@@ -1529,6 +1739,7 @@ function detailRow(
 
 
   return `
+
     <div class="detail-row">
 
       <div class="detail-label">
@@ -1542,6 +1753,7 @@ function detailRow(
       </div>
 
     </div>
+
   `;
 
 }
@@ -1598,6 +1810,52 @@ function vehicleCard(
     "";
 
 
+  let statusText =
+    "";
+
+
+  if(
+    status.days !== null
+  ){
+
+    if(
+      status.type ===
+      "expired"
+    ){
+
+      statusText =
+        translations[
+          currentLanguage
+        ].expiredStatus;
+
+    }
+
+    else if(
+      status.type ===
+      "expiring"
+    ){
+
+      statusText =
+        status.days +
+        " " +
+        translations[
+          currentLanguage
+        ].daysLeft;
+
+    }
+
+    else{
+
+      statusText =
+        translations[
+          currentLanguage
+        ].valid;
+
+    }
+
+  }
+
+
   return `
 
     <div class="vehicle-card">
@@ -1638,12 +1896,17 @@ function vehicleCard(
         vehicle.customer_name
         ?
         `
+
         <div class="customer-name">
+
           👤
+
           ${escapeHTML(
             vehicle.customer_name
           )}
+
         </div>
+
         `
         :
         ""
@@ -1654,12 +1917,17 @@ function vehicleCard(
         vehicle.mobile
         ?
         `
+
         <div class="customer-mobile">
+
           📞
+
           ${escapeHTML(
             vehicle.mobile
           )}
+
         </div>
+
         `
         :
         ""
@@ -1670,11 +1938,15 @@ function vehicleCard(
         className
         ?
         `
+
         <div class="class-badge">
+
           ${escapeHTML(
             className
           )}
+
         </div>
+
         `
         :
         ""
@@ -1689,6 +1961,7 @@ function vehicleCard(
             translations[
               currentLanguage
             ].registration,
+
             vehicle.registration_date
           )
         }
@@ -1699,6 +1972,7 @@ function vehicleCard(
             translations[
               currentLanguage
             ].fitness,
+
             vehicle.fitness_expiry
           )
         }
@@ -1709,6 +1983,7 @@ function vehicleCard(
             translations[
               currentLanguage
             ].insurance,
+
             vehicle.insurance_expiry
           )
         }
@@ -1719,6 +1994,7 @@ function vehicleCard(
             translations[
               currentLanguage
             ].tax,
+
             vehicle.tax_expiry
           )
         }
@@ -1729,6 +2005,7 @@ function vehicleCard(
             translations[
               currentLanguage
             ].pucc,
+
             vehicle.pucc_expiry
           )
         }
@@ -1739,6 +2016,7 @@ function vehicleCard(
             translations[
               currentLanguage
             ].permit,
+
             vehicle.permit_expiry
           )
         }
@@ -1747,52 +2025,35 @@ function vehicleCard(
         ${
           status.days !== null
           ?
+
           `
+
           <div class="detail-row">
 
             <div class="detail-label">
-              Status
+
+              ${translations[
+                currentLanguage
+              ].status}
+
             </div>
 
             <div
               class="detail-value ${statusClass}"
             >
-              ${
-                status.type === "expired"
-                ?
-                (
-                  currentLanguage === "gu"
-                  ?
-                  "Expired"
-                  :
-                  "Expired"
-                )
-                :
-                status.type === "expiring"
-                ?
-                (
-                  currentLanguage === "gu"
-                  ?
-                  status.days +
-                  " દિવસ બાકી"
-                  :
-                  status.days +
-                  " days left"
-                )
-                :
-                (
-                  currentLanguage === "gu"
-                  ?
-                  "Valid"
-                  :
-                  "Valid"
-                )
-              }
+
+              ${escapeHTML(
+                statusText
+              )}
+
             </div>
 
           </div>
+
           `
+
           :
+
           ""
         }
 
@@ -1814,9 +2075,11 @@ function vehicleCard(
           "
 
         >
+
           ${translations[
             currentLanguage
           ].edit}
+
         </button>
 
 
@@ -1831,9 +2094,11 @@ function vehicleCard(
           "
 
         >
+
           ${translations[
             currentLanguage
           ].whatsapp}
+
         </button>
 
 
@@ -1848,9 +2113,11 @@ function vehicleCard(
           "
 
         >
+
           ${translations[
             currentLanguage
           ].delete}
+
         </button>
 
 
@@ -1860,46 +2127,6 @@ function vehicleCard(
     </div>
 
   `;
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHTML(
-  value
-){
-
-  return String(
-    value === undefined ||
-    value === null
-      ?
-      ""
-      :
-      value
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
 
 }
 
@@ -1926,18 +2153,19 @@ async function loadVehicles(){
       data,
       error
     } =
-    await supabaseClient
 
-      .from("vehicles")
+      await supabaseClient
 
-      .select("*")
+        .from("vehicles")
 
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
+        .select("*")
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
 
 
     if(error){
@@ -1952,7 +2180,9 @@ async function loadVehicles(){
 
 
     filteredVehicles =
-      [...allVehicles];
+      [
+        ...allVehicles
+      ];
 
 
     updateStats();
@@ -2084,10 +2314,14 @@ function renderAll(){
         }
       );
 
-  }else{
+  }
+
+  else{
 
     filteredVehicles =
-      [...allVehicles];
+      [
+        ...allVehicles
+      ];
 
   }
 
@@ -2102,7 +2336,7 @@ function renderAll(){
 
 
 /* =========================================================
-   RENDER EXPIRING
+   EXPIRING SECTION
 ========================================================= */
 
 function renderExpiring(){
@@ -2119,16 +2353,22 @@ function renderExpiring(){
     );
 
 
-  if(!vehicles.length){
+  if(
+    !vehicles.length
+  ){
 
     grid.innerHTML = `
+
       <div class="empty">
+
         ${
           translations[
             currentLanguage
           ].noExpiring
         }
+
       </div>
+
     `;
 
     return;
@@ -2138,19 +2378,21 @@ function renderExpiring(){
 
   grid.innerHTML =
     vehicles
+
       .map(
         vehicle =>
           vehicleCard(
             vehicle
           )
       )
+
       .join("");
 
 }
 
 
 /* =========================================================
-   RENDER EXPIRED
+   EXPIRED SECTION
 ========================================================= */
 
 function renderExpired(){
@@ -2167,16 +2409,22 @@ function renderExpired(){
     );
 
 
-  if(!vehicles.length){
+  if(
+    !vehicles.length
+  ){
 
     grid.innerHTML = `
+
       <div class="empty">
+
         ${
           translations[
             currentLanguage
           ].noExpired
         }
+
       </div>
+
     `;
 
     return;
@@ -2186,19 +2434,21 @@ function renderExpired(){
 
   grid.innerHTML =
     vehicles
+
       .map(
         vehicle =>
           vehicleCard(
             vehicle
           )
       )
+
       .join("");
 
 }
 
 
 /* =========================================================
-   RENDER VEHICLE LIST
+   VEHICLE LIST
 ========================================================= */
 
 function renderVehicleList(){
@@ -2231,21 +2481,27 @@ function renderVehicleList(){
     "none";
 
 
-  if(!filteredVehicles.length){
+  if(
+    !filteredVehicles.length
+  ){
 
     grid.style.display =
       "none";
 
+
     pagination.style.display =
       "none";
 
+
     empty.style.display =
       "block";
+
 
     empty.textContent =
       translations[
         currentLanguage
       ].noVehicles;
+
 
     return;
 
@@ -2299,12 +2555,14 @@ function renderVehicleList(){
 
   grid.innerHTML =
     pageVehicles
+
       .map(
         vehicle =>
           vehicleCard(
             vehicle
           )
       )
+
       .join("");
 
 
@@ -2321,13 +2579,18 @@ function renderVehicleList(){
       "pageInfo"
     )
     .textContent =
-    translations[
-      currentLanguage
-    ].page +
-    " " +
-    currentPage +
-    " / " +
-    totalPages;
+
+      translations[
+        currentLanguage
+      ].page +
+
+      " " +
+
+      currentPage +
+
+      " / " +
+
+      totalPages;
 
 
   document
@@ -2357,6 +2620,7 @@ function handleSearch(){
   currentPage =
     1;
 
+
   renderAll();
 
 }
@@ -2382,11 +2646,16 @@ function nextPage(){
 
     currentPage++;
 
+
     renderVehicleList();
 
+
     window.scrollTo({
+
       top:0,
+
       behavior:"smooth"
+
     });
 
   }
@@ -2407,11 +2676,16 @@ function previousPage(){
 
     currentPage--;
 
+
     renderVehicleList();
 
+
     window.scrollTo({
+
       top:0,
+
       behavior:"smooth"
+
     });
 
   }
@@ -2420,7 +2694,7 @@ function previousPage(){
 
 
 /* =========================================================
-   EDIT
+   EDIT VEHICLE
 ========================================================= */
 
 function editVehicle(
@@ -2429,7 +2703,9 @@ function editVehicle(
 
   window.location.href =
     "upload.html?id=" +
-    encodeURIComponent(id);
+    encodeURIComponent(
+      id
+    );
 
 }
 
@@ -2452,17 +2728,18 @@ async function deleteStoragePhoto(
   const {
     error
   } =
-  await supabaseClient
 
-    .storage
+    await supabaseClient
 
-    .from(
-      "vehicle-photos"
-    )
+      .storage
 
-    .remove([
-      path
-    ]);
+      .from(
+        "vehicle-photos"
+      )
+
+      .remove([
+        path
+      ]);
 
 
   if(error){
@@ -2501,6 +2778,7 @@ async function deleteVehicle(
 
 
   const confirmText =
+
     currentLanguage === "gu"
 
     ?
@@ -2513,7 +2791,9 @@ async function deleteVehicle(
 
 
   if(
-    !confirm(confirmText)
+    !confirm(
+      confirmText
+    )
   ){
 
     return;
@@ -2524,7 +2804,7 @@ async function deleteVehicle(
   try{
 
     /*
-      Delete storage photo first
+      Delete photo
     */
 
     if(
@@ -2539,22 +2819,23 @@ async function deleteVehicle(
 
 
     /*
-      Delete database record
+      Delete database row
     */
 
     const {
       error
     } =
-    await supabaseClient
 
-      .from("vehicles")
+      await supabaseClient
 
-      .delete()
+        .from("vehicles")
 
-      .eq(
-        "id",
-        id
-      );
+        .delete()
+
+        .eq(
+          "id",
+          id
+        );
 
 
     if(error){
@@ -2565,11 +2846,17 @@ async function deleteVehicle(
 
 
     alert(
+
       currentLanguage === "gu"
+
       ?
+
       "વાહન કાયમ માટે Delete થઈ ગયું."
+
       :
+
       "Vehicle permanently deleted."
+
     );
 
 
@@ -2631,11 +2918,17 @@ function sendWhatsApp(
   if(!mobile){
 
     alert(
+
       currentLanguage === "gu"
+
       ?
+
       "આ વાહન માટે Mobile Number ઉપલબ્ધ નથી."
+
       :
+
       "Mobile Number is not available for this vehicle."
+
     );
 
     return;
@@ -2646,10 +2939,6 @@ function sendWhatsApp(
   let phone =
     mobile;
 
-
-  /*
-    Indian number
-  */
 
   if(
     phone.length === 10
@@ -2672,7 +2961,8 @@ function sendWhatsApp(
     "";
 
 
-  const lines = [];
+  const lines =
+    [];
 
 
   if(
@@ -2696,6 +2986,7 @@ function sendWhatsApp(
       " ના દસ્તાવેજની માન્યતા તપાસવા વિનંતી."
     );
 
+
     if(
       vehicle.fitness_expiry
     ){
@@ -2708,6 +2999,7 @@ function sendWhatsApp(
       );
 
     }
+
 
     if(
       vehicle.insurance_expiry
@@ -2722,6 +3014,7 @@ function sendWhatsApp(
 
     }
 
+
     if(
       vehicle.pucc_expiry
     ){
@@ -2734,6 +3027,7 @@ function sendWhatsApp(
       );
 
     }
+
 
     if(
       vehicle.permit_expiry
@@ -2748,7 +3042,9 @@ function sendWhatsApp(
 
     }
 
-  }else{
+  }
+
+  else{
 
     lines.push(
       "RV Vehicle Reminder"
@@ -2767,6 +3063,7 @@ function sendWhatsApp(
       "."
     );
 
+
     if(
       vehicle.fitness_expiry
     ){
@@ -2779,6 +3076,7 @@ function sendWhatsApp(
       );
 
     }
+
 
     if(
       vehicle.insurance_expiry
@@ -2793,6 +3091,7 @@ function sendWhatsApp(
 
     }
 
+
     if(
       vehicle.pucc_expiry
     ){
@@ -2805,6 +3104,7 @@ function sendWhatsApp(
       );
 
     }
+
 
     if(
       vehicle.permit_expiry
@@ -2829,12 +3129,14 @@ function sendWhatsApp(
 
 
   window.open(
+
     "https://wa.me/" +
     phone +
     "?text=" +
     message,
 
     "_blank"
+
   );
 
 }
@@ -2861,12 +3163,15 @@ document.addEventListener(
 ========================================================= */
 
 setInterval(
+
   function(){
 
     loadVehicles();
 
   },
+
   5 * 60 * 1000
+
 );
 
 </script>
