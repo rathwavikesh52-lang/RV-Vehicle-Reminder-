@@ -229,7 +229,7 @@ body{
 
 
 /* =========================================================
-   SECTION TITLES
+   SECTION TITLE
 ========================================================= */
 
 .section-title{
@@ -263,23 +263,22 @@ body{
 .vehicle-grid{
   display:grid;
 
-  grid-template-columns:
-    repeat(2,1fr);
+  grid-template-columns:1fr;
 
-  gap:15px;
+  gap:14px;
 }
 
 
 /* =========================================================
-   VEHICLE CARD
+   VEHICLE CARD - HORIZONTAL
 ========================================================= */
 
 .vehicle-card{
-  background:rgba(255,255,255,.97);
+  background:rgba(255,255,255,.98);
 
   border-radius:18px;
 
-  padding:15px;
+  padding:14px;
 
   box-shadow:
     0 5px 22px rgba(0,0,0,.12);
@@ -287,11 +286,21 @@ body{
   overflow:hidden;
 
   position:relative;
+
+  display:flex;
+
+  gap:16px;
+
+  align-items:flex-start;
+
+  transition:.2s;
 }
 
 .vehicle-card:hover{
   transform:translateY(-2px);
-  transition:.2s;
+
+  box-shadow:
+    0 8px 26px rgba(0,0,0,.15);
 }
 
 
@@ -300,9 +309,11 @@ body{
 ========================================================= */
 
 .vehicle-class-photo{
-  width:100%;
+  width:210px;
 
-  height:175px;
+  height:155px;
+
+  flex:0 0 210px;
 
   object-fit:contain;
 
@@ -311,14 +322,35 @@ body{
   border-radius:14px;
 
   background:#f5f7fa;
-
-  margin-bottom:12px;
 }
 
 
 /* =========================================================
-   VEHICLE NUMBER
+   RIGHT CONTENT
 ========================================================= */
+
+.vehicle-content{
+  flex:1;
+
+  min-width:0;
+}
+
+
+/* =========================================================
+   VEHICLE / CUSTOMER TOP
+========================================================= */
+
+.vehicle-top-line{
+  display:flex;
+
+  align-items:center;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin-bottom:4px;
+}
 
 .vehicle-number{
   font-size:22px;
@@ -327,7 +359,7 @@ body{
 
   color:#092754;
 
-  margin-bottom:6px;
+  margin:0;
 }
 
 .customer-name{
@@ -337,7 +369,7 @@ body{
 
   color:#333;
 
-  margin-top:3px;
+  margin:0;
 }
 
 .customer-mobile{
@@ -345,7 +377,7 @@ body{
 
   color:#555;
 
-  margin-top:4px;
+  margin:0;
 }
 
 
@@ -356,9 +388,9 @@ body{
 .class-badge{
   display:inline-block;
 
-  margin-top:9px;
+  margin:5px 0 9px;
 
-  padding:5px 10px;
+  padding:4px 9px;
 
   border-radius:20px;
 
@@ -366,43 +398,76 @@ body{
 
   color:#174a83;
 
-  font-size:12px;
+  font-size:11px;
 
   font-weight:700;
 }
 
 
 /* =========================================================
-   DETAILS
+   DETAILS - INLINE
 ========================================================= */
 
 .details{
-  margin-top:13px;
+  margin-top:5px;
 
   border-top:1px solid #e7eaf0;
 
-  padding-top:10px;
-}
+  padding-top:9px;
 
-.detail-row{
   display:flex;
 
-  justify-content:space-between;
+  flex-wrap:wrap;
 
-  gap:10px;
+  align-items:center;
 
-  padding:5px 0;
+  gap:6px 0;
+}
+
+
+.detail-row{
+  display:inline-flex;
+
+  align-items:center;
+
+  width:auto;
+
+  padding:3px 11px 3px 0;
+
+  margin-right:11px;
+
+  border:0;
 
   font-size:13px;
+
+  position:relative;
 }
+
+
+.detail-row:not(:last-child)::after{
+  content:"|";
+
+  position:absolute;
+
+  right:0;
+
+  color:#b7bec9;
+
+  font-weight:400;
+}
+
 
 .detail-label{
   color:#667085;
+
   font-weight:600;
+
+  margin-right:5px;
 }
 
+
 .detail-value{
-  text-align:right;
+  text-align:left;
 
   font-weight:700;
 
@@ -432,20 +497,19 @@ body{
 ========================================================= */
 
 .actions{
-  display:grid;
+  display:flex;
 
-  grid-template-columns:
-    repeat(3,1fr);
+  justify-content:flex-end;
 
   gap:7px;
 
-  margin-top:14px;
+  margin-top:10px;
 }
 
 .action-btn{
   border:0;
 
-  padding:10px 5px;
+  padding:8px 13px;
 
   border-radius:9px;
 
@@ -525,11 +589,13 @@ body{
 
 .page-btn:disabled{
   opacity:.4;
+
   cursor:not-allowed;
 }
 
 .page-info{
   font-weight:700;
+
   color:#123b70;
 }
 
@@ -558,8 +624,48 @@ body{
 
 @media(max-width:700px){
 
-  .vehicle-grid{
-    grid-template-columns:1fr;
+  .vehicle-card{
+    gap:11px;
+
+    padding:10px;
+  }
+
+  .vehicle-class-photo{
+    width:105px;
+
+    height:105px;
+
+    flex:0 0 105px;
+  }
+
+  .vehicle-number{
+    font-size:18px;
+  }
+
+  .customer-name{
+    font-size:13px;
+  }
+
+  .customer-mobile{
+    font-size:12px;
+  }
+
+  .detail-row{
+    font-size:11px;
+
+    padding-right:8px;
+
+    margin-right:8px;
+  }
+
+  .actions{
+    justify-content:flex-start;
+  }
+
+  .action-btn{
+    padding:7px 9px;
+
+    font-size:11px;
   }
 
   .stats{
@@ -575,10 +681,6 @@ body{
     font-size:23px;
   }
 
-  .vehicle-class-photo{
-    height:165px;
-  }
-
 }
 
 
@@ -588,18 +690,30 @@ body{
 
 @media(max-width:400px){
 
-  .actions{
-    grid-template-columns:
-      1fr 1fr 1fr;
+  .vehicle-class-photo{
+    width:90px;
+
+    height:90px;
+
+    flex:0 0 90px;
   }
 
-  .action-btn{
-    font-size:11px;
-    padding:9px 3px;
+  .vehicle-number{
+    font-size:17px;
+  }
+
+  .details{
+    gap:2px 0;
   }
 
   .detail-row{
-    font-size:12px;
+    font-size:10px;
+  }
+
+  .action-btn{
+    padding:6px 7px;
+
+    font-size:10px;
   }
 
 }
@@ -671,8 +785,6 @@ body{
   <div class="top-card">
 
 
-    <!-- ADD VEHICLE -->
-
     <a
       href="./upload.html"
       class="add-vehicle-btn"
@@ -686,8 +798,6 @@ body{
 
     <div class="stats">
 
-
-      <!-- TOTAL -->
 
       <div class="stat">
 
@@ -708,8 +818,6 @@ body{
       </div>
 
 
-      <!-- EXPIRING SOON -->
-
       <div class="stat">
 
         <div
@@ -728,8 +836,6 @@ body{
 
       </div>
 
-
-      <!-- EXPIRED -->
 
       <div class="stat">
 
@@ -961,22 +1067,22 @@ const translations = {
       "WhatsApp",
 
     registration:
-      "Registration",
+      "Registration Date",
 
     fitness:
-      "Fitness",
+      "Fitness Valid UpTo",
 
     insurance:
-      "Insurance",
+      "Insurance Valid UpTo",
 
     tax:
-      "Tax",
+      "Tax Valid UpTo",
 
     pucc:
-      "PUCC",
+      "PUCC Valid UpTo",
 
     permit:
-      "Permit",
+      "Permit Valid UpTo",
 
     status:
       "Status",
@@ -1038,22 +1144,22 @@ const translations = {
       "WhatsApp",
 
     registration:
-      "રજીસ્ટ્રેશન",
+      "રજીસ્ટ્રેશન તારીખ",
 
     fitness:
-      "Fitness",
+      "Fitness Valid UpTo",
 
     insurance:
-      "Insurance",
+      "Insurance Valid UpTo",
 
     tax:
-      "Tax",
+      "Tax Valid UpTo",
 
     pucc:
-      "PUCC",
+      "PUCC Valid UpTo",
 
     permit:
-      "Permit",
+      "Permit Valid UpTo",
 
     status:
       "સ્થિતિ",
@@ -1305,15 +1411,11 @@ function parseDate(
 
   if(match){
 
-    const date =
-      new Date(
-        Number(match[1]),
-        Number(match[2]) - 1,
-        Number(match[3])
-      );
-
-
-    return date;
+    return new Date(
+      Number(match[1]),
+      Number(match[2]) - 1,
+      Number(match[3])
+    );
 
   }
 
@@ -1651,13 +1753,17 @@ function detailRow(
     <div class="detail-row">
 
       <div class="detail-label">
-        ${escapeHTML(label)}
+
+        ${escapeHTML(label)}:
+
       </div>
 
       <div class="detail-value">
+
         ${escapeHTML(
           displayDate(value)
         )}
+
       </div>
 
     </div>
@@ -1668,7 +1774,7 @@ function detailRow(
 
 
 /* =========================================================
-   VEHICLE CARD
+   VEHICLE CARD - NEW DESIGN
 ========================================================= */
 
 function vehicleCard(
@@ -1769,6 +1875,8 @@ function vehicleCard(
     <div class="vehicle-card">
 
 
+      <!-- CLASS PHOTO -->
+
       <img
 
         src="${photo}"
@@ -1790,176 +1898,96 @@ function vehicleCard(
       >
 
 
-      <div class="vehicle-number">
+      <!-- RIGHT SIDE CONTENT -->
 
-        ${escapeHTML(
-          vehicle.vehicle_number ||
-          ""
-        )}
-
-      </div>
+      <div class="vehicle-content">
 
 
-      ${
-        vehicle.customer_name
-        ?
-        `
+        <!-- VEHICLE NUMBER / NAME / MOBILE -->
 
-        <div class="customer-name">
+        <div class="vehicle-top-line">
 
-          👤
 
-          ${escapeHTML(
+          <div class="vehicle-number">
+
+            🚗
+            ${escapeHTML(
+              vehicle.vehicle_number ||
+              ""
+            )}
+
+          </div>
+
+
+          ${
             vehicle.customer_name
-          )}
+            ?
 
-        </div>
+            `
 
-        `
-        :
-        ""
-      }
+            <div class="customer-name">
 
+              👤
+              ${escapeHTML(
+                vehicle.customer_name
+              )}
 
-      ${
-        (
-          vehicle.customer_mobile ||
-          vehicle.mobile
-        )
-        ?
-        `
+            </div>
 
-        <div class="customer-mobile">
+            `
 
-          📞
+            :
 
-          ${escapeHTML(
-            vehicle.customer_mobile ||
-            vehicle.mobile ||
             ""
-          )}
+          }
+
+
+          ${
+            (
+              vehicle.customer_mobile ||
+              vehicle.mobile
+            )
+
+            ?
+
+            `
+
+            <div class="customer-mobile">
+
+              📞
+              ${escapeHTML(
+                vehicle.customer_mobile ||
+                vehicle.mobile ||
+                ""
+              )}
+
+            </div>
+
+            `
+
+            :
+
+            ""
+          }
+
 
         </div>
 
-        `
-        :
-        ""
-      }
 
-
-      ${
-        className
-        ?
-        `
-
-        <div class="class-badge">
-
-          ${escapeHTML(
-            className
-          )}
-
-        </div>
-
-        `
-        :
-        ""
-      }
-
-
-      <div class="details">
-
+        <!-- VEHICLE CLASS -->
 
         ${
-          detailRow(
-            translations[
-              currentLanguage
-            ].registration,
+          className
 
-            vehicle.registration_date
-          )
-        }
-
-
-        ${
-          detailRow(
-            translations[
-              currentLanguage
-            ].fitness,
-
-            vehicle.fitness_expiry
-          )
-        }
-
-
-        ${
-          detailRow(
-            translations[
-              currentLanguage
-            ].insurance,
-
-            vehicle.insurance_expiry
-          )
-        }
-
-
-        ${
-          detailRow(
-            translations[
-              currentLanguage
-            ].tax,
-
-            vehicle.tax_expiry
-          )
-        }
-
-
-        ${
-          detailRow(
-            translations[
-              currentLanguage
-            ].pucc,
-
-            vehicle.pucc_expiry
-          )
-        }
-
-
-        ${
-          detailRow(
-            translations[
-              currentLanguage
-            ].permit,
-
-            vehicle.permit_expiry
-          )
-        }
-
-
-        ${
-          status.days !== null
           ?
 
           `
 
-          <div class="detail-row">
+          <div class="class-badge">
 
-            <div class="detail-label">
-
-              ${translations[
-                currentLanguage
-              ].status}
-
-            </div>
-
-            <div
-              class="detail-value ${statusClass}"
-            >
-
-              ${escapeHTML(
-                statusText
-              )}
-
-            </div>
+            ${escapeHTML(
+              className
+            )}
 
           </div>
 
@@ -1971,67 +1999,180 @@ function vehicleCard(
         }
 
 
-      </div>
+        <!-- DOCUMENT DETAILS -->
+
+        <div class="details">
 
 
-      <div class="actions">
+          ${
+            detailRow(
+              translations[
+                currentLanguage
+              ].registration,
 
-
-        <button
-
-          class="action-btn edit-btn"
-
-          onclick="
-            editVehicle(
-              '${vehicle.id}'
+              vehicle.registration_date
             )
-          "
-
-        >
-
-          ${translations[
-            currentLanguage
-          ].edit}
-
-        </button>
+          }
 
 
-        <button
+          ${
+            detailRow(
+              translations[
+                currentLanguage
+              ].fitness,
 
-          class="action-btn whatsapp-btn"
-
-          onclick="
-            sendWhatsApp(
-              '${vehicle.id}'
+              vehicle.fitness_expiry
             )
-          "
-
-        >
-
-          ${translations[
-            currentLanguage
-          ].whatsapp}
-
-        </button>
+          }
 
 
-        <button
+          ${
+            detailRow(
+              translations[
+                currentLanguage
+              ].tax,
 
-          class="action-btn delete-btn"
-
-          onclick="
-            deleteVehicle(
-              '${vehicle.id}'
+              vehicle.tax_expiry
             )
-          "
+          }
 
-        >
 
-          ${translations[
-            currentLanguage
-          ].delete}
+          ${
+            detailRow(
+              translations[
+                currentLanguage
+              ].insurance,
 
-        </button>
+              vehicle.insurance_expiry
+            )
+          }
+
+
+          ${
+            detailRow(
+              translations[
+                currentLanguage
+              ].pucc,
+
+              vehicle.pucc_expiry
+            )
+          }
+
+
+          ${
+            detailRow(
+              translations[
+                currentLanguage
+              ].permit,
+
+              vehicle.permit_expiry
+            )
+          }
+
+
+          ${
+            status.days !== null
+
+            ?
+
+            `
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+
+                ${translations[
+                  currentLanguage
+                ].status}:
+
+              </div>
+
+              <div
+                class="detail-value ${statusClass}"
+              >
+
+                ${escapeHTML(
+                  statusText
+                )}
+
+              </div>
+
+            </div>
+
+            `
+
+            :
+
+            ""
+          }
+
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+
+          <button
+
+            class="action-btn edit-btn"
+
+            onclick="
+              editVehicle(
+                '${vehicle.id}'
+              )
+            "
+
+          >
+
+            ${translations[
+              currentLanguage
+            ].edit}
+
+          </button>
+
+
+          <button
+
+            class="action-btn whatsapp-btn"
+
+            onclick="
+              sendWhatsApp(
+                '${vehicle.id}'
+              )
+            "
+
+          >
+
+            ${translations[
+              currentLanguage
+            ].whatsapp}
+
+          </button>
+
+
+          <button
+
+            class="action-btn delete-btn"
+
+            onclick="
+              deleteVehicle(
+                '${vehicle.id}'
+              )
+            "
+
+          >
+
+            ${translations[
+              currentLanguage
+            ].delete}
+
+          </button>
+
+
+        </div>
 
 
       </div>
@@ -2601,10 +2742,6 @@ async function deleteVehicle(
 
   try{
 
-    /*
-      Delete photo
-    */
-
     if(
       vehicle.photo_path
     ){
@@ -2615,10 +2752,6 @@ async function deleteVehicle(
 
     }
 
-
-    /*
-      Delete database row
-    */
 
     const {
       error
@@ -2702,13 +2835,6 @@ function sendWhatsApp(
   }
 
 
-  /*
-    CUSTOMER MOBILE
-
-    First customer_mobile
-    Then mobile
-  */
-
   let mobile =
     vehicle.customer_mobile ||
     vehicle.mobile ||
@@ -2744,10 +2870,6 @@ function sendWhatsApp(
   }
 
 
-  /*
-    INDIA COUNTRY CODE
-  */
-
   let phone =
     mobile;
 
@@ -2763,10 +2885,6 @@ function sendWhatsApp(
   }
 
 
-  /*
-    CUSTOMER NAME
-  */
-
   const customerName =
     String(
       vehicle.customer_name ||
@@ -2774,10 +2892,6 @@ function sendWhatsApp(
     )
     .trim();
 
-
-  /*
-    VEHICLE NUMBER
-  */
 
   const vehicleNumber =
     String(
@@ -2787,17 +2901,11 @@ function sendWhatsApp(
     .trim();
 
 
-  /*
-    EXPIRY DOCUMENTS
-  */
-
   const expiryDocuments =
     [];
 
 
-  /*
-    FITNESS
-  */
+  /* FITNESS */
 
   if(
     vehicle.fitness_expiry
@@ -2831,9 +2939,7 @@ function sendWhatsApp(
   }
 
 
-  /*
-    INSURANCE
-  */
+  /* INSURANCE */
 
   if(
     vehicle.insurance_expiry
@@ -2867,9 +2973,7 @@ function sendWhatsApp(
   }
 
 
-  /*
-    PUCC
-  */
+  /* PUCC */
 
   if(
     vehicle.pucc_expiry
@@ -2903,11 +3007,7 @@ function sendWhatsApp(
   }
 
 
-  /*
-    PERMIT
-
-    LTT ignored
-  */
+  /* PERMIT */
 
   if(
     vehicle.permit_expiry &&
@@ -2947,10 +3047,6 @@ function sendWhatsApp(
   }
 
 
-  /*
-    NO VALID DATE
-  */
-
   if(
     !expiryDocuments.length
   ){
@@ -2974,10 +3070,6 @@ function sendWhatsApp(
   }
 
 
-  /*
-    SORT BY NEAREST EXPIRY
-  */
-
   expiryDocuments.sort(
 
     (a,b) =>
@@ -3000,17 +3092,11 @@ function sendWhatsApp(
     nearest.name;
 
 
-  /*
-    CREATE MESSAGE
-  */
-
   let message =
     "";
 
 
-  /*
-    GUJARATI MESSAGE
-  */
+  /* GUJARATI */
 
   if(
     currentLanguage === "gu"
@@ -3038,9 +3124,7 @@ function sendWhatsApp(
   }
 
 
-  /*
-    ENGLISH MESSAGE
-  */
+  /* ENGLISH */
 
   else{
 
@@ -3065,10 +3149,6 @@ Nasvadi`;
 
   }
 
-
-  /*
-    OPEN WHATSAPP
-  */
 
   const whatsappURL =
 
