@@ -370,9 +370,7 @@ body::before{
 
 
 /* =========================================
-   IMPORTANT
    CARD HIGHLIGHT DISABLED
-   ONLY DATE COLOUR WILL CHANGE
 ========================================= */
 
 .vehicle-card.expired-highlight{
@@ -402,17 +400,14 @@ body::before{
   font-weight:800;
 }
 
-/* Expired */
 .expiry-date.expired{
   color:#dc3545;
 }
 
-/* Today / 1 to 5 days */
 .expiry-date.near{
   color:#f57c00;
 }
 
-/* 6 to 15 days */
 .expiry-date.soon{
   color:#c49a00;
 }
@@ -657,9 +652,6 @@ body::before{
     font-size:20px;
   }
 
-
-  /* 5 BOXES ONE LINE */
-
   .document-expiry-stats{
     grid-template-columns:repeat(5,1fr);
     gap:5px;
@@ -676,9 +668,6 @@ body::before{
   .document-stat-value{
     font-size:18px;
   }
-
-
-  /* TODAY EXPIRY */
 
   .today-expiry-header{
     font-size:13px;
@@ -704,9 +693,6 @@ body::before{
   .today-vehicle-number{
     font-size:10px;
   }
-
-
-  /* VEHICLE CARD */
 
   .vehicle-card{
 
@@ -798,9 +784,6 @@ body::before{
     font-size:18px;
   }
 
-
-  /* 5 BOXES ONE LINE */
-
   .document-expiry-stats{
     grid-template-columns:repeat(5,1fr);
     gap:3px;
@@ -817,9 +800,6 @@ body::before{
   .document-stat-value{
     font-size:16px;
   }
-
-
-  /* TODAY EXPIRY */
 
   .today-expiry-row{
     min-height:46px;
@@ -1211,10 +1191,18 @@ const VEHICLE_CLASS_ASSET_BASE =
   ASSET_BASE + "vehicle-classes/";
 
 
+/* =========================================
+   VEHICLE CLASS PHOTOS
+   MGV ADDED
+========================================= */
+
 const vehicleClassPhotos = {
 
   HGV:
     VEHICLE_CLASS_ASSET_BASE + "hgv.png",
+
+  MGV:
+    VEHICLE_CLASS_ASSET_BASE + "mgv.png",
 
   LGV:
     VEHICLE_CLASS_ASSET_BASE + "Igv.png",
@@ -1780,7 +1768,6 @@ function daysUntil(value){
 
 
 /* =========================================
-   NEW:
    DATE COLOUR CLASS
 ========================================= */
 
@@ -1795,16 +1782,12 @@ function getExpiryDateClass(value){
   }
 
 
-  /* EXPIRED */
-
   if(days < 0){
 
     return "expired";
 
   }
 
-
-  /* TODAY + 1 TO 5 DAYS */
 
   if(days >= 0 && days <= 5){
 
@@ -1813,16 +1796,12 @@ function getExpiryDateClass(value){
   }
 
 
-  /* 6 TO 15 DAYS */
-
   if(days >= 6 && days <= 15){
 
     return "soon";
 
   }
 
-
-  /* MORE THAN 15 DAYS */
 
   return "";
 
@@ -1888,7 +1867,7 @@ function getExpiryStatus(vehicle){
 
 
 /* =========================================
-   EXISTING 15-DAY LOGIC
+   15-DAY LOGIC
 ========================================= */
 
 function isExpiring(vehicle){
@@ -2569,6 +2548,19 @@ function vehicleCard(vehicle){
     "";
 
 
+  /*
+     VEHICLE CLASS PHOTO
+
+     HGV  -> hgv.png
+     MGV  -> mgv.png
+     LGV  -> Igv.png
+     LMV  -> Imv.png
+     LPV  -> Ipv.png
+     HPV  -> bus.png
+     2WN  -> 2wn.png
+     3WT  -> 3wt.png
+  */
+
   const photoUrl =
     getVehicleClassPhoto(
       vehicle
@@ -2644,11 +2636,6 @@ function vehicleCard(vehicle){
       vehicle.permit_expiry
     );
 
-
-  /*
-     Highlight class kept internally,
-     but CSS keeps card white.
-  */
 
   const highlightClass =
     getVehicleHighlightClass(
