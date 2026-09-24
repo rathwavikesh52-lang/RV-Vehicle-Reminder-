@@ -24,14 +24,14 @@
 
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   background:#f4f6f8;
   color:#222;
 }
 
 .header{
   background:#111827;
-  color:white;
+  color:#fff;
   padding:18px;
   text-align:center;
 }
@@ -54,7 +54,7 @@ body{
 }
 
 .card{
-  background:white;
+  background:#fff;
   border-radius:14px;
   padding:18px;
   margin-bottom:18px;
@@ -134,7 +134,7 @@ textarea{
 
 .btn-primary{
   background:#2563eb;
-  color:white;
+  color:#fff;
 }
 
 .btn-primary:hover{
@@ -143,17 +143,7 @@ textarea{
 
 .btn-success{
   background:#16a34a;
-  color:white;
-}
-
-.btn-danger{
-  background:#dc2626;
-  color:white;
-}
-
-.btn-secondary{
-  background:#374151;
-  color:white;
+  color:#fff;
 }
 
 .btn:disabled{
@@ -206,11 +196,6 @@ textarea{
   color:#991b1b;
 }
 
-.message.info{
-  background:#dbeafe;
-  color:#1e40af;
-}
-
 .class-grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -224,7 +209,7 @@ textarea{
   padding:8px;
   text-align:center;
   cursor:pointer;
-  background:white;
+  background:#fff;
 }
 
 .class-item.active{
@@ -276,6 +261,7 @@ textarea{
 </head>
 
 <body>
+
 
 <div class="header">
 
@@ -400,16 +386,20 @@ textarea{
 
   <div class="class-grid">
 
+
     <div
       class="class-item"
       data-class="HGV"
       onclick="selectVehicleClass('HGV')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/HGV.png"
         onerror="this.style.display='none'"
       >
+
       <div>HGV</div>
+
     </div>
 
 
@@ -418,11 +408,14 @@ textarea{
       data-class="LGV"
       onclick="selectVehicleClass('LGV')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/LGV.png"
         onerror="this.style.display='none'"
       >
+
       <div>LGV</div>
+
     </div>
 
 
@@ -431,11 +424,14 @@ textarea{
       data-class="MGV"
       onclick="selectVehicleClass('MGV')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/MGV.png"
         onerror="this.style.display='none'"
       >
+
       <div>MGV</div>
+
     </div>
 
 
@@ -444,11 +440,14 @@ textarea{
       data-class="MPV"
       onclick="selectVehicleClass('MPV')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/MPV.png"
         onerror="this.style.display='none'"
       >
+
       <div>MPV</div>
+
     </div>
 
 
@@ -457,11 +456,14 @@ textarea{
       data-class="LMV"
       onclick="selectVehicleClass('LMV')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/LMV.png"
         onerror="this.style.display='none'"
       >
+
       <div>LMV</div>
+
     </div>
 
 
@@ -470,11 +472,14 @@ textarea{
       data-class="LPV"
       onclick="selectVehicleClass('LPV')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/LPV.png"
         onerror="this.style.display='none'"
       >
+
       <div>LPV</div>
+
     </div>
 
 
@@ -483,11 +488,14 @@ textarea{
       data-class="HPV"
       onclick="selectVehicleClass('HPV')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/HPV.png"
         onerror="this.style.display='none'"
       >
+
       <div>HPV</div>
+
     </div>
 
 
@@ -496,11 +504,14 @@ textarea{
       data-class="2WN"
       onclick="selectVehicleClass('2WN')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/2WN.png"
         onerror="this.style.display='none'"
       >
+
       <div>2WN</div>
+
     </div>
 
 
@@ -509,11 +520,14 @@ textarea{
       data-class="3WT"
       onclick="selectVehicleClass('3WT')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/3WT.png"
         onerror="this.style.display='none'"
       >
+
       <div>3WT</div>
+
     </div>
 
 
@@ -522,12 +536,16 @@ textarea{
       data-class="OTH"
       onclick="selectVehicleClass('OTH')"
     >
+
       <img
         src="https://rathwavikesh52-lang.github.io/RV-Vehicle-Reminder-/assets/OTH.png"
         onerror="this.style.display='none'"
       >
+
       <div>OTH</div>
+
     </div>
+
 
   </div>
 
@@ -660,6 +678,7 @@ textarea{
 
 </div>
 
+
 </div>
 
 
@@ -700,7 +719,9 @@ let currentPhotoUrl = null;
 ========================================= */
 
 const params =
-  new URLSearchParams(window.location.search);
+  new URLSearchParams(
+    window.location.search
+  );
 
 editingId =
   params.get("id");
@@ -712,47 +733,68 @@ editingId =
 
 document
   .getElementById("photoInput")
-  .addEventListener("change", function(e){
+  .addEventListener(
+    "change",
+    function(e){
 
-    const file =
-      e.target.files &&
-      e.target.files[0];
+      const file =
+        e.target.files &&
+        e.target.files[0];
 
-    if(!file){
-      return;
+      if(!file){
+        return;
+      }
+
+      selectedFile =
+        file;
+
+      const preview =
+        document.getElementById(
+          "preview"
+        );
+
+      preview.src =
+        URL.createObjectURL(
+          file
+        );
+
+      preview.style.display =
+        "block";
+
     }
-
-    selectedFile = file;
-
-    const preview =
-      document.getElementById("preview");
-
-    preview.src =
-      URL.createObjectURL(file);
-
-    preview.style.display =
-      "block";
-
-  });
+  );
 
 
 /* =========================================
    VEHICLE CLASS
 ========================================= */
 
-function selectVehicleClass(value){
+function selectVehicleClass(
+  value
+){
 
   document
-    .getElementById("vehicleClass")
-    .value = value;
+    .getElementById(
+      "vehicleClass"
+    )
+    .value =
+    value;
+
 
   document
-    .querySelectorAll(".class-item")
-    .forEach(function(item){
+    .querySelectorAll(
+      ".class-item"
+    )
+    .forEach(
+      function(item){
 
-      item.classList.remove("active");
+        item.classList.remove(
+          "active"
+        );
 
-    });
+      }
+    );
+
 
   const selected =
     document.querySelector(
@@ -761,8 +803,13 @@ function selectVehicleClass(value){
       '"]'
     );
 
+
   if(selected){
-    selected.classList.add("active");
+
+    selected.classList.add(
+      "active"
+    );
+
   }
 
 }
@@ -778,7 +825,9 @@ function showMessage(
 ){
 
   const box =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
 
   box.textContent =
     text;
@@ -802,33 +851,60 @@ function setProgress(
 ){
 
   document
-    .getElementById("progress")
+    .getElementById(
+      "progress"
+    )
     .style.width =
     percent + "%";
 
+
   document
-    .getElementById("progressText")
+    .getElementById(
+      "progressText"
+    )
     .textContent =
-    text || (percent + "%");
+    text ||
+    (percent + "%");
 
 }
 
 
 /* =========================================
-   OLD WORKING OCR
-   NORMALIZE
+   NORMALIZE OCR TEXT
 ========================================= */
 
-function normalizeOCRText(text){
+function normalizeOCRText(
+  text
+){
 
-  return String(text || "")
-    .replace(/\r/g,"")
-    .replace(/[“”]/g,'"')
-    .replace(/[‘’]/g,"'")
-    .replace(/[|]/g,"I")
-    .replace(/[ \t]+/g," ")
-    .replace(/\n[ \t]+/g,"\n")
-    .trim();
+  return String(
+    text || ""
+  )
+  .replace(
+    /\r/g,
+    ""
+  )
+  .replace(
+    /[“”]/g,
+    '"'
+  )
+  .replace(
+    /[‘’]/g,
+    "'"
+  )
+  .replace(
+    /[|]/g,
+    "I"
+  )
+  .replace(
+    /[ \t]+/g,
+    " "
+  )
+  .replace(
+    /\n[ \t]+/g,
+    "\n"
+  )
+  .trim();
 
 }
 
@@ -837,22 +913,33 @@ function normalizeOCRText(text){
    OCR LINES
 ========================================= */
 
-function getOCRLines(text){
+function getOCRLines(
+  text
+){
 
-  return normalizeOCRText(text)
-    .split("\n")
-    .map(function(line){
+  return normalizeOCRText(
+    text
+  )
+  .split("\n")
+  .map(
+    function(line){
 
       return line
-        .replace(/\s+/g," ")
+        .replace(
+          /\s+/g,
+          " "
+        )
         .trim();
 
-    })
-    .filter(function(line){
+    }
+  )
+  .filter(
+    function(line){
 
       return line.length > 0;
 
-    });
+    }
+  );
 
 }
 
@@ -889,31 +976,65 @@ function validDateParts(
   year
 ){
 
-  day = parseInt(day,10);
+  day =
+    parseInt(
+      day,
+      10
+    );
 
-  month = parseInt(month,10);
+  month =
+    parseInt(
+      month,
+      10
+    );
 
-  year = parseInt(year,10);
+  year =
+    parseInt(
+      year,
+      10
+    );
+
 
   if(
     !Number.isInteger(day) ||
     !Number.isInteger(month) ||
     !Number.isInteger(year)
   ){
+
     return false;
+
   }
 
-  if(day < 1 || day > 31){
+
+  if(
+    day < 1 ||
+    day > 31
+  ){
+
     return false;
+
   }
 
-  if(month < 1 || month > 12){
+
+  if(
+    month < 1 ||
+    month > 12
+  ){
+
     return false;
+
   }
 
-  if(year < 1900 || year > 2100){
+
+  if(
+    year < 1900 ||
+    year > 2100
+  ){
+
     return false;
+
   }
+
 
   return true;
 
@@ -921,41 +1042,61 @@ function validDateParts(
 
 
 /* =========================================
-   NORMALIZE DATE
+   NORMALIZE DATE STRING
 ========================================= */
 
-function normalizeDateString(value){
+function normalizeDateString(
+  value
+){
 
   if(!value){
     return "";
   }
 
+
   let s =
     String(value)
       .trim()
-      .replace(/[|]/g,"I")
-      .replace(/\s+/g," ");
+      .replace(
+        /[|]/g,
+        "I"
+      )
+      .replace(
+        /\s+/g,
+        " "
+      );
+
 
   let m;
 
 
-  /* DD-MMM-YYYY */
+  /*
+    DD-MMM-YYYY
+  */
 
   m =
     s.match(
       /^(\d{1,2})[\-\/\s]([A-Za-z]{3})[\-\/\s](\d{4})$/i
     );
 
+
   if(m){
 
     const day =
-      parseInt(m[1],10);
+      parseInt(
+        m[1],
+        10
+      );
 
     const mon =
       m[2].toUpperCase();
 
     const year =
-      parseInt(m[3],10);
+      parseInt(
+        m[3],
+        10
+      );
+
 
     if(
       MONTHS[mon] &&
@@ -967,7 +1108,8 @@ function normalizeDateString(value){
     ){
 
       return (
-        String(day).padStart(2,"0") +
+        String(day)
+          .padStart(2,"0") +
         "-" +
         mon.charAt(0) +
         mon.slice(1).toLowerCase() +
@@ -980,23 +1122,38 @@ function normalizeDateString(value){
   }
 
 
-  /* DD/MM/YYYY or DD-MM-YYYY */
+  /*
+    DD/MM/YYYY
+    DD-MM-YYYY
+    DD MM YYYY
+  */
 
   m =
     s.match(
       /^(\d{1,2})[\-\/\s](\d{1,2})[\-\/\s](\d{4})$/
     );
 
+
   if(m){
 
     const day =
-      parseInt(m[1],10);
+      parseInt(
+        m[1],
+        10
+      );
 
     const month =
-      parseInt(m[2],10);
+      parseInt(
+        m[2],
+        10
+      );
 
     const year =
-      parseInt(m[3],10);
+      parseInt(
+        m[3],
+        10
+      );
+
 
     if(
       validDateParts(
@@ -1007,15 +1164,30 @@ function normalizeDateString(value){
     ){
 
       const monthNames = [
-        "Jan","Feb","Mar","Apr",
-        "May","Jun","Jul","Aug",
-        "Sep","Oct","Nov","Dec"
+
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+
       ];
 
+
       return (
-        String(day).padStart(2,"0") +
+        String(day)
+          .padStart(2,"0") +
         "-" +
-        monthNames[month-1] +
+        monthNames[
+          month - 1
+        ] +
         "-" +
         year
       );
@@ -1025,23 +1197,36 @@ function normalizeDateString(value){
   }
 
 
-  /* YYYY-MM-DD */
+  /*
+    YYYY-MM-DD
+  */
 
   m =
     s.match(
       /^(\d{4})[\-\/](\d{1,2})[\-\/](\d{1,2})$/
     );
 
+
   if(m){
 
     const year =
-      parseInt(m[1],10);
+      parseInt(
+        m[1],
+        10
+      );
 
     const month =
-      parseInt(m[2],10);
+      parseInt(
+        m[2],
+        10
+      );
 
     const day =
-      parseInt(m[3],10);
+      parseInt(
+        m[3],
+        10
+      );
+
 
     if(
       validDateParts(
@@ -1052,15 +1237,30 @@ function normalizeDateString(value){
     ){
 
       const monthNames = [
-        "Jan","Feb","Mar","Apr",
-        "May","Jun","Jul","Aug",
-        "Sep","Oct","Nov","Dec"
+
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+
       ];
 
+
       return (
-        String(day).padStart(2,"0") +
+        String(day)
+          .padStart(2,"0") +
         "-" +
-        monthNames[month-1] +
+        monthNames[
+          month - 1
+        ] +
         "-" +
         year
       );
@@ -1068,6 +1268,7 @@ function normalizeDateString(value){
     }
 
   }
+
 
   return "";
 
@@ -1078,7 +1279,9 @@ function normalizeDateString(value){
    EXTRACT DATE FROM TEXT
 ========================================= */
 
-function extractDateFromText(text){
+function extractDateFromText(
+  text
+){
 
   const source =
     String(text || "");
@@ -1096,13 +1299,16 @@ function extractDateFromText(text){
 
 
   for(
-    let i=0;
-    i<patterns.length;
+    let i = 0;
+    i < patterns.length;
     i++
   ){
 
     const match =
-      source.match(patterns[i]);
+      source.match(
+        patterns[i]
+      );
+
 
     if(match){
 
@@ -1111,13 +1317,17 @@ function extractDateFromText(text){
           match[0]
         );
 
+
       if(result){
+
         return result;
+
       }
 
     }
 
   }
+
 
   return "";
 
@@ -1135,56 +1345,82 @@ function findValueAfterLabels(
 ){
 
   const lines =
-    getOCRLines(text);
+    getOCRLines(
+      text
+    );
+
 
   const normalizedLabels =
-    labels.map(function(label){
+    labels.map(
+      function(label){
 
-      return label
-        .toUpperCase()
-        .replace(/\s+/g," ")
-        .trim();
+        return label
+          .toUpperCase()
+          .replace(
+            /\s+/g,
+            " "
+          )
+          .trim();
 
-    });
+      }
+    );
 
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
     const upper =
       lines[i]
         .toUpperCase()
-        .replace(/\s+/g," ")
+        .replace(
+          /\s+/g,
+          " "
+        )
         .trim();
 
 
-    let matched = false;
+    let matched =
+      false;
 
-    let matchedLabel = "";
+    let matchedLabel =
+      "";
 
 
     for(
-      let j=0;
-      j<normalizedLabels.length;
+      let j = 0;
+      j < normalizedLabels.length;
       j++
     ){
 
       const label =
         normalizedLabels[j];
 
+
       if(
         upper === label ||
-        upper.indexOf(label + ":") === 0 ||
-        upper.indexOf(label + " ") === 0 ||
-        upper.indexOf(label) === 0 ||
-        upper.indexOf(label) >= 0
+        upper.indexOf(
+          label + ":"
+        ) === 0 ||
+        upper.indexOf(
+          label + " "
+        ) === 0 ||
+        upper.indexOf(
+          label
+        ) === 0 ||
+        upper.indexOf(
+          label
+        ) >= 0
       ){
 
-        matched = true;
-        matchedLabel = label;
+        matched =
+          true;
+
+        matchedLabel =
+          label;
+
         break;
 
       }
@@ -1197,10 +1433,13 @@ function findValueAfterLabels(
     }
 
 
-    /* SAME LINE */
+    /*
+      SAME LINE
+    */
 
     let sameLine =
       lines[i];
+
 
     let pos =
       sameLine
@@ -1209,52 +1448,72 @@ function findValueAfterLabels(
           matchedLabel
         );
 
+
     if(pos >= 0){
 
       let after =
         sameLine
           .substring(
-            pos + matchedLabel.length
+            pos +
+            matchedLabel.length
           )
-          .replace(/^[:\-\s]+/,"")
+          .replace(
+            /^[:\-\s]+/,
+            ""
+          )
           .trim();
 
+
       const date =
-        extractDateFromText(after);
+        extractDateFromText(
+          after
+        );
+
 
       if(date){
+
         return date;
+
       }
 
     }
 
 
-    /* NEXT LINES */
+    /*
+      NEXT LINES
+    */
 
     for(
-      let j=1;
-      j<=maxLines;
+      let j = 1;
+      j <= maxLines;
       j++
     ){
 
       if(
         !lines[i+j]
       ){
+
         break;
+
       }
+
 
       const date =
         extractDateFromText(
           lines[i+j]
         );
 
+
       if(date){
+
         return date;
+
       }
 
     }
 
   }
+
 
   return "";
 
@@ -1265,19 +1524,26 @@ function findValueAfterLabels(
    INSURANCE BLOCK
 ========================================= */
 
-function findInsuranceBlockDate(text){
+function findInsuranceBlockDate(
+  text
+){
 
   const lines =
-    getOCRLines(text);
+    getOCRLines(
+      text
+    );
+
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
     const upper =
-      lines[i].toUpperCase();
+      lines[i]
+        .toUpperCase();
+
 
     if(
       upper.indexOf(
@@ -1291,9 +1557,10 @@ function findInsuranceBlockDate(text){
           i + 9
         );
 
+
       for(
-        let j=i+1;
-        j<end;
+        let j = i + 1;
+        j < end;
         j++
       ){
 
@@ -1301,9 +1568,14 @@ function findInsuranceBlockDate(text){
           lines[j]
             .toUpperCase();
 
+
         if(
-          lineUpper.indexOf("VALIDITY") >= 0 ||
-          lineUpper.indexOf("VALID") >= 0
+          lineUpper.indexOf(
+            "VALIDITY"
+          ) >= 0 ||
+          lineUpper.indexOf(
+            "VALID"
+          ) >= 0
         ){
 
           const same =
@@ -1311,28 +1583,39 @@ function findInsuranceBlockDate(text){
               lines[j]
             );
 
+
           if(same){
+
             return same;
+
           }
 
 
           for(
-            let k=1;
-            k<=2;
+            let k = 1;
+            k <= 2;
             k++
           ){
 
-            if(!lines[j+k]){
+            if(
+              !lines[j+k]
+            ){
+
               break;
+
             }
+
 
             const date =
               extractDateFromText(
                 lines[j+k]
               );
 
+
             if(date){
+
               return date;
+
             }
 
           }
@@ -1345,6 +1628,7 @@ function findInsuranceBlockDate(text){
 
   }
 
+
   return "";
 
 }
@@ -1354,10 +1638,14 @@ function findInsuranceBlockDate(text){
    TAX
 ========================================= */
 
-function findTaxValue(text){
+function findTaxValue(
+  text
+){
 
   const lines =
-    getOCRLines(text);
+    getOCRLines(
+      text
+    );
 
 
   const labels = [
@@ -1373,24 +1661,28 @@ function findTaxValue(text){
 
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
     const upper =
       lines[i]
         .toUpperCase()
-        .replace(/\s+/g," ")
+        .replace(
+          /\s+/g,
+          " "
+        )
         .trim();
 
 
-    let matched = false;
+    let matched =
+      false;
 
 
     for(
-      let j=0;
-      j<labels.length;
+      let j = 0;
+      j < labels.length;
       j++
     ){
 
@@ -1401,7 +1693,9 @@ function findTaxValue(text){
         ) === 0
       ){
 
-        matched = true;
+        matched =
+          true;
+
         break;
 
       }
@@ -1414,13 +1708,13 @@ function findTaxValue(text){
     }
 
 
-    let localText =
+    const localText =
       lines
         .slice(
           i,
           Math.min(
             lines.length,
-            i+4
+            i + 4
           )
         )
         .join(" ");
@@ -1430,15 +1724,29 @@ function findTaxValue(text){
       localText.toUpperCase();
 
 
-    /* LTT OCR variants */
+    /*
+      LTT OCR variants
+    */
 
     if(
-      /\bLTT\b/.test(localUpper) ||
-      /\bL7T\b/.test(localUpper) ||
-      /\bLT7\b/.test(localUpper) ||
-      /\bLIT\b/.test(localUpper) ||
-      /\bLII\b/.test(localUpper) ||
-      /\bL\s*T\s*T\b/.test(localUpper)
+      /\bLTT\b/.test(
+        localUpper
+      ) ||
+      /\bL7T\b/.test(
+        localUpper
+      ) ||
+      /\bLT7\b/.test(
+        localUpper
+      ) ||
+      /\bLIT\b/.test(
+        localUpper
+      ) ||
+      /\bLII\b/.test(
+        localUpper
+      ) ||
+      /\bL\s*T\s*T\b/.test(
+        localUpper
+      )
     ){
 
       return "LTT";
@@ -1451,11 +1759,15 @@ function findTaxValue(text){
         localText
       );
 
+
     if(date){
+
       return date;
+
     }
 
   }
+
 
   return "";
 
@@ -1466,7 +1778,9 @@ function findTaxValue(text){
    CLEAN VEHICLE CANDIDATE
 ========================================= */
 
-function cleanVehicleCandidate(raw){
+function cleanVehicleCandidate(
+  raw
+){
 
   if(!raw){
     return "";
@@ -1476,32 +1790,44 @@ function cleanVehicleCandidate(raw){
   let s =
     String(raw)
       .toUpperCase()
-      .replace(/[^A-Z0-9]/g,"");
+      .replace(
+        /[^A-Z0-9]/g,
+        ""
+      );
 
 
-  /* Repair beginning only */
+  /*
+    Repair beginning ONLY
+  */
 
   if(
     s.indexOf("G7") === 0
   ){
+
     s =
       "GJ" +
       s.substring(2);
+
   }
+
 
   if(
     s.indexOf("6J") === 0
   ){
+
     s =
       "GJ" +
       s.substring(2);
+
   }
 
 
   if(
     s.indexOf("GJ") !== 0
   ){
+
     return "";
+
   }
 
 
@@ -1519,7 +1845,9 @@ function cleanVehicleCandidate(raw){
 
 
   if(!match){
+
     return "";
+
   }
 
 
@@ -1533,7 +1861,9 @@ function cleanVehicleCandidate(raw){
     match[3];
 
 
-  /* RTO corrections ONLY */
+  /*
+    RTO corrections ONLY
+  */
 
   rto =
     rto
@@ -1550,9 +1880,13 @@ function cleanVehicleCandidate(raw){
 
 
   if(
-    !/^\d{2}$/.test(rto)
+    !/^\d{2}$/.test(
+      rto
+    )
   ){
+
     return "";
+
   }
 
 
@@ -1563,13 +1897,19 @@ function cleanVehicleCandidate(raw){
   */
 
   if(
-    !/^[A-Z]{1,3}$/.test(series)
+    !/^[A-Z]{1,3}$/.test(
+      series
+    )
   ){
+
     return "";
+
   }
 
 
-  /* Number corrections */
+  /*
+    Number corrections
+  */
 
   numberPart =
     numberPart
@@ -1586,9 +1926,13 @@ function cleanVehicleCandidate(raw){
 
 
   if(
-    !/^\d{3,5}$/.test(numberPart)
+    !/^\d{3,5}$/.test(
+      numberPart
+    )
   ){
+
     return "";
+
   }
 
 
@@ -1606,10 +1950,15 @@ function cleanVehicleCandidate(raw){
    EXTRACT VEHICLE NUMBER
 ========================================= */
 
-function extractVehicleNumber(text){
+function extractVehicleNumber(
+  text
+){
 
   const lines =
-    getOCRLines(text);
+    getOCRLines(
+      text
+    );
+
 
   const candidates = [];
 
@@ -1624,11 +1973,17 @@ function extractVehicleNumber(text){
         raw
       );
 
+
     if(cleaned){
 
       candidates.push({
-        value:cleaned,
-        score:score
+
+        value:
+          cleaned,
+
+        score:
+          score
+
       });
 
     }
@@ -1636,19 +1991,20 @@ function extractVehicleNumber(text){
   }
 
 
-  /* =======================================
-     STEP 1
-     Immediately after VEHICLE NUMBER
-  ======================================= */
+  /*
+    STEP 1
+    Immediately after VEHICLE NUMBER
+  */
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
     const upper =
-      lines[i].toUpperCase();
+      lines[i]
+        .toUpperCase();
 
 
     if(
@@ -1666,6 +2022,7 @@ function extractVehicleNumber(text){
           /(?:GJ|G7|6J)[A-Z0-9\s]{5,14}/i
         );
 
+
       if(sameMatch){
 
         addCandidate(
@@ -1681,25 +2038,31 @@ function extractVehicleNumber(text){
       */
 
       for(
-        let j=1;
-        j<=2;
+        let j = 1;
+        j <= 2;
         j++
       ){
 
-        if(!lines[i+j]){
+        if(
+          !lines[i+j]
+        ){
+
           continue;
+
         }
+
 
         const nextMatch =
           lines[i+j].match(
             /(?:GJ|G7|6J)[A-Z0-9\s]{5,14}/i
           );
 
+
         if(nextMatch){
 
           addCandidate(
             nextMatch[0],
-            115-j
+            115 - j
           );
 
         }
@@ -1711,14 +2074,14 @@ function extractVehicleNumber(text){
   }
 
 
-  /* =======================================
-     STEP 2
-     Individual tokens around label
-  ======================================= */
+  /*
+    STEP 2
+    Individual tokens around label
+  */
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
@@ -1731,34 +2094,43 @@ function extractVehicleNumber(text){
     ){
 
       for(
-        let j=0;
-        j<=3;
+        let j = 0;
+        j <= 3;
         j++
       ){
 
-        if(!lines[i+j]){
+        if(
+          !lines[i+j]
+        ){
+
           continue;
+
         }
+
 
         const tokens =
           lines[i+j]
-            .split(/\s+/);
+            .split(
+              /\s+/
+            );
 
 
         for(
-          let k=0;
-          k<tokens.length;
+          let k = 0;
+          k < tokens.length;
           k++
         ){
 
           if(
             /^(?:GJ|G7|6J)[A-Z0-9]{5,12}$/i
-              .test(tokens[k])
+              .test(
+                tokens[k]
+              )
           ){
 
             addCandidate(
               tokens[k],
-              105-j
+              105 - j
             );
 
           }
@@ -1772,31 +2144,35 @@ function extractVehicleNumber(text){
   }
 
 
-  /* =======================================
-     STEP 3
-     Global scan
-  ======================================= */
+  /*
+    STEP 3
+    Global scan
+  */
 
   for(
-    let i=0;
-    i<lines.length;
+    let i = 0;
+    i < lines.length;
     i++
   ){
 
     const tokens =
       lines[i]
-        .split(/\s+/);
+        .split(
+          /\s+/
+        );
 
 
     for(
-      let j=0;
-      j<tokens.length;
+      let j = 0;
+      j < tokens.length;
       j++
     ){
 
       if(
         /^(?:GJ|G7|6J)[A-Z0-9]{5,12}$/i
-          .test(tokens[j])
+          .test(
+            tokens[j]
+          )
       ){
 
         addCandidate(
@@ -1811,49 +2187,66 @@ function extractVehicleNumber(text){
   }
 
 
-  /* =======================================
-     GROUP REPEATED CANDIDATES
-  ======================================= */
+  /*
+    GROUP REPEATED CANDIDATES
+  */
 
   const groups = {};
 
 
-  candidates.forEach(function(item){
+  candidates.forEach(
+    function(item){
 
-    if(!groups[item.value]){
+      if(
+        !groups[item.value]
+      ){
 
-      groups[item.value] = {
-        count:0,
-        bestScore:0
-      };
+        groups[item.value] = {
+
+          count:0,
+
+          bestScore:0
+
+        };
+
+      }
+
+
+      groups[item.value]
+        .count++;
+
+
+      if(
+        item.score >
+        groups[item.value]
+          .bestScore
+      ){
+
+        groups[item.value]
+          .bestScore =
+          item.score;
+
+      }
 
     }
-
-    groups[item.value].count++;
-
-    if(
-      item.score >
-      groups[item.value].bestScore
-    ){
-
-      groups[item.value].bestScore =
-        item.score;
-
-    }
-
-  });
+  );
 
 
   let best = "";
 
-  let bestFinalScore = -1;
+  let bestFinalScore =
+    -1;
 
 
-  Object.keys(groups)
-    .forEach(function(value){
+  Object.keys(
+    groups
+  )
+  .forEach(
+    function(value){
 
       const data =
         groups[value];
+
 
       const finalScore =
         data.count * 1000 +
@@ -1873,7 +2266,8 @@ function extractVehicleNumber(text){
 
       }
 
-    });
+    }
+  );
 
 
   return best;
@@ -1885,14 +2279,19 @@ function extractVehicleNumber(text){
    VEHICLE CLASS
 ========================================= */
 
-function detectVehicleClass(text){
+function detectVehicleClass(
+  text
+){
 
   const upper =
-    normalizeOCRText(text)
-      .toUpperCase();
+    normalizeOCRText(
+      text
+    )
+    .toUpperCase();
 
 
   const codes = [
+
     "HGV",
     "MGV",
     "MPV",
@@ -1903,24 +2302,28 @@ function detectVehicleClass(text){
     "2WN",
     "3WT",
     "OTH"
+
   ];
 
 
   for(
-    let i=0;
-    i<codes.length;
+    let i = 0;
+    i < codes.length;
     i++
   ){
 
     const code =
       codes[i];
 
+
     if(
       new RegExp(
         "\\b" +
         code +
         "\\b"
-      ).test(upper)
+      ).test(
+        upper
+      )
     ){
 
       return code;
@@ -1930,8 +2333,9 @@ function detectVehicleClass(text){
   }
 
 
-  /* Description fallbacks */
-
+  /*
+    Description fallbacks
+  */
 
   if(
     upper.indexOf(
@@ -1945,11 +2349,21 @@ function detectVehicleClass(text){
 
 
   if(
-    upper.indexOf("M-CYCLE") >= 0 ||
-    upper.indexOf("MOTORCYCLE") >= 0 ||
-    upper.indexOf("MOTOR CYCLE") >= 0 ||
-    upper.indexOf("SCOOTER") >= 0 ||
-    upper.indexOf("TWO WHEELER") >= 0
+    upper.indexOf(
+      "M-CYCLE"
+    ) >= 0 ||
+    upper.indexOf(
+      "MOTORCYCLE"
+    ) >= 0 ||
+    upper.indexOf(
+      "MOTOR CYCLE"
+    ) >= 0 ||
+    upper.indexOf(
+      "SCOOTER"
+    ) >= 0 ||
+    upper.indexOf(
+      "TWO WHEELER"
+    ) >= 0
   ){
 
     return "2WN";
@@ -1958,9 +2372,15 @@ function detectVehicleClass(text){
 
 
   if(
-    upper.indexOf("THREE WHEELER") >= 0 ||
-    upper.indexOf("AUTO RICKSHAW") >= 0 ||
-    upper.indexOf("AUTORICKSHAW") >= 0
+    upper.indexOf(
+      "THREE WHEELER"
+    ) >= 0 ||
+    upper.indexOf(
+      "AUTO RICKSHAW"
+    ) >= 0 ||
+    upper.indexOf(
+      "AUTORICKSHAW"
+    ) >= 0
   ){
 
     return "3WT";
@@ -1969,7 +2389,9 @@ function detectVehicleClass(text){
 
 
   if(
-    upper.indexOf("BUS") >= 0
+    upper.indexOf(
+      "BUS"
+    ) >= 0
   ){
 
     return "HPV";
@@ -1978,10 +2400,18 @@ function detectVehicleClass(text){
 
 
   if(
-    upper.indexOf("TRACTOR") >= 0 ||
-    upper.indexOf("PICK-UP") >= 0 ||
-    upper.indexOf("PICK UP") >= 0 ||
-    upper.indexOf("GOODS VEHICLE") >= 0
+    upper.indexOf(
+      "TRACTOR"
+    ) >= 0 ||
+    upper.indexOf(
+      "PICK-UP"
+    ) >= 0 ||
+    upper.indexOf(
+      "PICK UP"
+    ) >= 0 ||
+    upper.indexOf(
+      "GOODS VEHICLE"
+    ) >= 0
   ){
 
     return "LGV";
@@ -1990,8 +2420,12 @@ function detectVehicleClass(text){
 
 
   if(
-    upper.indexOf("MOTOR CAR") >= 0 ||
-    upper.indexOf("CAR") >= 0
+    upper.indexOf(
+      "MOTOR CAR"
+    ) >= 0 ||
+    upper.indexOf(
+      "CAR"
+    ) >= 0
   ){
 
     return "LMV";
@@ -2005,14 +2439,16 @@ function detectVehicleClass(text){
 
 
 /* =========================================
-   EXTRACT ALL OCR DATA
+   EXTRACT OCR DATA
 ========================================= */
 
 function extractOCRData(){
 
   const text =
     document
-      .getElementById("ocrText")
+      .getElementById(
+        "ocrText"
+      )
       .value;
 
 
@@ -2021,76 +2457,98 @@ function extractOCRData(){
   }
 
 
-  /* VEHICLE NUMBER */
+  /*
+    VEHICLE NUMBER
+  */
 
   const vehicleNumber =
-    extractVehicleNumber(text);
+    extractVehicleNumber(
+      text
+    );
 
 
   if(vehicleNumber){
 
     document
-      .getElementById("vehicleNumber")
+      .getElementById(
+        "vehicleNumber"
+      )
       .value =
       vehicleNumber;
 
   }
 
 
-  /* REGISTRATION */
+  /*
+    REGISTRATION
+  */
 
   const registrationDate =
     findValueAfterLabels(
       text,
       [
+
         "REGISTRATION DATE",
         "REGISTRATION DT",
         "REGN DATE",
         "REGN DT",
         "REG DATE"
+
       ]
     );
 
 
   document
-    .getElementById("registrationDate")
+    .getElementById(
+      "registrationDate"
+    )
     .value =
     registrationDate;
 
 
-  /* FITNESS */
+  /*
+    FITNESS
+  */
 
   const fitnessExpiry =
     findValueAfterLabels(
       text,
       [
+
         "FITNESS VALID UPTO",
         "FITNESS VALID UP TO",
         "FITNESS VALID",
         "FITNESS EXPIRY",
         "FITNESS EXPIRY DATE",
         "FITNESS/REGN"
+
       ]
     );
 
 
   document
-    .getElementById("fitnessExpiry")
+    .getElementById(
+      "fitnessExpiry"
+    )
     .value =
     fitnessExpiry;
 
 
-  /* INSURANCE */
+  /*
+    INSURANCE
+  */
 
   let insuranceExpiry =
     findValueAfterLabels(
       text,
       [
+
         "INSURANCE VALID UPTO",
         "INSURANCE VALID UP TO",
         "INSURANCE VALID",
         "INSURANCE EXPIRY",
         "INSURANCE VALIDITY"
+
       ]
     );
 
@@ -2106,29 +2564,40 @@ function extractOCRData(){
 
 
   document
-    .getElementById("insuranceExpiry")
+    .getElementById(
+      "insuranceExpiry"
+    )
     .value =
     insuranceExpiry;
 
 
-  /* TAX */
+  /*
+    TAX
+  */
 
   const taxExpiry =
-    findTaxValue(text);
+    findTaxValue(
+      text
+    );
 
 
   document
-    .getElementById("taxExpiry")
+    .getElementById(
+      "taxExpiry"
+    )
     .value =
     taxExpiry;
 
 
-  /* PUCC */
+  /*
+    PUCC
+  */
 
   const puccExpiry =
     findValueAfterLabels(
       text,
       [
+
         "PUCC VALID UPTO",
         "PUCC VALID UP TO",
         "PUC VALID UPTO",
@@ -2138,42 +2607,55 @@ function extractOCRData(){
         "POLLUTION UNDER CONTROL",
         "PUCC",
         "PUC"
+
       ]
     );
 
 
   document
-    .getElementById("puccExpiry")
+    .getElementById(
+      "puccExpiry"
+    )
     .value =
     puccExpiry;
 
 
-  /* PERMIT */
+  /*
+    PERMIT
+  */
 
   const permitExpiry =
     findValueAfterLabels(
       text,
       [
+
         "PERMIT VALID UPTO",
         "PERMIT VALID UP TO",
         "PERMIT VALID",
         "PERMIT EXPIRY",
         "PERMIT EXPIRY DATE",
         "PERMIT"
+
       ]
     );
 
 
   document
-    .getElementById("permitExpiry")
+    .getElementById(
+      "permitExpiry"
+    )
     .value =
     permitExpiry;
 
 
-  /* VEHICLE CLASS */
+  /*
+    VEHICLE CLASS
+  */
 
   const vehicleClass =
-    detectVehicleClass(text);
+    detectVehicleClass(
+      text
+    );
 
 
   if(vehicleClass){
@@ -2191,7 +2673,9 @@ function extractOCRData(){
    CREATE ENHANCED IMAGE
 ========================================= */
 
-function createEnhancedImage(file){
+function createEnhancedImage(
+  file
+){
 
   return new Promise(
     function(resolve,reject){
@@ -2217,13 +2701,17 @@ function createEnhancedImage(file){
                 img.height;
 
 
-              if(width < 1800){
+              if(
+                width < 1800
+              ){
 
                 const scale =
                   1800 / width;
 
+
                 width =
                   1800;
+
 
                 height =
                   Math.round(
@@ -2237,6 +2725,7 @@ function createEnhancedImage(file){
                 document.createElement(
                   "canvas"
                 );
+
 
               canvas.width =
                 width;
@@ -2274,9 +2763,9 @@ function createEnhancedImage(file){
 
 
               for(
-                let i=0;
-                i<data.length;
-                i+=4
+                let i = 0;
+                i < data.length;
+                i += 4
               ){
 
                 const gray =
@@ -2319,7 +2808,9 @@ function createEnhancedImage(file){
 
                   if(blob){
 
-                    resolve(blob);
+                    resolve(
+                      blob
+                    );
 
                   }else{
 
@@ -2342,6 +2833,7 @@ function createEnhancedImage(file){
           img.onerror =
             reject;
 
+
           img.src =
             e.target.result;
 
@@ -2352,7 +2844,9 @@ function createEnhancedImage(file){
         reject;
 
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(
+        file
+      );
 
     }
   );
@@ -2361,7 +2855,7 @@ function createEnhancedImage(file){
 
 
 /* =========================================
-   TESSERACT OCR
+   RECOGNIZE OCR
 ========================================= */
 
 async function recognizeOCR(
@@ -2375,6 +2869,7 @@ async function recognizeOCR(
       image,
       "eng",
       {
+
         logger:function(info){
 
           if(
@@ -2384,13 +2879,18 @@ async function recognizeOCR(
 
             const local =
               Math.round(
-                (info.progress || 0) * 100
+                (
+                  info.progress ||
+                  0
+                ) * 100
               );
 
 
             const base =
-              ((passNumber - 1) /
-                totalPasses) * 100;
+              (
+                (passNumber - 1) /
+                totalPasses
+              ) * 100;
 
 
             const step =
@@ -2401,7 +2901,9 @@ async function recognizeOCR(
             const total =
               Math.round(
                 base +
-                local * step / 100
+                local *
+                step /
+                100
               );
 
 
@@ -2419,11 +2921,15 @@ async function recognizeOCR(
           }
 
         }
+
       }
     );
 
 
-  return result.data.text || "";
+  return (
+    result.data.text ||
+    ""
+  );
 
 }
 
@@ -2452,7 +2958,8 @@ async function startOCR(){
     );
 
 
-  btn.disabled = true;
+  btn.disabled =
+    true;
 
 
   document
@@ -2514,7 +3021,6 @@ async function startOCR(){
     /*
       STEP 3
       Enhanced image again
-      High quality pass
     */
 
     const enhanced2 =
@@ -2532,7 +3038,7 @@ async function startOCR(){
 
 
     /*
-      Combine all OCR passes
+      Combine all passes
     */
 
     const combined =
@@ -2544,7 +3050,9 @@ async function startOCR(){
 
 
     document
-      .getElementById("ocrText")
+      .getElementById(
+        "ocrText"
+      )
       .value =
       combined;
 
@@ -2616,7 +3124,10 @@ async function loadVehicle(){
       await supabaseClient
         .from("vehicles")
         .select("*")
-        .eq("id", editingId)
+        .eq(
+          "id",
+          editingId
+        )
         .single();
 
 
@@ -2635,7 +3146,8 @@ async function loadVehicle(){
         "customerName"
       )
       .value =
-      data.customer_name || "";
+      data.customer_name ||
+      "";
 
 
     document
@@ -2653,7 +3165,8 @@ async function loadVehicle(){
         "vehicleNumber"
       )
       .value =
-      data.vehicle_number || "";
+      data.vehicle_number ||
+      "";
 
 
     document
@@ -2661,7 +3174,8 @@ async function loadVehicle(){
         "registrationDate"
       )
       .value =
-      data.registration_date || "";
+      data.registration_date ||
+      "";
 
 
     document
@@ -2669,7 +3183,8 @@ async function loadVehicle(){
         "fitnessExpiry"
       )
       .value =
-      data.fitness_expiry || "";
+      data.fitness_expiry ||
+      "";
 
 
     document
@@ -2677,7 +3192,8 @@ async function loadVehicle(){
         "insuranceExpiry"
       )
       .value =
-      data.insurance_expiry || "";
+      data.insurance_expiry ||
+      "";
 
 
     document
@@ -2685,7 +3201,8 @@ async function loadVehicle(){
         "taxExpiry"
       )
       .value =
-      data.tax_expiry || "";
+      data.tax_expiry ||
+      "";
 
 
     document
@@ -2693,7 +3210,8 @@ async function loadVehicle(){
         "puccExpiry"
       )
       .value =
-      data.pucc_expiry || "";
+      data.pucc_expiry ||
+      "";
 
 
     document
@@ -2701,7 +3219,8 @@ async function loadVehicle(){
         "permitExpiry"
       )
       .value =
-      data.permit_expiry || "";
+      data.permit_expiry ||
+      "";
 
 
     document
@@ -2709,10 +3228,13 @@ async function loadVehicle(){
         "ocrText"
       )
       .value =
-      data.ocr_text || "";
+      data.ocr_text ||
+      "";
 
 
-    if(data.vehicle_class){
+    if(
+      data.vehicle_class
+    ){
 
       selectVehicleClass(
         data.vehicle_class
@@ -2731,15 +3253,19 @@ async function loadVehicle(){
       null;
 
 
-    if(data.photo_url){
+    if(
+      data.photo_url
+    ){
 
       const preview =
         document.getElementById(
           "preview"
         );
 
+
       preview.src =
         data.photo_url;
+
 
       preview.style.display =
         "block";
@@ -2754,11 +3280,13 @@ async function loadVehicle(){
       .textContent =
       "✏️ Update Vehicle";
 
+
   }catch(error){
 
     console.error(
       error
     );
+
 
     showMessage(
       "Vehicle load failed: " +
@@ -2811,21 +3339,28 @@ async function uploadVehiclePhoto(
   } =
     await supabaseClient
       .storage
-      .from("vehicle-photos")
+      .from(
+        "vehicle-photos"
+      )
       .upload(
         filePath,
         file,
         {
+
           upsert:false,
+
           contentType:
             file.type ||
             "image/jpeg"
+
         }
       );
 
 
   if(error){
+
     throw error;
+
   }
 
 
@@ -2834,15 +3369,22 @@ async function uploadVehiclePhoto(
   } =
     supabaseClient
       .storage
-      .from("vehicle-photos")
+      .from(
+        "vehicle-photos"
+      )
       .getPublicUrl(
         filePath
       );
 
 
   return {
-    path:filePath,
-    url:data.publicUrl
+
+    path:
+      filePath,
+
+    url:
+      data.publicUrl
+
   };
 
 }
@@ -2866,7 +3408,9 @@ async function deleteOldPhoto(
   } =
     await supabaseClient
       .storage
-      .from("vehicle-photos")
+      .from(
+        "vehicle-photos"
+      )
       .remove([
         path
       ]);
@@ -3008,8 +3552,10 @@ async function saveVehicle(){
         "error"
       );
 
+
       saveBtn.disabled =
         false;
+
 
       return;
 
@@ -3019,13 +3565,13 @@ async function saveVehicle(){
     let photoUrl =
       currentPhotoUrl;
 
+
     let photoPath =
       oldPhotoPath;
 
 
     /*
-      New photo:
-      upload first.
+      New photo upload
     */
 
     if(selectedFile){
@@ -3039,6 +3585,7 @@ async function saveVehicle(){
 
       photoUrl =
         uploaded.url;
+
 
       photoPath =
         uploaded.path;
@@ -3093,81 +3640,40 @@ async function saveVehicle(){
     let result;
 
 
-    if(editingId){
+    /* =====================================
+       EDIT
+    ===================================== */
 
-      /*
-        UPDATE
-      */
+    if(editingId){
 
       result =
         await supabaseClient
           .from("vehicles")
-          .update(vehicleData)
+          .update(
+            vehicleData
+          )
           .eq(
             "id",
             editingId
           );
 
 
-    }else{
+      if(result.error){
 
-      /*
-        Check same vehicle
-      */
+        throw result.error;
 
-      const {
-        data:existing
-      } =
-        await supabaseClient
-          .from("vehicles")
-          .select(
-            "id,photo_path"
-          )
-          .eq(
-            "vehicle_number",
-            vehicleNumber
-          )
-          .maybeSingle();
+      }
 
 
-      if(existing){
+      if(
+        selectedFile &&
+        oldPhotoPath &&
+        oldPhotoPath !== photoPath
+      ){
 
-        /*
-          Same vehicle:
-          delete old photo after
-          successful DB update.
-        */
-
-        const oldPath =
-          existing.photo_path;
-
-
-        result =
-          await supabaseClient
-            .from("vehicles")
-            .update(vehicleData)
-            .eq(
-              "id",
-              existing.id
-            );
-
-
-        if(result.error){
-          throw result.error;
-        }
-
-
-        if(
-          selectedFile &&
-          oldPath &&
-          oldPath !== photoPath
-        ){
-
-          await deleteOldPhoto(
-            oldPath
-          );
-
-        }
+        await deleteOldPhoto(
+          oldPhotoPath
+        );
 
 
         showMessage(
@@ -3175,50 +3681,100 @@ async function saveVehicle(){
           "success"
         );
 
+      }else{
 
-        saveBtn.disabled =
-          false;
-
-        return;
+        showMessage(
+          "Vehicle updated successfully.",
+          "success"
+        );
 
       }
 
 
-      /*
-        New vehicle
-      */
+      selectedFile =
+        null;
+
+
+      currentPhotoUrl =
+        photoUrl;
+
+
+      oldPhotoPath =
+        photoPath;
+
+
+      document
+        .getElementById(
+          "photoInput"
+        )
+        .value =
+        "";
+
+
+      saveBtn.disabled =
+        false;
+
+
+      return;
+
+    }
+
+
+    /* =====================================
+       CHECK SAME VEHICLE
+    ===================================== */
+
+    const {
+      data:existing
+    } =
+      await supabaseClient
+        .from("vehicles")
+        .select(
+          "id,photo_path"
+        )
+        .eq(
+          "vehicle_number",
+          vehicleNumber
+        )
+        .maybeSingle();
+
+
+    if(existing){
+
+      const oldPath =
+        existing.photo_path;
+
 
       result =
         await supabaseClient
           .from("vehicles")
-          .insert([
+          .update(
             vehicleData
-          ]);
-
-    }
-
-
-    if(result.error){
-      throw result.error;
-    }
+          )
+          .eq(
+            "id",
+            existing.id
+          );
 
 
-    /*
-      Edit mode:
-      delete old photo only after
-      DB update succeeded.
-    */
+      if(result.error){
 
-    if(
-      editingId &&
-      selectedFile &&
-      oldPhotoPath &&
-      oldPhotoPath !== photoPath
-    ){
+        throw result.error;
 
-      await deleteOldPhoto(
-        oldPhotoPath
-      );
+      }
+
+
+      if(
+        selectedFile &&
+        oldPath &&
+        oldPath !== photoPath
+      ){
+
+        await deleteOldPhoto(
+          oldPath
+        );
+
+      }
 
 
       showMessage(
@@ -3226,24 +3782,71 @@ async function saveVehicle(){
         "success"
       );
 
-    }else{
 
-      showMessage(
-        editingId
-          ? "Vehicle updated successfully."
-          : "Vehicle saved successfully.",
-        "success"
-      );
+      selectedFile =
+        null;
+
+
+      currentPhotoUrl =
+        photoUrl;
+
+
+      oldPhotoPath =
+        photoPath;
+
+
+      document
+        .getElementById(
+          "photoInput"
+        )
+        .value =
+        "";
+
+
+      saveBtn.disabled =
+        false;
+
+
+      return;
 
     }
 
 
-    /*
-      Clear selected file
-    */
+    /* =====================================
+       NEW VEHICLE
+    ===================================== */
+
+    result =
+      await supabaseClient
+        .from("vehicles")
+        .insert([
+          vehicleData
+        ]);
+
+
+    if(result.error){
+
+      throw result.error;
+
+    }
+
+
+    showMessage(
+      "Vehicle saved successfully.",
+      "success"
+    );
+
 
     selectedFile =
       null;
+
+
+    currentPhotoUrl =
+      photoUrl;
+
+
+    oldPhotoPath =
+      photoPath;
 
 
     document
@@ -3252,13 +3855,6 @@ async function saveVehicle(){
       )
       .value =
       "";
-
-
-    currentPhotoUrl =
-      photoUrl;
-
-    oldPhotoPath =
-      photoPath;
 
 
   }catch(error){
