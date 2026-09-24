@@ -361,30 +361,16 @@ body::before{
   box-shadow:0 2px 8px rgba(0,0,0,.07);
 
   align-items:stretch;
-
-  transition:
-    background .2s ease,
-    border-color .2s ease,
-    box-shadow .2s ease;
 }
 
 
 /* =========================================
    CARD HIGHLIGHT DISABLED
+   ONLY DATE WILL CHANGE COLOR
 ========================================= */
 
-.vehicle-card.expired-highlight{
-  background:white;
-  border-color:#ddd;
-  box-shadow:0 2px 8px rgba(0,0,0,.07);
-}
-
-.vehicle-card.near-highlight{
-  background:white;
-  border-color:#ddd;
-  box-shadow:0 2px 8px rgba(0,0,0,.07);
-}
-
+.vehicle-card.expired-highlight,
+.vehicle-card.near-highlight,
 .vehicle-card.soon-highlight{
   background:white;
   border-color:#ddd;
@@ -507,14 +493,10 @@ body::before{
 
 .action-column button{
   width:100%;
-
   border:none;
   border-radius:6px;
-
   padding:8px 5px;
-
   cursor:pointer;
-
   font-size:12px;
   font-weight:bold;
 }
@@ -684,9 +666,7 @@ body::before{
       1fr;
 
     gap:4px;
-
     padding:8px 6px;
-
     font-size:9px;
   }
 
@@ -695,7 +675,6 @@ body::before{
   }
 
   .vehicle-card{
-
     grid-template-columns:
       82px
       1.05fr
@@ -704,7 +683,6 @@ body::before{
       65px;
 
     gap:7px;
-
     padding:8px;
   }
 
@@ -745,7 +723,6 @@ body::before{
 @media(max-width:430px){
 
   .vehicle-card{
-
     grid-template-columns:
       70px
       1fr
@@ -754,7 +731,6 @@ body::before{
       58px;
 
     gap:5px;
-
     padding:6px;
   }
 
@@ -813,9 +789,7 @@ body::before{
       1fr;
 
     gap:2px;
-
     padding:7px 3px;
-
     font-size:7px;
   }
 
@@ -892,276 +866,275 @@ body::before{
 <main class="container">
 
 
-  <!-- ADD VEHICLE -->
+<!-- ADD VEHICLE -->
 
-  <div class="top-row">
+<div class="top-row">
 
-    <button
-      class="add-btn"
-      id="addVehicleBtn"
-      onclick="addVehicle()"
-    >
-      ＋ Add Vehicle
-    </button>
-
-  </div>
-
-
-  <!-- MAIN STATS -->
-
-  <div class="stats">
-
-    <div class="stat-card">
-
-      <div
-        class="stat-title"
-        id="totalTitle"
-      >
-        Total Vehicles
-      </div>
-
-      <div
-        class="stat-value"
-        id="totalVehicles"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="stat-card">
-
-      <div
-        class="stat-title"
-        id="expiringTitle"
-      >
-        Expiring Soon
-      </div>
-
-      <div
-        class="stat-value"
-        id="expiringVehicles"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="stat-card">
-
-      <div
-        class="stat-title"
-        id="expiredTitle"
-      >
-        Expired
-      </div>
-
-      <div
-        class="stat-value"
-        id="expiredVehicles"
-      >
-        0
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- TODAY EXACT EXPIRY - 5 BOXES -->
-
-  <div class="document-expiry-stats">
-
-    <div class="document-stat-box">
-
-      <div class="document-stat-title">
-        Fitness
-      </div>
-
-      <div
-        class="document-stat-value"
-        id="fitnessCount"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="document-stat-box">
-
-      <div class="document-stat-title">
-        Insurance
-      </div>
-
-      <div
-        class="document-stat-value"
-        id="insuranceCount"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="document-stat-box">
-
-      <div class="document-stat-title">
-        PUC
-      </div>
-
-      <div
-        class="document-stat-value"
-        id="pucCount"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="document-stat-box">
-
-      <div class="document-stat-title">
-        Tax
-      </div>
-
-      <div
-        class="document-stat-value"
-        id="taxCount"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="document-stat-box">
-
-      <div class="document-stat-title">
-        Permit
-      </div>
-
-      <div
-        class="document-stat-value"
-        id="permitCount"
-      >
-        0
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- TODAY EXPIRY VEHICLES -->
-
-  <div class="today-expiry-box">
-
-    <div
-      class="today-expiry-header"
-      id="todayExpiryTitle"
-    >
-      Today's Expiry Vehicles
-    </div>
-
-    <div
-      class="today-expiry-scroll"
-      id="todayExpiryList"
-    ></div>
-
-  </div>
-
-
-  <!-- SEARCH -->
-
-  <div class="search-box">
-
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Search vehicle number, customer, mobile or class..."
-      oninput="handleSearch()"
-    >
-
-  </div>
-
-
-  <!-- VEHICLE LIST TITLE -->
-
-  <div
-    class="list-title"
-    id="vehicleListTitle"
+  <button
+    class="add-btn"
+    id="addVehicleBtn"
+    onclick="addVehicle()"
   >
-    Vehicle List
+    ＋ Add Vehicle
+  </button>
+
+</div>
+
+
+<!-- MAIN STATS -->
+
+<div class="stats">
+
+  <div class="stat-card">
+
+    <div
+      class="stat-title"
+      id="totalTitle"
+    >
+      Total Vehicles
+    </div>
+
+    <div
+      class="stat-value"
+      id="totalVehicles"
+    >
+      0
+    </div>
+
   </div>
 
 
-  <!-- VEHICLE LIST -->
+  <div class="stat-card">
+
+    <div
+      class="stat-title"
+      id="expiringTitle"
+    >
+      Expiring Soon
+    </div>
+
+    <div
+      class="stat-value"
+      id="expiringVehicles"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    <div
+      class="stat-title"
+      id="expiredTitle"
+    >
+      Expired
+    </div>
+
+    <div
+      class="stat-value"
+      id="expiredVehicles"
+    >
+      0
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TODAY EXPIRY - 5 BOXES -->
+
+<div class="document-expiry-stats">
+
+  <div class="document-stat-box">
+
+    <div class="document-stat-title">
+      Fitness
+    </div>
+
+    <div
+      class="document-stat-value"
+      id="fitnessCount"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="document-stat-box">
+
+    <div class="document-stat-title">
+      Insurance
+    </div>
+
+    <div
+      class="document-stat-value"
+      id="insuranceCount"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="document-stat-box">
+
+    <div class="document-stat-title">
+      PUC
+    </div>
+
+    <div
+      class="document-stat-value"
+      id="pucCount"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="document-stat-box">
+
+    <div class="document-stat-title">
+      Tax
+    </div>
+
+    <div
+      class="document-stat-value"
+      id="taxCount"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="document-stat-box">
+
+    <div class="document-stat-title">
+      Permit
+    </div>
+
+    <div
+      class="document-stat-value"
+      id="permitCount"
+    >
+      0
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TODAY EXPIRY VEHICLES -->
+
+<div class="today-expiry-box">
 
   <div
-    id="vehicleList"
-    class="vehicle-list"
+    class="today-expiry-header"
+    id="todayExpiryTitle"
+  >
+    Today's Expiry Vehicles
+  </div>
+
+  <div
+    class="today-expiry-scroll"
+    id="todayExpiryList"
   ></div>
 
-
-  <!-- LOADING -->
-
-  <div
-    id="loadingMessage"
-    class="message"
-    style="display:none;"
-  >
-    Loading vehicles...
-  </div>
+</div>
 
 
-  <!-- EMPTY -->
+<!-- SEARCH -->
 
-  <div
-    id="emptyMessage"
-    class="message"
-    style="display:none;"
-  >
-    No vehicles found.
-  </div>
+<div class="search-box">
 
-
-  <!-- PAGINATION -->
-
-  <div
-    class="pagination"
-    id="pagination"
-    style="display:none;"
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search vehicle number, customer, mobile or class..."
+    oninput="handleSearch()"
   >
 
-    <button
-      id="previousBtn"
-      onclick="previousPage()"
-    >
-      Previous
-    </button>
+</div>
 
-    <span id="pageInfo">
-      Page 1 / 1
-    </span>
 
-    <button
-      id="nextBtn"
-      onclick="nextPage()"
-    >
-      Next
-    </button>
+<!-- VEHICLE LIST TITLE -->
 
-  </div>
+<div
+  class="list-title"
+  id="vehicleListTitle"
+>
+  Vehicle List
+</div>
+
+
+<!-- VEHICLE LIST -->
+
+<div
+  id="vehicleList"
+  class="vehicle-list"
+></div>
+
+
+<!-- LOADING -->
+
+<div
+  id="loadingMessage"
+  class="message"
+  style="display:none;"
+>
+  Loading vehicles...
+</div>
+
+
+<!-- EMPTY -->
+
+<div
+  id="emptyMessage"
+  class="message"
+  style="display:none;"
+>
+  No vehicles found.
+</div>
+
+
+<!-- PAGINATION -->
+
+<div
+  class="pagination"
+  id="pagination"
+  style="display:none;"
+>
+
+  <button
+    id="previousBtn"
+    onclick="previousPage()"
+  >
+    Previous
+  </button>
+
+  <span id="pageInfo">
+    Page 1 / 1
+  </span>
+
+  <button
+    id="nextBtn"
+    onclick="nextPage()"
+  >
+    Next
+  </button>
+
+</div>
 
 </main>
 
 
 <script>
-
 
 /* =========================================
    SUPABASE
@@ -1193,7 +1166,7 @@ const VEHICLE_CLASS_ASSET_BASE =
 
 /* =========================================
    VEHICLE CLASS PHOTOS
-   MGV ADDED
+   ALL PNG
 ========================================= */
 
 const vehicleClassPhotos = {
@@ -1201,20 +1174,20 @@ const vehicleClassPhotos = {
   HGV:
     VEHICLE_CLASS_ASSET_BASE + "hgv.png",
 
+  LGV:
+    VEHICLE_CLASS_ASSET_BASE + "lgv.png",
+
   MGV:
     VEHICLE_CLASS_ASSET_BASE + "mgv.png",
 
-  LGV:
-    VEHICLE_CLASS_ASSET_BASE + "Igv.png",
-
   LMV:
-    VEHICLE_CLASS_ASSET_BASE + "Imv.png",
+    VEHICLE_CLASS_ASSET_BASE + "lmv.png",
 
   LPV:
-    VEHICLE_CLASS_ASSET_BASE + "Ipv.png",
+    VEHICLE_CLASS_ASSET_BASE + "lpv.png",
 
   HPV:
-    VEHICLE_CLASS_ASSET_BASE + "bus.png",
+    VEHICLE_CLASS_ASSET_BASE + "hpv.png",
 
   "2WN":
     VEHICLE_CLASS_ASSET_BASE + "2wn.png",
@@ -1236,148 +1209,104 @@ const translations = {
 
   en: {
 
-    total:
-      "Total Vehicles",
+    total:"Total Vehicles",
 
-    expiring:
-      "Expiring Soon",
+    expiring:"Expiring Soon",
 
-    expired:
-      "Expired",
+    expired:"Expired",
 
-    vehicleList:
-      "Vehicle List",
+    vehicleList:"Vehicle List",
 
-    todayExpiry:
-      "Today's Expiry Vehicles",
+    todayExpiry:"Today's Expiry Vehicles",
 
-    addVehicle:
-      "＋ Add Vehicle",
+    addVehicle:"＋ Add Vehicle",
 
     search:
       "Search vehicle number, customer, mobile or class...",
 
-    loading:
-      "Loading vehicles...",
+    loading:"Loading vehicles...",
 
-    noVehicles:
-      "No vehicles found.",
+    noVehicles:"No vehicles found.",
 
-    noTodayExpiry:
-      "No expiry today.",
+    noTodayExpiry:"No expiry today.",
 
-    previous:
-      "Previous",
+    previous:"Previous",
 
-    next:
-      "Next",
+    next:"Next",
 
-    edit:
-      "Edit",
+    edit:"Edit",
 
-    delete:
-      "Delete",
+    delete:"Delete",
 
-    whatsapp:
-      "WhatsApp",
+    whatsapp:"WhatsApp",
 
-    registration:
-      "Registration",
+    registration:"Registration",
 
-    fitness:
-      "Fitness",
+    fitness:"Fitness",
 
-    insurance:
-      "Insurance",
+    insurance:"Insurance",
 
-    tax:
-      "Tax",
+    tax:"Tax",
 
-    pucc:
-      "PUC",
+    pucc:"PUC",
 
-    permit:
-      "Permit",
+    permit:"Permit",
 
-    page:
-      "Page",
+    page:"Page",
 
-    noPhoto:
-      "No Photo"
+    noPhoto:"No Photo"
 
   },
 
 
   gu: {
 
-    total:
-      "કુલ વાહનો",
+    total:"કુલ વાહનો",
 
-    expiring:
-      "ટૂંક સમયમાં પૂર્ણ",
+    expiring:"ટૂંક સમયમાં પૂર્ણ",
 
-    expired:
-      "સમાપ્ત",
+    expired:"સમાપ્ત",
 
-    vehicleList:
-      "વાહન યાદી",
+    vehicleList:"વાહન યાદી",
 
-    todayExpiry:
-      "આજની એક્સપાયરીવાળા વાહનો",
+    todayExpiry:"આજની એક્સપાયરીવાળા વાહનો",
 
-    addVehicle:
-      "＋ વાહન ઉમેરો",
+    addVehicle:"＋ વાહન ઉમેરો",
 
     search:
       "વાહન નંબર, ગ્રાહક, મોબાઇલ અથવા ક્લાસ શોધો...",
 
-    loading:
-      "વાહનો લોડ થઈ રહ્યા છે...",
+    loading:"વાહનો લોડ થઈ રહ્યા છે...",
 
-    noVehicles:
-      "કોઈ વાહન મળ્યું નથી.",
+    noVehicles:"કોઈ વાહન મળ્યું નથી.",
 
-    noTodayExpiry:
-      "આજે કોઈ એક્સપાયરી નથી.",
+    noTodayExpiry:"આજે કોઈ એક્સપાયરી નથી.",
 
-    previous:
-      "પાછળ",
+    previous:"પાછળ",
 
-    next:
-      "આગળ",
+    next:"આગળ",
 
-    edit:
-      "Edit",
+    edit:"Edit",
 
-    delete:
-      "Delete",
+    delete:"Delete",
 
-    whatsapp:
-      "WhatsApp",
+    whatsapp:"WhatsApp",
 
-    registration:
-      "રજીસ્ટ્રેશન",
+    registration:"રજીસ્ટ્રેશન",
 
-    fitness:
-      "Fitness",
+    fitness:"Fitness",
 
-    insurance:
-      "Insurance",
+    insurance:"Insurance",
 
-    tax:
-      "Tax",
+    tax:"Tax",
 
-    pucc:
-      "PUC",
+    pucc:"PUC",
 
-    permit:
-      "Permit",
+    permit:"Permit",
 
-    page:
-      "પેજ",
+    page:"પેજ",
 
-    noPhoto:
-      "ફોટો નથી"
+    noPhoto:"ફોટો નથી"
 
   }
 
@@ -1405,7 +1334,6 @@ function setLanguage(language){
 
   currentLanguage = language;
 
-
   document
     .getElementById("englishBtn")
     .classList.toggle(
@@ -1413,14 +1341,12 @@ function setLanguage(language){
       language === "en"
     );
 
-
   document
     .getElementById("gujaratiBtn")
     .classList.toggle(
       "active",
       language === "gu"
     );
-
 
   updateLanguage();
 
@@ -1436,71 +1362,38 @@ function updateLanguage(){
   const t =
     translations[currentLanguage];
 
+  document.getElementById("totalTitle")
+    .textContent = t.total;
 
-  document
-    .getElementById("totalTitle")
-    .textContent =
-      t.total;
+  document.getElementById("expiringTitle")
+    .textContent = t.expiring;
 
+  document.getElementById("expiredTitle")
+    .textContent = t.expired;
 
-  document
-    .getElementById("expiringTitle")
-    .textContent =
-      t.expiring;
+  document.getElementById("vehicleListTitle")
+    .textContent = t.vehicleList;
 
+  document.getElementById("todayExpiryTitle")
+    .textContent = t.todayExpiry;
 
-  document
-    .getElementById("expiredTitle")
-    .textContent =
-      t.expired;
+  document.getElementById("addVehicleBtn")
+    .textContent = t.addVehicle;
 
+  document.getElementById("searchInput")
+    .placeholder = t.search;
 
-  document
-    .getElementById("vehicleListTitle")
-    .textContent =
-      t.vehicleList;
+  document.getElementById("loadingMessage")
+    .textContent = t.loading;
 
+  document.getElementById("emptyMessage")
+    .textContent = t.noVehicles;
 
-  document
-    .getElementById("todayExpiryTitle")
-    .textContent =
-      t.todayExpiry;
+  document.getElementById("previousBtn")
+    .textContent = t.previous;
 
-
-  document
-    .getElementById("addVehicleBtn")
-    .textContent =
-      t.addVehicle;
-
-
-  document
-    .getElementById("searchInput")
-    .placeholder =
-      t.search;
-
-
-  document
-    .getElementById("loadingMessage")
-    .textContent =
-      t.loading;
-
-
-  document
-    .getElementById("emptyMessage")
-    .textContent =
-      t.noVehicles;
-
-
-  document
-    .getElementById("previousBtn")
-    .textContent =
-      t.previous;
-
-
-  document
-    .getElementById("nextBtn")
-    .textContent =
-      t.next;
+  document.getElementById("nextBtn")
+    .textContent = t.next;
 
 }
 
@@ -1527,9 +1420,8 @@ function getVehicleClassPhoto(vehicle){
     String(
       vehicle.vehicle_class || ""
     )
-      .trim()
-      .toUpperCase();
-
+    .trim()
+    .toUpperCase();
 
   return (
     vehicleClassPhotos[
@@ -1550,22 +1442,17 @@ function parseDate(value){
     return null;
   }
 
-
   const str =
     String(value).trim();
-
 
   if(!str){
     return null;
   }
 
-
   if(
     str.toUpperCase() === "LTT"
   ){
-
     return null;
-
   }
 
 
@@ -1576,31 +1463,16 @@ function parseDate(value){
       /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
     );
 
-
   if(match){
-
-    const day =
-      Number(match[1]);
-
-    const month =
-      Number(match[2]) - 1;
-
-    const year =
-      Number(match[3]);
-
 
     const date =
       new Date(
-        year,
-        month,
-        day
+        Number(match[3]),
+        Number(match[2])-1,
+        Number(match[1])
       );
 
-
-    date.setHours(
-      0,0,0,0
-    );
-
+    date.setHours(0,0,0,0);
 
     return date;
 
@@ -1614,31 +1486,16 @@ function parseDate(value){
       /^(\d{4})-(\d{1,2})-(\d{1,2})/
     );
 
-
   if(match){
-
-    const year =
-      Number(match[1]);
-
-    const month =
-      Number(match[2]) - 1;
-
-    const day =
-      Number(match[3]);
-
 
     const date =
       new Date(
-        year,
-        month,
-        day
+        Number(match[1]),
+        Number(match[2])-1,
+        Number(match[3])
       );
 
-
-    date.setHours(
-      0,0,0,0
-    );
-
+    date.setHours(0,0,0,0);
 
     return date;
 
@@ -1648,22 +1505,17 @@ function parseDate(value){
   const date =
     new Date(str);
 
-
   if(
     !isNaN(
       date.getTime()
     )
   ){
 
-    date.setHours(
-      0,0,0,0
-    );
-
+    date.setHours(0,0,0,0);
 
     return date;
 
   }
-
 
   return null;
 
@@ -1680,44 +1532,34 @@ function displayDate(value){
     return "";
   }
 
-
   const str =
     String(value).trim();
-
 
   if(
     str.toUpperCase() === "LTT"
   ){
-
     return "LTT";
-
   }
-
 
   const date =
     parseDate(str);
 
-
   if(!date){
     return str;
   }
-
 
   const day =
     String(
       date.getDate()
     ).padStart(2,"0");
 
-
   const month =
     String(
       date.getMonth()+1
     ).padStart(2,"0");
 
-
   const year =
     date.getFullYear();
-
 
   return (
     day +
@@ -1739,25 +1581,18 @@ function daysUntil(value){
   const date =
     parseDate(value);
 
-
   if(!date){
     return null;
   }
 
-
   const today =
     new Date();
 
-
-  today.setHours(
-    0,0,0,0
-  );
-
+  today.setHours(0,0,0,0);
 
   const difference =
     date.getTime() -
     today.getTime();
-
 
   return Math.ceil(
     difference /
@@ -1768,19 +1603,42 @@ function daysUntil(value){
 
 
 /* =========================================
+   DOCUMENT-SPECIFIC HIGHLIGHT DAYS
+========================================= */
+
+const expiryHighlightDays = {
+
+  fitness_expiry:60,
+
+  insurance_expiry:30,
+
+  pucc_expiry:15,
+
+  tax_expiry:15,
+
+  permit_expiry:30
+
+};
+
+
+/* =========================================
    DATE COLOUR CLASS
 ========================================= */
 
-function getExpiryDateClass(value){
+function getExpiryDateClass(
+  value,
+  field
+){
 
   const days =
     daysUntil(value);
-
 
   if(days === null){
     return "";
   }
 
+
+  /* Expired */
 
   if(days < 0){
 
@@ -1789,16 +1647,18 @@ function getExpiryDateClass(value){
   }
 
 
-  if(days >= 0 && days <= 5){
+  /* Document-specific reminder */
+
+  const highlightDays =
+    expiryHighlightDays[field];
+
+
+  if(
+    highlightDays !== undefined &&
+    days <= highlightDays
+  ){
 
     return "near";
-
-  }
-
-
-  if(days >= 6 && days <= 15){
-
-    return "soon";
 
   }
 
@@ -1809,212 +1669,78 @@ function getExpiryDateClass(value){
 
 
 /* =========================================
-   EXPIRY STATUS
-========================================= */
-
-function getExpiryStatus(vehicle){
-
-  const fields = [
-
-    vehicle.fitness_expiry,
-
-    vehicle.insurance_expiry,
-
-    vehicle.pucc_expiry,
-
-    vehicle.permit_expiry
-
-  ];
-
-
-  const days =
-    fields
-      .map(daysUntil)
-      .filter(
-        value =>
-          value !== null
-      );
-
-
-  if(!days.length){
-
-    return "normal";
-
-  }
-
-
-  const minimum =
-    Math.min(...days);
-
-
-  if(minimum < 0){
-
-    return "expired";
-
-  }
-
-
-  if(minimum <= 10){
-
-    return "expiring";
-
-  }
-
-
-  return "normal";
-
-}
-
-
-/* =========================================
-   15-DAY LOGIC
+   EXPIRING SOON
+   USES NEW DOCUMENT LIMITS
 ========================================= */
 
 function isExpiring(vehicle){
 
-  const fields = [
+  for(
+    const field in expiryHighlightDays
+  ){
 
-    vehicle.fitness_expiry,
-
-    vehicle.insurance_expiry,
-
-    vehicle.pucc_expiry,
-
-    vehicle.permit_expiry
-
-  ];
-
-
-  return fields.some(
-
-    field => {
-
-      const days =
-        daysUntil(field);
-
-
-      return (
-
-        days !== null &&
-
-        days >= 0 &&
-
-        days <= 15
-
+    const days =
+      daysUntil(
+        vehicle[field]
       );
+
+    const limit =
+      expiryHighlightDays[field];
+
+    if(
+      days !== null &&
+      days >= 0 &&
+      days <= limit
+    ){
+
+      return true;
 
     }
 
-  );
+  }
 
-}
-
-
-function isExpired(vehicle){
-
-  const fields = [
-
-    vehicle.fitness_expiry,
-
-    vehicle.insurance_expiry,
-
-    vehicle.pucc_expiry,
-
-    vehicle.permit_expiry
-
-  ];
-
-
-  return fields.some(
-
-    field => {
-
-      const days =
-        daysUntil(field);
-
-
-      return (
-
-        days !== null &&
-
-        days < 0
-
-      );
-
-    }
-
-  );
+  return false;
 
 }
 
 
 /* =========================================
-   VEHICLE LIST HIGHLIGHT STATUS
+   EXPIRED
 ========================================= */
 
-function getVehicleHighlightClass(vehicle){
+function isExpired(vehicle){
 
-  const fields = [
+  for(
+    const field in expiryHighlightDays
+  ){
 
-    vehicle.fitness_expiry,
-
-    vehicle.insurance_expiry,
-
-    vehicle.pucc_expiry,
-
-    vehicle.tax_expiry,
-
-    vehicle.permit_expiry
-
-  ];
-
-
-  const days =
-    fields
-      .map(daysUntil)
-      .filter(
-        value =>
-          value !== null
+    const days =
+      daysUntil(
+        vehicle[field]
       );
 
+    if(
+      days !== null &&
+      days < 0
+    ){
 
-  if(!days.length){
+      return true;
 
-    return "";
-
-  }
-
-
-  const minimum =
-    Math.min(...days);
-
-
-  if(minimum < 0){
-
-    return "expired-highlight";
+    }
 
   }
 
+  return false;
 
-  if(
-    minimum >= 0 &&
-    minimum <= 5
-  ){
-
-    return "near-highlight";
-
-  }
+}
 
 
-  if(
-    minimum >= 6 &&
-    minimum <= 15
-  ){
+/* =========================================
+   VEHICLE CARD HIGHLIGHT
+   DISABLED - DATE ONLY
+========================================= */
 
-    return "soon-highlight";
-
-  }
-
+function getVehicleHighlightClass(){
 
   return "";
 
@@ -2035,7 +1761,6 @@ function countTodayExpiry(field){
         daysUntil(
           vehicle[field]
         );
-
 
       return days === 0;
 
@@ -2059,14 +1784,12 @@ function updateDocumentExpiryStats(){
         "fitness_expiry"
       );
 
-
   document
     .getElementById("insuranceCount")
     .textContent =
       countTodayExpiry(
         "insurance_expiry"
       );
-
 
   document
     .getElementById("pucCount")
@@ -2075,14 +1798,12 @@ function updateDocumentExpiryStats(){
         "pucc_expiry"
       );
 
-
   document
     .getElementById("taxCount")
     .textContent =
       countTodayExpiry(
         "tax_expiry"
       );
-
 
   document
     .getElementById("permitCount")
@@ -2095,7 +1816,7 @@ function updateDocumentExpiryStats(){
 
 
 /* =========================================
-   TODAY EXPIRY VEHICLE LIST
+   TODAY EXPIRY VEHICLES
 ========================================= */
 
 function renderTodayExpiryVehicles(){
@@ -2105,17 +1826,14 @@ function renderTodayExpiryVehicles(){
       "todayExpiryList"
     );
 
-
   if(!container){
     return;
   }
-
 
   const t =
     translations[
       currentLanguage
     ];
-
 
   const todayVehicles =
     allVehicles.filter(
@@ -2136,7 +1854,6 @@ function renderTodayExpiryVehicles(){
 
         ];
 
-
         return fields.some(
 
           field =>
@@ -2155,9 +1872,7 @@ function renderTodayExpiryVehicles(){
 
       `
         <div class="today-empty">
-
           ${t.noTodayExpiry}
-
         </div>
       `;
 
@@ -2173,67 +1888,52 @@ function renderTodayExpiryVehicles(){
       .map(vehicle => {
 
         const fitness =
-
           daysUntil(
             vehicle.fitness_expiry
           ) === 0
-
             ? displayDate(
                 vehicle.fitness_expiry
               )
-
             : "—";
 
 
         const insurance =
-
           daysUntil(
             vehicle.insurance_expiry
           ) === 0
-
             ? displayDate(
                 vehicle.insurance_expiry
               )
-
             : "—";
 
 
         const pucc =
-
           daysUntil(
             vehicle.pucc_expiry
           ) === 0
-
             ? displayDate(
                 vehicle.pucc_expiry
               )
-
             : "—";
 
 
         const tax =
-
           daysUntil(
             vehicle.tax_expiry
           ) === 0
-
             ? displayDate(
                 vehicle.tax_expiry
               )
-
             : "—";
 
 
         const permit =
-
           daysUntil(
             vehicle.permit_expiry
           ) === 0
-
             ? displayDate(
                 vehicle.permit_expiry
               )
-
             : "—";
 
 
@@ -2242,46 +1942,29 @@ function renderTodayExpiryVehicles(){
           <div class="today-expiry-row">
 
             <div class="today-vehicle-number">
-
               ${escapeHtml(
                 vehicle.vehicle_number || ""
               )}
-
             </div>
 
-
             <div class="today-expiry-item">
-
               ${escapeHtml(fitness)}
-
             </div>
 
-
             <div class="today-expiry-item">
-
               ${escapeHtml(insurance)}
-
             </div>
 
-
             <div class="today-expiry-item">
-
               ${escapeHtml(pucc)}
-
             </div>
 
-
             <div class="today-expiry-item">
-
               ${escapeHtml(tax)}
-
             </div>
 
-
             <div class="today-expiry-item">
-
               ${escapeHtml(permit)}
-
             </div>
 
           </div>
@@ -2303,20 +1986,15 @@ async function loadVehicles(){
 
   showLoading(true);
 
-
   try{
 
     const {
       data,
       error
     } =
-
       await supabaseClient
-
         .from("vehicles")
-
         .select("*")
-
         .order(
           "created_at",
           {
@@ -2340,7 +2018,6 @@ async function loadVehicles(){
     allVehicles =
       data || [];
 
-
     filteredVehicles =
       [...allVehicles];
 
@@ -2359,7 +2036,6 @@ async function loadVehicles(){
   }catch(error){
 
     console.error(error);
-
 
     document
       .getElementById("vehicleList")
@@ -2418,7 +2094,6 @@ function updateStats(){
       "totalVehicles"
     )
     .textContent =
-
       allVehicles.length;
 
 
@@ -2439,7 +2114,6 @@ function updateStats(){
       "expiringVehicles"
     )
     .textContent =
-
       expiring;
 
 
@@ -2448,7 +2122,6 @@ function updateStats(){
       "expiredVehicles"
     )
     .textContent =
-
       expired;
 
 }
@@ -2548,18 +2221,9 @@ function vehicleCard(vehicle){
     "";
 
 
-  /*
+  /* =====================================
      VEHICLE CLASS PHOTO
-
-     HGV  -> hgv.png
-     MGV  -> mgv.png
-     LGV  -> Igv.png
-     LMV  -> Imv.png
-     LPV  -> Ipv.png
-     HPV  -> bus.png
-     2WN  -> 2wn.png
-     3WT  -> 3wt.png
-  */
+  ===================================== */
 
   const photoUrl =
     getVehicleClassPhoto(
@@ -2604,48 +2268,47 @@ function vehicleCard(vehicle){
 
 
   /* =====================================
-     DATE COLOUR CLASSES
+     DOCUMENT-SPECIFIC DATE COLOUR
   ===================================== */
 
   const fitnessClass =
     getExpiryDateClass(
-      vehicle.fitness_expiry
+      vehicle.fitness_expiry,
+      "fitness_expiry"
     );
 
 
   const insuranceClass =
     getExpiryDateClass(
-      vehicle.insurance_expiry
+      vehicle.insurance_expiry,
+      "insurance_expiry"
     );
 
 
   const taxClass =
     getExpiryDateClass(
-      vehicle.tax_expiry
+      vehicle.tax_expiry,
+      "tax_expiry"
     );
 
 
   const puccClass =
     getExpiryDateClass(
-      vehicle.pucc_expiry
+      vehicle.pucc_expiry,
+      "pucc_expiry"
     );
 
 
   const permitClass =
     getExpiryDateClass(
-      vehicle.permit_expiry
-    );
-
-
-  const highlightClass =
-    getVehicleHighlightClass(
-      vehicle
+      vehicle.permit_expiry,
+      "permit_expiry"
     );
 
 
   return `
 
-    <div class="vehicle-card ${highlightClass}">
+    <div class="vehicle-card">
 
 
       <!-- PHOTO -->
@@ -2702,9 +2365,7 @@ function vehicleCard(vehicle){
         <div class="info-item">
 
           <div class="label">
-
             Vehicle Number
-
           </div>
 
           <div class="value vehicle-number">
@@ -2721,9 +2382,7 @@ function vehicleCard(vehicle){
         <div class="info-item">
 
           <div class="label">
-
             Customer Name
-
           </div>
 
           <div class="value">
@@ -2740,9 +2399,7 @@ function vehicleCard(vehicle){
         <div class="info-item">
 
           <div class="label">
-
             Mobile Number
-
           </div>
 
           <div class="value">
@@ -2758,7 +2415,7 @@ function vehicleCard(vehicle){
       </div>
 
 
-      <!-- DOCUMENTS -->
+      <!-- DOCUMENT COLUMN 1 -->
 
       <div class="doc-column">
 
@@ -2766,9 +2423,7 @@ function vehicleCard(vehicle){
         <div class="doc-item">
 
           <div class="label">
-
             ${t.registration}
-
           </div>
 
           <div class="value">
@@ -2787,9 +2442,7 @@ function vehicleCard(vehicle){
         <div class="doc-item">
 
           <div class="label">
-
             ${t.fitness}
-
           </div>
 
           <div
@@ -2810,9 +2463,7 @@ function vehicleCard(vehicle){
         <div class="doc-item">
 
           <div class="label">
-
             ${t.insurance}
-
           </div>
 
           <div
@@ -2830,7 +2481,7 @@ function vehicleCard(vehicle){
       </div>
 
 
-      <!-- DOCUMENTS -->
+      <!-- DOCUMENT COLUMN 2 -->
 
       <div class="doc-column">
 
@@ -2840,9 +2491,7 @@ function vehicleCard(vehicle){
         <div class="doc-item">
 
           <div class="label">
-
             ${t.tax}
-
           </div>
 
           <div
@@ -2863,9 +2512,7 @@ function vehicleCard(vehicle){
         <div class="doc-item">
 
           <div class="label">
-
             ${t.pucc}
-
           </div>
 
           <div
@@ -2886,9 +2533,7 @@ function vehicleCard(vehicle){
         <div class="doc-item">
 
           <div class="label">
-
             ${t.permit}
-
           </div>
 
           <div
@@ -2912,47 +2557,32 @@ function vehicleCard(vehicle){
 
 
         <button
-
           class="edit-btn"
-
           onclick="editVehicle('${escapeJs(
             vehicle.id
           )}')"
-
         >
-
           ${t.edit}
-
         </button>
 
 
         <button
-
           class="whatsapp-btn"
-
           onclick="sendWhatsApp('${escapeJs(
             vehicle.id
           )}')"
-
         >
-
           ${t.whatsapp}
-
         </button>
 
 
         <button
-
           class="delete-btn"
-
           onclick="deleteVehicle('${escapeJs(
             vehicle.id
           )}')"
-
         >
-
           ${t.delete}
-
         </button>
 
 
@@ -2998,10 +2628,8 @@ function renderVehicles(){
     empty.style.display =
       "block";
 
-
     pagination.style.display =
       "none";
-
 
     return;
 
@@ -3121,13 +2749,9 @@ function previousPage(){
 
     renderVehicles();
 
-
     window.scrollTo({
-
       top:0,
-
       behavior:"smooth"
-
     });
 
   }
@@ -3152,13 +2776,9 @@ function nextPage(){
 
     renderVehicles();
 
-
     window.scrollTo({
-
       top:0,
-
       behavior:"smooth"
-
     });
 
   }
@@ -3248,35 +2868,28 @@ function sendWhatsApp(id){
   const documents = [
 
     {
-      name:
-        "Fitness",
-
-      date:
-        vehicle.fitness_expiry
+      name:"Fitness",
+      date:vehicle.fitness_expiry
     },
 
     {
-      name:
-        "Insurance",
-
-      date:
-        vehicle.insurance_expiry
+      name:"Insurance",
+      date:vehicle.insurance_expiry
     },
 
     {
-      name:
-        "PUC",
-
-      date:
-        vehicle.pucc_expiry
+      name:"PUC",
+      date:vehicle.pucc_expiry
     },
 
     {
-      name:
-        "Permit",
+      name:"Tax",
+      date:vehicle.tax_expiry
+    },
 
-      date:
-        vehicle.permit_expiry
+    {
+      name:"Permit",
+      date:vehicle.permit_expiry
     }
 
   ];
@@ -3302,17 +2915,13 @@ function sendWhatsApp(id){
       })
 
       .filter(
-
         doc =>
           doc.days !== null
-
       )
 
       .sort(
-
         (a,b) =>
           a.days - b.days
-
       );
 
 
@@ -3331,13 +2940,10 @@ function sendWhatsApp(id){
 
 
   const expiryDate =
-
     nearest
-
       ? displayDate(
           nearest.date
         )
-
       : "";
 
 
@@ -3454,43 +3060,31 @@ async function deleteVehicle(id){
 
   try{
 
-
-    /* DELETE UPLOADED PHOTO */
+    /* DELETE PHOTO */
 
     if(
       vehicle.photo_path
     ){
 
       const {
-
         error:
           storageError
-
       } =
-
         await supabaseClient
-
           .storage
-
           .from(
             "vehicle-photos"
           )
-
           .remove([
-
             vehicle.photo_path
-
           ]);
 
 
       if(storageError){
 
         console.warn(
-
           "Storage delete warning:",
-
           storageError
-
         );
 
       }
@@ -3501,17 +3095,11 @@ async function deleteVehicle(id){
     /* DELETE DATABASE ROW */
 
     const {
-
       error
-
     } =
-
       await supabaseClient
-
         .from("vehicles")
-
         .delete()
-
         .eq(
           "id",
           id
@@ -3545,17 +3133,11 @@ async function deleteVehicle(id){
 
 
     alert(
-
       "Delete Error: " +
-
       (
-
         error.message ||
-
         "Unknown error"
-
       )
-
     );
 
   }
