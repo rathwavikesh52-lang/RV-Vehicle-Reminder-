@@ -1019,6 +1019,14 @@ function parseDateFromText(
   let text =
     String(value)
       .replace(
+        /[Oo]/g,
+        "0"
+      )
+      .replace(
+        /[Il]/g,
+        "1"
+      )
+      .replace(
         /\s+/g,
         " "
       )
@@ -1066,8 +1074,6 @@ function parseDateFromText(
   };
 
 
-  /* DD-MMM-YYYY */
-
   let match =
     text.match(
       /\b(\d{1,2})[\s\/\-\.]([A-Za-z]{3,9})[\s\/\-\.](\d{4})\b/i
@@ -1103,8 +1109,6 @@ function parseDateFromText(
   }
 
 
-  /* DD-MM-YYYY */
-
   match =
     text.match(
       /\b(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})\b/
@@ -1121,8 +1125,6 @@ function parseDateFromText(
 
   }
 
-
-  /* YYYY-MM-DD */
 
   match =
     text.match(
@@ -1323,7 +1325,7 @@ photoInput.addEventListener(
     try{
 
       showStatus(
-        "Photo selected. Starting 3-pass OCR...",
+        "Photo selected. Advanced OCR શરૂ થઈ રહ્યું છે...",
         "info"
       );
 
@@ -1791,7 +1793,7 @@ async function convertImageToJPG(
 
 
 /* =========================================================
-   OCR PREPROCESSING
+   IMAGE PREPROCESSING
 ========================================================= */
 
 async function preprocessImage(
@@ -1885,122 +1887,74 @@ async function preprocessImage(
                 imageData.data;
 
 
-              if(
-                mode ===
-                "gray"
+              for(
+                let i=0;
+                i<pixels.length;
+                i+=4
               ){
 
-                for(
-                  let i=0;
-                  i<pixels.length;
-                  i+=4
+                let gray =
+                  (
+                    0.299*pixels[i] +
+                    0.587*pixels[i+1] +
+                    0.114*pixels[i+2]
+                  );
+
+
+                if(
+                  mode === "contrast"
                 ){
-
-                  const gray =
-                    (
-                      0.299*pixels[i] +
-                      0.587*pixels[i+1] +
-                      0.114*pixels[i+2]
-                    );
-
-                  pixels[i] =
-                    gray;
-
-                  pixels[i+1] =
-                    gray;
-
-                  pixels[i+2] =
-                    gray;
-
-                }
-
-              }
-
-
-              if(
-                mode ===
-                "contrast"
-              ){
-
-                for(
-                  let i=0;
-                  i<pixels.length;
-                  i+=4
-                ){
-
-                  let gray =
-                    (
-                      0.299*pixels[i] +
-                      0.587*pixels[i+1] +
-                      0.114*pixels[i+2]
-                    );
-
 
                   gray =
                     (
                       gray - 128
                     ) * 1.8 + 128;
 
+                }
+
+
+                if(
+                  mode === "strong"
+                ){
 
                   gray =
-                    Math.max(
-                      0,
-                      Math.min(
-                        255,
-                        gray
-                      )
-                    );
-
-
-                  pixels[i] =
-                    gray;
-
-                  pixels[i+1] =
-                    gray;
-
-                  pixels[i+2] =
-                    gray;
+                    (
+                      gray - 128
+                    ) * 2.3 + 128;
 
                 }
 
-              }
 
-
-              if(
-                mode ===
-                "threshold"
-              ){
-
-                for(
-                  let i=0;
-                  i<pixels.length;
-                  i+=4
+                if(
+                  mode === "threshold"
                 ){
 
-                  const gray =
-                    (
-                      0.299*pixels[i] +
-                      0.587*pixels[i+1] +
-                      0.114*pixels[i+2]
-                    );
-
-
-                  const value =
-                    gray > 150
+                  gray =
+                    gray > 145
                       ? 255
                       : 0;
 
-
-                  pixels[i] =
-                    value;
-
-                  pixels[i+1] =
-                    value;
-
-                  pixels[i+2] =
-                    value;
-
                 }
+
+
+                gray =
+                  Math.max(
+                    0,
+                    Math.min(
+                      255,
+                      gray
+                    )
+                  );
+
+
+                pixels[i] =
+                  gray;
+
+                pixels[i+1] =
+                  gray;
+
+                pixels[i+2] =
+                  gray;
 
               }
 
@@ -2079,8 +2033,32 @@ async function preprocessImage(
 
 async function ocrSinglePass(
   image,
-  worker
+  worker,
+  psm="6"
 ){
+
+  try{
+
+    await worker.setParameters({
+
+      tessedit_pageseg_mode:
+        psm,
+
+      preserve_interword_spaces:
+        "1"
+
+    });
+
+  }
+  catch(e){
+
+    console.warn(
+      "OCR parameter warning:",
+      e
+    );
+
+  }
+
 
   const result =
     await worker.recognize(
@@ -2100,7 +2078,7 @@ async function ocrSinglePass(
 
 
 /* =========================================================
-   3 PASS OCR
+   ADVANCED OCR
 ========================================================= */
 
 async function runOCR(
@@ -2154,19 +2132,38 @@ async function runOCR(
       );
 
 
+    /* PASS 1 */
+
     progressBox.textContent =
-      "🔍 OCR Pass 1/3 — Original image...";
+      "🔍 OCR Pass 1/5 — Original...";
 
 
     const pass1 =
       await ocrSinglePass(
         file,
-        worker
+        worker,
+        "6"
       );
 
 
+    /* PASS 2 */
+
     progressBox.textContent =
-      "🔍 OCR Pass 2/3 — Enhanced image...";
+      "🔍 OCR Pass 2/5 — Sparse text...";
+
+
+    const pass2 =
+      await ocrSinglePass(
+        file,
+        worker,
+        "11"
+      );
+
+
+    /* PASS 3 */
+
+    progressBox.textContent =
+      "🔍 OCR Pass 3/5 — Enhanced...";
 
 
     const enhanced =
@@ -2176,15 +2173,39 @@ async function runOCR(
       );
 
 
-    const pass2 =
+    const pass3 =
       await ocrSinglePass(
         enhanced,
-        worker
+        worker,
+        "6"
       );
 
 
+    /* PASS 4 */
+
     progressBox.textContent =
-      "🔍 OCR Pass 3/3 — Clear image...";
+      "🔍 OCR Pass 4/5 — Strong enhanced...";
+
+
+    const strong =
+      await preprocessImage(
+        file,
+        "strong"
+      );
+
+
+    const pass4 =
+      await ocrSinglePass(
+        strong,
+        worker,
+        "11"
+      );
+
+
+    /* PASS 5 */
+
+    progressBox.textContent =
+      "🔍 OCR Pass 5/5 — Threshold...";
 
 
     const threshold =
@@ -2194,10 +2215,11 @@ async function runOCR(
       );
 
 
-    const pass3 =
+    const pass5 =
       await ocrSinglePass(
         threshold,
-        worker
+        worker,
+        "6"
       );
 
 
@@ -2205,7 +2227,9 @@ async function runOCR(
       [
         pass1,
         pass2,
-        pass3
+        pass3,
+        pass4,
+        pass5
       ]
       .filter(
         x =>
@@ -2229,7 +2253,7 @@ async function runOCR(
 
 
     progressBox.textContent =
-      "✅ 3-pass OCR completed.";
+      "✅ Advanced 5-pass OCR completed.";
 
 
     return currentOCRText;
@@ -2254,9 +2278,7 @@ async function runOCR(
       }
       catch(e){
 
-        console.warn(
-          e
-        );
+        console.warn(e);
 
       }
 
@@ -2355,33 +2377,61 @@ function cleanVehicleCandidate(
 
 
 /* =========================================================
-   VEHICLE NUMBER OCR
-   STRONG VERSION
+   CHARACTER CORRECTION
 ========================================================= */
 
-function normalizeVehicleOCR(
+function numberChar(
+  char
+){
+
+  const c =
+    String(char || "")
+      .toUpperCase();
+
+
+  const map = {
+
+    "O":"0",
+    "Q":"0",
+    "D":"0",
+
+    "I":"1",
+    "L":"1",
+
+    "Z":"2",
+
+    "S":"5",
+
+    "B":"8"
+
+  };
+
+
+  return map[c] || c;
+
+}
+
+
+function correctNumberPart(
   value
 ){
 
-  let s =
-    cleanVehicleCandidate(
-      value
-    );
-
-
-  /*
-    Common OCR errors.
-    Only used when the character
-    position requires a number.
-  */
-
-  return s;
+  return String(
+    value || ""
+  )
+    .toUpperCase()
+    .split("")
+    .map(
+      numberChar
+    )
+    .join("");
 
 }
 
 
 /* =========================================================
-   FIX VEHICLE NUMBER
+   VEHICLE NUMBER CANDIDATE
+   VERY STRONG
 ========================================================= */
 
 function fixVehicleNumberCandidate(
@@ -2404,27 +2454,13 @@ function fixVehicleNumberCandidate(
 
 
   /*
-    Standard Indian registration:
-
-    GJ34AD0750
-
-    State:
-    2 letters
-
-    RTO:
-    1-2 digits
-
-    Series:
-    1-3 letters
-
-    Number:
-    3-4 digits
+    Maximum/minimum standard Indian
+    registration number length.
   */
-
 
   if(
     s.length < 8 ||
-    s.length > 12
+    s.length > 11
   ){
 
     return "";
@@ -2433,85 +2469,80 @@ function fixVehicleNumberCandidate(
 
 
   /*
-    Find state code.
+    State code.
+  */
+
+  let state =
+    s.substring(
+      0,
+      2
+    );
+
+
+  /*
+    OCR sometimes reads GJ correctly,
+    but other characters incorrectly.
   */
 
   if(
-    !/^[A-Z]{2}/.test(s)
+    state !== "GJ"
   ){
 
-    return "";
+    /*
+      Only allow common OCR correction
+      for Gujarat state code.
+    */
+
+    const possible =
+      state
+        .replace(
+          /6/g,
+          "G"
+        )
+        .replace(
+          /0/g,
+          "O"
+        );
+
+
+    if(
+      possible === "GO" ||
+      possible === "GJ"
+    ){
+
+      state = "GJ";
+
+    }
+    else{
+
+      return "";
+
+    }
 
   }
 
 
   /*
-    Try all possible RTO lengths.
+    Try RTO 1 digit and 2 digit.
   */
 
   for(
-    let rtoLen = 1;
-    rtoLen <= 2;
+    let rtoLen=1;
+    rtoLen<=2;
     rtoLen++
   ){
 
-    const state =
+    let rtoRaw =
       s.substring(
-        0,
-        2
+        2,
+        2+rtoLen
       );
-
-
-    const rtoStart =
-      2;
-
-
-    const rtoEnd =
-      2 + rtoLen;
 
 
     let rto =
-      s.substring(
-        rtoStart,
-        rtoEnd
+      correctNumberPart(
+        rtoRaw
       );
-
-
-    /*
-      Correct OCR number characters
-      in RTO area.
-    */
-
-    rto =
-      rto
-        .replace(
-          /O/g,
-          "0"
-        )
-        .replace(
-          /Q/g,
-          "0"
-        )
-        .replace(
-          /I/g,
-          "1"
-        )
-        .replace(
-          /L/g,
-          "1"
-        )
-        .replace(
-          /Z/g,
-          "2"
-        )
-        .replace(
-          /S/g,
-          "5"
-        )
-        .replace(
-          /B/g,
-          "8"
-        );
 
 
     if(
@@ -2523,78 +2554,99 @@ function fixVehicleNumberCandidate(
     }
 
 
+    /*
+      RTO must be 1 or 2 digits.
+    */
+
     const rest =
       s.substring(
-        rtoEnd
+        2+rtoLen
       );
 
 
     /*
-      Series letters + final number.
+      Important:
+      Correct final number BEFORE regex.
+
+      This fixes:
+      GJ34AD075O
+      GJ34AD07SO
+      GJ34AD0Z50
     */
 
-    const match =
-      rest.match(
-        /^([A-Z]{1,3})(\d{3,4})$/
-      );
+    /*
+      Try series length 1,2,3.
+    */
 
-
-    if(
-      match
+    for(
+      let seriesLen=1;
+      seriesLen<=3;
+      seriesLen++
     ){
 
       const series =
-        match[1];
+        rest.substring(
+          0,
+          seriesLen
+        );
 
 
-      let number =
-        match[2];
-
-
-      number =
-        number
-          .replace(
-            /O/g,
-            "0"
-          )
-          .replace(
-            /Q/g,
-            "0"
-          )
-          .replace(
-            /I/g,
-            "1"
-          )
-          .replace(
-            /L/g,
-            "1"
-          )
-          .replace(
-            /Z/g,
-            "2"
-          )
-          .replace(
-            /S/g,
-            "5"
-          )
-          .replace(
-            /B/g,
-            "8"
-          );
+      const numberRaw =
+        rest.substring(
+          seriesLen
+        );
 
 
       if(
-        /^\d{3,4}$/.test(
+        !/^[A-Z]{1,3}$/.test(
+          series
+        )
+      ){
+
+        continue;
+
+      }
+
+
+      const number =
+        correctNumberPart(
+          numberRaw
+        );
+
+
+      if(
+        !/^\d{3,4}$/.test(
           number
         )
       ){
 
-        return (
-          state +
-          rto +
-          series +
-          number
-        );
+        continue;
+
+      }
+
+
+      /*
+        Final valid number.
+      */
+
+      const finalNumber =
+        state +
+        rto +
+        series +
+        number;
+
+
+      /*
+        Final safety check.
+      */
+
+      if(
+        /^GJ\d{1,2}[A-Z]{1,3}\d{3,4}$/.test(
+          finalNumber
+        )
+      ){
+
+        return finalNumber;
 
       }
 
@@ -2609,10 +2661,10 @@ function fixVehicleNumberCandidate(
 
 
 /* =========================================================
-   VEHICLE NUMBER FROM FULL OCR
+   EXTRACT CANDIDATES FROM TEXT
 ========================================================= */
 
-function extractVehicleNumber(
+function collectVehicleCandidates(
   text
 ){
 
@@ -2622,118 +2674,39 @@ function extractVehicleNumber(
     );
 
 
-  const candidates = [];
+  const result = [];
 
 
-  /*
-    -------------------------------------------------------
-    METHOD 1
-    Search entire OCR text with spaces.
-    -------------------------------------------------------
-  */
+  function addCandidate(
+    raw,
+    score,
+    source
+  ){
 
-  const compactText =
-    normalizeOCRText(
-      text
-    )
-    .toUpperCase()
-    .replace(
-      /[^A-Z0-9]/g,
-      ""
-    );
+    const fixed =
+      fixVehicleNumberCandidate(
+        raw
+      );
 
 
-  /*
-    Exact Gujarat style.
-  */
+    if(
+      fixed
+    ){
 
-  const compactMatches =
-    compactText.match(
-      /GJ\d{1,2}[A-Z]{1,3}\d{3,4}/g
-    );
+      result.push({
+        value:fixed,
+        score:Number(score) || 0,
+        source:source || ""
+      });
 
-
-  if(compactMatches){
-
-    compactMatches.forEach(
-      x => {
-
-        const fixed =
-          fixVehicleNumberCandidate(
-            x
-          );
-
-        if(fixed){
-
-          candidates.push(
-            fixed
-          );
-
-        }
-
-      }
-    );
+    }
 
   }
 
 
   /*
     -------------------------------------------------------
-    METHOD 2
-    Search line-by-line.
-    -------------------------------------------------------
-  */
-
-  lines.forEach(
-    line => {
-
-      const clean =
-        line
-          .toUpperCase()
-          .replace(
-            /[^A-Z0-9]/g,
-            ""
-          );
-
-
-      const matches =
-        clean.match(
-          /[A-Z]{2}[A-Z0-9]{6,10}/g
-        );
-
-
-      if(matches){
-
-        matches.forEach(
-          x => {
-
-            const fixed =
-              fixVehicleNumberCandidate(
-                x
-              );
-
-            if(fixed){
-
-              candidates.push(
-                fixed
-              );
-
-            }
-
-          }
-        );
-
-      }
-
-    }
-  );
-
-
-  /*
-    -------------------------------------------------------
-    METHOD 3
-    Specifically search lines near
-    REGISTRATION / REGN NUMBER.
+    A) Registration label area
     -------------------------------------------------------
   */
 
@@ -2741,17 +2714,25 @@ function extractVehicleNumber(
 
     "REGISTRATION NO",
     "REGISTRATION NUMBER",
-    "REGISTRATION",
-    "REGN NO",
-    "REGN NUMBER",
-    "REGN.",
-    "REGN",
     "REGISTRATIONNO",
     "REGISTRATIONNUMBER",
+
+    "REGN NO",
+    "REGN NUMBER",
+    "REGNNO",
+    "REGNNUMBER",
+
+    "REG NO",
+    "REG NUMBER",
+    "REGNO",
+    "REGNUMBER",
+
     "VEHICLE NO",
     "VEHICLE NUMBER",
-    "REG NO",
-    "REG NO."
+    "VEHICLENO",
+    "VEHICLENUMBER",
+
+    "REGISTRATION"
 
   ];
 
@@ -2767,7 +2748,7 @@ function extractVehicleNumber(
         .toUpperCase();
 
 
-    const keywordFound =
+    const isLabel =
       registrationKeywords.some(
         keyword =>
           upper.includes(
@@ -2776,7 +2757,9 @@ function extractVehicleNumber(
       );
 
 
-    if(!keywordFound){
+    if(
+      !isLabel
+    ){
 
       continue;
 
@@ -2784,10 +2767,10 @@ function extractVehicleNumber(
 
 
     /*
-      Check same line.
+      Same line.
     */
 
-    const sameLine =
+    const same =
       lines[i]
         .toUpperCase()
         .replace(
@@ -2797,41 +2780,33 @@ function extractVehicleNumber(
 
 
     /*
-      Search every substring.
+      Search all substrings.
     */
 
     for(
       let start=0;
-      start<sameLine.length;
+      start<same.length;
       start++
     ){
 
       for(
         let len=8;
-        len<=12;
+        len<=11;
         len++
       ){
 
         const part =
-          sameLine.substring(
+          same.substring(
             start,
-            start + len
+            start+len
           );
 
 
-        const fixed =
-          fixVehicleNumberCandidate(
-            part
-          );
-
-
-        if(fixed){
-
-          candidates.push(
-            fixed
-          );
-
-        }
+        addCandidate(
+          part,
+          100,
+          "registration-label-same-line"
+        );
 
       }
 
@@ -2839,16 +2814,18 @@ function extractVehicleNumber(
 
 
     /*
-      Also check next 2 lines.
+      Next 5 lines.
     */
 
     for(
       let j=1;
-      j<=2;
+      j<=5;
       j++
     ){
 
-      if(!lines[i+j]){
+      if(
+        !lines[i+j]
+      ){
 
         continue;
 
@@ -2872,30 +2849,22 @@ function extractVehicleNumber(
 
         for(
           let len=8;
-          len<=12;
+          len<=11;
           len++
         ){
 
           const part =
             next.substring(
               start,
-              start + len
+              start+len
             );
 
 
-          const fixed =
-            fixVehicleNumberCandidate(
-              part
-            );
-
-
-          if(fixed){
-
-            candidates.push(
-              fixed
-            );
-
-          }
+          addCandidate(
+            part,
+            95-j*5,
+            "registration-label-next-line"
+          );
 
         }
 
@@ -2908,106 +2877,110 @@ function extractVehicleNumber(
 
   /*
     -------------------------------------------------------
-    METHOD 4
-    More tolerant OCR correction.
-    
-    Example:
-    GJ34AD075O
-    GJ34AD0Z50
-    GJ34AD07SO
+    B) Full text
     -------------------------------------------------------
   */
 
-  const loose =
+  const compact =
     normalizeOCRText(
       text
     )
       .toUpperCase()
       .replace(
-        /[^A-Z0-9\s]/g,
-        " "
+        /[^A-Z0-9]/g,
+        ""
       );
 
 
-  const looseTokens =
-    loose
-      .split(
-        /\s+/
-      )
-      .filter(
-        Boolean
-      );
+  /*
+    Try every substring instead of only
+    exact regex. This catches OCR mistakes.
+  */
+
+  for(
+    let start=0;
+    start<compact.length;
+    start++
+  ){
+
+    for(
+      let len=8;
+      len<=11;
+      len++
+    ){
+
+      const part =
+        compact.substring(
+          start,
+          start+len
+        );
 
 
-  looseTokens.forEach(
-    token => {
+      if(
+        part.startsWith("GJ")
+      ){
 
-      const cleaned =
-        token
+        addCandidate(
+          part,
+          50,
+          "full-text"
+        );
+
+      }
+
+    }
+
+  }
+
+
+  /*
+    -------------------------------------------------------
+    C) Line-by-line
+    -------------------------------------------------------
+  */
+
+  lines.forEach(
+    line => {
+
+      const clean =
+        line
+          .toUpperCase()
           .replace(
             /[^A-Z0-9]/g,
             ""
           );
 
 
-      /*
-        Gujarat registration starts GJ.
-      */
-
-      if(
-        cleaned.startsWith(
-          "GJ"
-        )
+      for(
+        let start=0;
+        start<clean.length;
+        start++
       ){
 
-        /*
-          Try OCR number substitutions
-          globally, then validate.
-        */
+        for(
+          let len=8;
+          len<=11;
+          len++
+        ){
 
-        const corrected =
-          cleaned
-            .replace(
-              /O/g,
-              "0"
-            )
-            .replace(
-              /Q/g,
-              "0"
-            )
-            .replace(
-              /I/g,
-              "1"
-            )
-            .replace(
-              /L/g,
-              "1"
-            )
-            .replace(
-              /Z/g,
-              "2"
-            )
-            .replace(
-              /S/g,
-              "5"
-            )
-            .replace(
-              /B/g,
-              "8"
+          const part =
+            clean.substring(
+              start,
+              start+len
             );
 
 
-        const fixed =
-          fixVehicleNumberCandidate(
-            corrected
-          );
+          if(
+            part.startsWith("GJ")
+          ){
 
+            addCandidate(
+              part,
+              65,
+              "line"
+            );
 
-        if(fixed){
-
-          candidates.push(
-            fixed
-          );
+          }
 
         }
 
@@ -3019,87 +2992,183 @@ function extractVehicleNumber(
 
   /*
     -------------------------------------------------------
-    SCORE CANDIDATES
+    D) Spaced vehicle number
     -------------------------------------------------------
+    
+    GJ 34 AD 0750
+    GJ-34-AD-0750
+    GJ 34 AD O750
   */
 
-  if(
-    candidates.length
+  const spacedRegex =
+    /\b(GJ)[\s\-./]*(\d[0-9OQDILZS B]{0,2})[\s\-./]*([A-Z]{1,3})[\s\-./]*(\d[A-Z0-9]{2,3})\b/gi;
+
+
+  let match;
+
+
+  while(
+    (match =
+      spacedRegex.exec(
+        normalizeOCRText(text)
+      ))
   ){
 
-    const counts = {};
+    const raw =
+      (
+        match[1] +
+        match[2] +
+        match[3] +
+        match[4]
+      )
+      .replace(
+        /\s/g,
+        ""
+      );
 
 
-    candidates.forEach(
-      value => {
-
-        counts[value] =
-          (
-            counts[value] ||
-            0
-          ) + 1;
-
-      }
+    addCandidate(
+      raw,
+      120,
+      "spaced-registration"
     );
-
-
-    candidates.sort(
-      (a,b) => {
-
-        /*
-          More repetitions = better.
-        */
-
-        const countDifference =
-          counts[b] -
-          counts[a];
-
-
-        if(
-          countDifference !== 0
-        ){
-
-          return countDifference;
-
-        }
-
-
-        /*
-          Prefer Gujarat.
-        */
-
-        if(
-          a.startsWith("GJ") &&
-          !b.startsWith("GJ")
-        ){
-
-          return -1;
-
-        }
-
-
-        if(
-          b.startsWith("GJ") &&
-          !a.startsWith("GJ")
-        ){
-
-          return 1;
-
-        }
-
-
-        return 0;
-
-      }
-    );
-
-
-    return candidates[0];
 
   }
 
 
-  return "";
+  return result;
+
+}
+
+
+/* =========================================================
+   VEHICLE NUMBER FINAL SELECTION
+========================================================= */
+
+function extractVehicleNumber(
+  text
+){
+
+  const candidates =
+    collectVehicleCandidates(
+      text
+    );
+
+
+  if(
+    !candidates.length
+  ){
+
+    return "";
+
+  }
+
+
+  const stats = {};
+
+
+  candidates.forEach(
+    item => {
+
+      if(
+        !stats[item.value]
+      ){
+
+        stats[item.value] = {
+
+          count:0,
+          score:0
+
+        };
+
+      }
+
+
+      stats[item.value].count++;
+
+      stats[item.value].score +=
+        item.score;
+
+    }
+  );
+
+
+  const unique =
+    Object.keys(
+      stats
+    );
+
+
+  unique.sort(
+    (a,b) => {
+
+      const A =
+        stats[a];
+
+      const B =
+        stats[b];
+
+
+      /*
+        Repeated OCR result gets
+        strong priority.
+      */
+
+      const scoreA =
+        A.score +
+        A.count * 35;
+
+      const scoreB =
+        B.score +
+        B.count * 35;
+
+
+      if(
+        scoreB !== scoreA
+      ){
+
+        return scoreB-scoreA;
+
+      }
+
+
+      /*
+        Prefer valid Gujarat format.
+      */
+
+      if(
+        a.startsWith("GJ") &&
+        !b.startsWith("GJ")
+      ){
+
+        return -1;
+
+      }
+
+
+      if(
+        b.startsWith("GJ") &&
+        !a.startsWith("GJ")
+      ){
+
+        return 1;
+
+      }
+
+
+      return 0;
+
+    }
+  );
+
+
+  console.log(
+    "VEHICLE NUMBER CANDIDATES:",
+    stats
+  );
+
+
+  return unique[0] || "";
 
 }
 
@@ -3140,16 +3209,14 @@ function extractDateNearKeywords(
       );
 
 
-    if(!found){
+    if(
+      !found
+    ){
 
       continue;
 
     }
 
-
-    /*
-      Same line.
-    */
 
     const same =
       parseDateFromText(
@@ -3157,16 +3224,14 @@ function extractDateNearKeywords(
       );
 
 
-    if(same){
+    if(
+      same
+    ){
 
       return same;
 
     }
 
-
-    /*
-      Search next lines.
-    */
 
     for(
       let j=1;
@@ -3178,7 +3243,9 @@ function extractDateNearKeywords(
         lines[i+j];
 
 
-      if(!line){
+      if(
+        !line
+      ){
 
         continue;
 
@@ -3191,7 +3258,9 @@ function extractDateNearKeywords(
         );
 
 
-      if(date){
+      if(
+        date
+      ){
 
         return date;
 
@@ -3251,7 +3320,7 @@ function extractFitnessDate(
       "FITNESS UPTO",
       "FITNESS"
     ],
-    5
+    6
   );
 
 }
@@ -3276,106 +3345,15 @@ function extractInsuranceDate(
         "INS VALID",
         "INSURANCE"
       ],
-      6
+      7
     );
 
 
-  if(direct){
-
-    return direct;
-
-  }
-
-
-  const lines =
-    getOCRLines(
-      text
-    );
-
-
-  for(
-    let i=0;
-    i<lines.length;
-    i++
+  if(
+    direct
   ){
 
-    const upper =
-      lines[i]
-        .toUpperCase();
-
-
-    if(
-      upper.includes(
-        "INSURANCE DETAILS"
-      )
-    ){
-
-      for(
-        let j=i+1;
-        j<=i+12;
-        j++
-      ){
-
-        if(!lines[j]){
-
-          continue;
-
-        }
-
-
-        if(
-          lines[j]
-            .toUpperCase()
-            .includes(
-              "VALIDITY"
-            )
-        ){
-
-          const same =
-            parseDateFromText(
-              lines[j]
-            );
-
-
-          if(same){
-
-            return same;
-
-          }
-
-
-          for(
-            let k=j+1;
-            k<=j+5;
-            k++
-          ){
-
-            if(!lines[k]){
-
-              continue;
-
-            }
-
-
-            const date =
-              parseDateFromText(
-                lines[k]
-              );
-
-
-            if(date){
-
-              return date;
-
-            }
-
-          }
-
-        }
-
-      }
-
-    }
+    return direct;
 
   }
 
@@ -3424,7 +3402,7 @@ function extractTax(
       "MV TAX",
       "TAX"
     ],
-    6
+    7
   );
 
 }
@@ -3432,7 +3410,6 @@ function extractTax(
 
 /* =========================================================
    PUCC / PUC
-   STRONG VERSION
 ========================================================= */
 
 function extractPUCCDate(
@@ -3446,13 +3423,14 @@ function extractPUCCDate(
 
 
   /*
-    First try exact keywords.
+    Strong direct keywords.
   */
 
   const direct =
     extractDateNearKeywords(
       text,
       [
+
         "PUCC VALID UPTO",
         "PUCC VALID UPT0",
         "PUCC VALIDITY",
@@ -3465,17 +3443,22 @@ function extractPUCCDate(
         "PUC EXPIRY",
         "PUC UPTO",
 
+        "P.U.C.C",
         "P.U.C",
-        "P.U.C.",
+        "P U C C",
         "P U C",
+
         "PUCC",
         "PUC"
+
       ],
-      8
+      10
     );
 
 
-  if(direct){
+  if(
+    direct
+  ){
 
     return direct;
 
@@ -3483,16 +3466,7 @@ function extractPUCCDate(
 
 
   /*
-    -------------------------------------------------------
-    OCR may read PUC as:
-    
-    PUC.C
-    PUCC
-    PUG
-    PUC VALID
-    POLLUTION
-    POLLUTION UNDER CONTROL
-    -------------------------------------------------------
+    OCR may read PUC as PUG.
   */
 
   for(
@@ -3515,15 +3489,25 @@ function extractPUCCDate(
         .trim();
 
 
-    const isPUCLine =
-      upper.includes("PUCC") ||
+    const compact =
+      upper.replace(
+        / /g,
+        ""
+      );
+
+
+    const possiblePUC =
       upper.includes("PUC") ||
+      upper.includes("PUCC") ||
+      upper.includes("P U C") ||
       upper.includes("POLLUTION") ||
-      upper.includes("POLLUTION UNDER CONTROL") ||
-      upper.includes("EMISSION");
+      upper.includes("EMISSION") ||
+      compact.includes("PUG");
 
 
-    if(!isPUCLine){
+    if(
+      !possiblePUC
+    ){
 
       continue;
 
@@ -3540,7 +3524,9 @@ function extractPUCCDate(
       );
 
 
-    if(sameDate){
+    if(
+      sameDate
+    ){
 
       return sameDate;
 
@@ -3548,20 +3534,18 @@ function extractPUCCDate(
 
 
     /*
-      Search next 12 lines.
+      Next 15 lines.
     */
 
     for(
       let j=1;
-      j<=12;
+      j<=15;
       j++
     ){
 
-      const next =
-        lines[i+j];
-
-
-      if(!next){
+      if(
+        !lines[i+j]
+      ){
 
         continue;
 
@@ -3570,77 +3554,15 @@ function extractPUCCDate(
 
       const date =
         parseDateFromText(
-          next
+          lines[i+j]
         );
 
 
-      if(date){
-
-        return date;
-
-      }
-
-    }
-
-  }
-
-
-  /*
-    -------------------------------------------------------
-    SPECIAL VAHAN FORMAT
-    Sometimes OCR gives:
-    
-    PUCC
-    19-Jun-2027
-    
-    Or:
-    
-    PUC
-    Valid Upto
-    19-Jun-2027
-    -------------------------------------------------------
-  */
-
-  for(
-    let i=0;
-    i<lines.length;
-    i++
-  ){
-
-    const upper =
-      lines[i]
-        .toUpperCase();
-
-
-    if(
-      upper.includes("PUC") ||
-      upper.includes("PUCC")
-    ){
-
-      for(
-        let j=i+1;
-        j<=i+15;
-        j++
+      if(
+        date
       ){
 
-        if(!lines[j]){
-
-          continue;
-
-        }
-
-
-        const date =
-          parseDateFromText(
-            lines[j]
-          );
-
-
-        if(date){
-
-          return date;
-
-        }
+        return date;
 
       }
 
@@ -3672,7 +3594,7 @@ function extractPermitDate(
       "PERMIT UPTO",
       "PERMIT"
     ],
-    7
+    8
   );
 
 }
@@ -3792,7 +3714,9 @@ function applyOCRData(
   text
 ){
 
-  if(!text){
+  if(
+    !text
+  ){
 
     return;
 
@@ -3813,18 +3737,20 @@ function applyOCRData(
     );
 
 
-  if(vehicleNumber){
+  const detected =
+    document.getElementById(
+      "vehicleDetected"
+    );
+
+
+  if(
+    vehicleNumber
+  ){
 
     document.getElementById(
       "vehicleNumber"
     ).value =
       vehicleNumber;
-
-
-    const detected =
-      document.getElementById(
-        "vehicleDetected"
-      );
 
 
     detected.textContent =
@@ -3838,14 +3764,8 @@ function applyOCRData(
   }
   else{
 
-    const detected =
-      document.getElementById(
-        "vehicleDetected"
-      );
-
-
     detected.textContent =
-      "⚠️ Vehicle Number OCRથી મળ્યો નથી. કૃપા કરીને ઉપર manually check કરો.";
+      "⚠️ Vehicle Number OCRથી મળ્યો નથી. કૃપા કરીને manually check કરો.";
 
 
     detected.style.display =
@@ -3862,7 +3782,9 @@ function applyOCRData(
     );
 
 
-  if(registrationDate){
+  if(
+    registrationDate
+  ){
 
     document.getElementById(
       "registrationDate"
@@ -3880,7 +3802,9 @@ function applyOCRData(
     );
 
 
-  if(fitnessDate){
+  if(
+    fitnessDate
+  ){
 
     document.getElementById(
       "fitnessExpiry"
@@ -3898,7 +3822,9 @@ function applyOCRData(
     );
 
 
-  if(insuranceDate){
+  if(
+    insuranceDate
+  ){
 
     document.getElementById(
       "insuranceExpiry"
@@ -3916,7 +3842,9 @@ function applyOCRData(
     );
 
 
-  if(tax){
+  if(
+    tax
+  ){
 
     document.getElementById(
       "taxExpiry"
@@ -3934,7 +3862,9 @@ function applyOCRData(
     );
 
 
-  if(puccDate){
+  if(
+    puccDate
+  ){
 
     document.getElementById(
       "puccExpiry"
@@ -3952,7 +3882,9 @@ function applyOCRData(
     );
 
 
-  if(permitDate){
+  if(
+    permitDate
+  ){
 
     document.getElementById(
       "permitExpiry"
@@ -3970,7 +3902,9 @@ function applyOCRData(
     );
 
 
-  if(vehicleClass){
+  if(
+    vehicleClass
+  ){
 
     setVehicleClass(
       vehicleClass
@@ -3980,8 +3914,9 @@ function applyOCRData(
 
 
   console.log(
-    "OCR EXTRACTED DATA:",
+    "FINAL OCR DATA:",
     {
+
       vehicleNumber,
       registrationDate,
       fitnessDate,
@@ -3990,6 +3925,7 @@ function applyOCRData(
       puccDate,
       permitDate,
       vehicleClass
+
     }
   );
 
@@ -4009,7 +3945,7 @@ function getFormData(){
       .trim()
       .toUpperCase()
       .replace(
-        /\s+/g,
+        /[^A-Z0-9]/g,
         ""
       );
 
@@ -4063,7 +3999,9 @@ function getFormData(){
       .trim();
 
 
-  if(!taxExpiry){
+  if(
+    !taxExpiry
+  ){
 
     taxExpiry =
       null;
@@ -4180,7 +4118,9 @@ async function uploadPhoto(
       );
 
 
-  if(uploadError){
+  if(
+    uploadError
+  ){
 
     throw uploadError;
 
@@ -4221,7 +4161,9 @@ async function deletePhoto(
   photoPath
 ){
 
-  if(!photoPath){
+  if(
+    !photoPath
+  ){
 
     return;
 
@@ -4241,7 +4183,9 @@ async function deletePhoto(
       ]);
 
 
-  if(error){
+  if(
+    error
+  ){
 
     console.warn(
       "Photo delete warning:",
@@ -4362,7 +4306,9 @@ async function saveVehicle(){
         );
 
 
-    if(editId){
+    if(
+      editId
+    ){
 
       duplicateQuery =
         duplicateQuery.neq(
@@ -4381,14 +4327,18 @@ async function saveVehicle(){
         .maybeSingle();
 
 
-    if(duplicateError){
+    if(
+      duplicateError
+    ){
 
       throw duplicateError;
 
     }
 
 
-    if(duplicateVehicle){
+    if(
+      duplicateVehicle
+    ){
 
       throw new Error(
         "This Vehicle Number already exists in another record."
@@ -4399,7 +4349,9 @@ async function saveVehicle(){
 
     /* UPLOAD PHOTO */
 
-    if(selectedFile){
+    if(
+      selectedFile
+    ){
 
       showStatus(
         "Uploading vehicle photo...",
@@ -4420,7 +4372,9 @@ async function saveVehicle(){
        EDIT
     ===================================================== */
 
-    if(editId){
+    if(
+      editId
+    ){
 
       const updateData = {
 
@@ -4493,7 +4447,9 @@ async function saveVehicle(){
         );
 
 
-      if(updateError){
+      if(
+        updateError
+      ){
 
         if(
           uploadedNewPhoto
@@ -4585,7 +4541,9 @@ async function saveVehicle(){
         );
 
 
-    if(insertError){
+    if(
+      insertError
+    ){
 
       if(
         uploadedNewPhoto
@@ -4648,7 +4606,7 @@ async function saveVehicle(){
 
 
 /* =========================================================
-   VEHICLE NUMBER MANUAL CLEANUP
+   MANUAL VEHICLE NUMBER CLEANUP
 ========================================================= */
 
 document.getElementById(
@@ -4661,7 +4619,7 @@ document.getElementById(
       this.value
         .toUpperCase()
         .replace(
-          /\s+/g,
+          /[^A-Z0-9]/g,
           ""
         );
 
@@ -4677,7 +4635,9 @@ document.addEventListener(
   "DOMContentLoaded",
   async () => {
 
-    if(editId){
+    if(
+      editId
+    ){
 
       await loadEditVehicle();
 
