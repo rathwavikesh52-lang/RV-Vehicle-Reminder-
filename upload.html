@@ -348,12 +348,12 @@ button{
       onclick="document.getElementById('photoInput').click()"
     >
 
-      <strong>Click here to upload vehicle / VAHAN photo</strong>
+      <strong>📤 Upload Vehicle / VAHAN Photo</strong>
 
       <br>
 
       <small>
-        JPG, JPEG, PNG
+        Photo / Screenshot — JPG, JPEG, PNG
       </small>
 
     </div>
@@ -362,7 +362,6 @@ button{
       type="file"
       id="photoInput"
       accept="image/*"
-      capture="environment"
       style="display:none"
     >
 
@@ -503,7 +502,7 @@ button{
       </div>
 
 
-      <!-- MPV ADDED -->
+      <!-- MPV -->
 
       <div
         class="class-item"
@@ -1421,12 +1420,6 @@ function findValueAfterLabels(
 
 /* =========================================================
    INSURANCE DETAILS BLOCK
-   Handles:
-   INSURANCE DETAILS
-   Company:
-   ...
-   Validity:
-   24-Nov-2029
 ========================================================= */
 
 function findInsuranceBlockDate(text){
@@ -1655,7 +1648,6 @@ function cleanVehicleCandidate(
      GJ
      G7
      6J
-     but only repair the beginning.
   */
 
   if(
@@ -1691,8 +1683,6 @@ function cleanVehicleCandidate(
 
   /*
      RTO code = exactly 2 characters.
-     Only here are OCR letter->number
-     corrections allowed.
   */
 
   if(rest.length < 6){
@@ -1730,8 +1720,6 @@ function cleanVehicleCandidate(
 
   /*
      Series letters.
-     Preserve letters.
-     OCR 5 -> S only in series.
   */
 
   let series = "";
@@ -1825,10 +1813,6 @@ function cleanVehicleCandidate(
 
 /* =========================================================
    VEHICLE NUMBER EXTRACTION
-   PRIORITY:
-   1. Immediately after Vehicle Number
-   2. Nearby lines
-   3. Global valid candidates
 ========================================================= */
 
 function extractVehicleNumber(
@@ -1864,10 +1848,7 @@ function extractVehicleNumber(
   }
 
 
-  /* ---------------------------------------
-     STEP 1
-     Exact Vehicle Number label
-  --------------------------------------- */
+  /* STEP 1 */
 
   for(
     let i=0;
@@ -1923,10 +1904,7 @@ function extractVehicleNumber(
   }
 
 
-  /* ---------------------------------------
-     STEP 2
-     Search text after label using regex
-  --------------------------------------- */
+  /* STEP 2 */
 
   const normalized =
     normalizeOCRText(text)
@@ -1971,10 +1949,7 @@ function extractVehicleNumber(
   }
 
 
-  /* ---------------------------------------
-     STEP 3
-     Global OCR candidate scan
-  --------------------------------------- */
+  /* STEP 3 */
 
   const global =
     normalized
@@ -1986,10 +1961,6 @@ function extractVehicleNumber(
         /\s+/g,
         " "
       );
-
-  /*
-     Try joined tokens first.
-  */
 
   const globalTokens =
     global
@@ -2035,10 +2006,6 @@ function extractVehicleNumber(
   }
 
 
-  /* ---------------------------------------
-     Score candidates
-  --------------------------------------- */
-
   if(
     candidates.length === 0
   ){
@@ -2047,9 +2014,6 @@ function extractVehicleNumber(
 
   }
 
-  /*
-     Remove duplicates.
-  */
 
   const unique = {};
 
@@ -2083,12 +2047,6 @@ function extractVehicleNumber(
 
   finalCandidates.sort(
     function(a,b){
-
-      /*
-         Prefer label-near candidate.
-         Also prefer exactly 4-digit
-         number ending.
-      */
 
       const aFour =
         /\d{4}$/.test(a.value)
@@ -2128,8 +2086,6 @@ function detectVehicleClass(
     normalizeOCRText(text)
       .toUpperCase();
 
-
-  /* Exact class codes */
 
   if(
     /\bHGV\b/.test(upper)
@@ -2212,10 +2168,6 @@ function detectVehicleClass(
   }
 
 
-  /* ---------------------------------------
-     Description based detection
-  --------------------------------------- */
-
   if(
     upper.includes(
       "CONSTRUCTION EQUIPMENT VEHICLE"
@@ -2228,21 +2180,11 @@ function detectVehicleClass(
 
 
   if(
-    upper.includes(
-      "M-CYCLE"
-    ) ||
-    upper.includes(
-      "MOTORCYCLE"
-    ) ||
-    upper.includes(
-      "MOTOR CYCLE"
-    ) ||
-    upper.includes(
-      "SCOOTER"
-    ) ||
-    upper.includes(
-      "TWO WHEELER"
-    )
+    upper.includes("M-CYCLE") ||
+    upper.includes("MOTORCYCLE") ||
+    upper.includes("MOTOR CYCLE") ||
+    upper.includes("SCOOTER") ||
+    upper.includes("TWO WHEELER")
   ){
 
     return "2WN";
@@ -2251,15 +2193,9 @@ function detectVehicleClass(
 
 
   if(
-    upper.includes(
-      "THREE WHEELER"
-    ) ||
-    upper.includes(
-      "AUTO RICKSHAW"
-    ) ||
-    upper.includes(
-      "AUTORICKSHAW"
-    )
+    upper.includes("THREE WHEELER") ||
+    upper.includes("AUTO RICKSHAW") ||
+    upper.includes("AUTORICKSHAW")
   ){
 
     return "3WT";
@@ -2268,9 +2204,7 @@ function detectVehicleClass(
 
 
   if(
-    upper.includes(
-      "BUS"
-    )
+    upper.includes("BUS")
   ){
 
     return "HPV";
@@ -2279,18 +2213,10 @@ function detectVehicleClass(
 
 
   if(
-    upper.includes(
-      "TRACTOR"
-    ) ||
-    upper.includes(
-      "PICK-UP"
-    ) ||
-    upper.includes(
-      "PICK UP"
-    ) ||
-    upper.includes(
-      "GOODS VEHICLE"
-    )
+    upper.includes("TRACTOR") ||
+    upper.includes("PICK-UP") ||
+    upper.includes("PICK UP") ||
+    upper.includes("GOODS VEHICLE")
   ){
 
     return "LGV";
@@ -2299,12 +2225,8 @@ function detectVehicleClass(
 
 
   if(
-    upper.includes(
-      "MOTOR CAR"
-    ) ||
-    upper.includes(
-      "CAR"
-    )
+    upper.includes("MOTOR CAR") ||
+    upper.includes("CAR")
   ){
 
     return "LMV";
@@ -2344,6 +2266,7 @@ function extractOCRData(){
     extractVehicleNumber(
       text
     );
+
 
   const registrationDate =
     findValueAfterLabels(
@@ -2444,10 +2367,6 @@ function extractOCRData(){
       text
     );
 
-
-  /* ---------------------------------------
-     Fill form
-  --------------------------------------- */
 
   document
     .getElementById(
@@ -2938,12 +2857,7 @@ async function startOCR(){
 
   try{
 
-    /*
-      ========================================
-      OCR STEP 1
-      Original image
-      ========================================
-    */
+    /* OCR STEP 1 */
 
     document
       .getElementById(
@@ -2961,12 +2875,7 @@ async function startOCR(){
       );
 
 
-    /*
-      ========================================
-      OCR STEP 2
-      Enhanced image
-      ========================================
-    */
+    /* OCR STEP 2 */
 
     document
       .getElementById(
@@ -2990,12 +2899,7 @@ async function startOCR(){
       );
 
 
-    /*
-      ========================================
-      OCR STEP 3
-      Enhanced image again
-      ========================================
-    */
+    /* OCR STEP 3 */
 
     document
       .getElementById(
@@ -3019,11 +2923,7 @@ async function startOCR(){
       );
 
 
-    /*
-      ========================================
-      COMBINE ALL 3 OCR RESULTS
-      ========================================
-    */
+    /* COMBINE */
 
     const combinedText =
       [
@@ -3049,10 +2949,6 @@ async function startOCR(){
       .value =
       combinedText;
 
-
-    /*
-      Extract structured fields
-    */
 
     extractOCRData();
 
@@ -3564,12 +3460,6 @@ async function saveVehicle(){
   }
 
 
-  /*
-     Basic Gujarat number check.
-     Allows GJ + 2 digits + 1-3 letters
-     + 3-5 digits.
-  */
-
   const numberCheck =
     /^GJ\d{2}[A-Z]{1,3}\d{3,5}$/;
 
@@ -3603,11 +3493,7 @@ async function saveVehicle(){
 
   try{
 
-    /*
-      ========================================
-      CHECK DUPLICATE VEHICLE NUMBER
-      ========================================
-    */
+    /* CHECK DUPLICATE */
 
     let duplicateQuery =
       supabaseClient
@@ -3659,11 +3545,7 @@ async function saveVehicle(){
     }
 
 
-    /*
-      ========================================
-      PHOTO
-      ========================================
-    */
+    /* PHOTO */
 
     let photoUrl =
       null;
@@ -3692,11 +3574,6 @@ async function saveVehicle(){
 
     }
     else if(editId){
-
-      /*
-        Keep old photo when editing
-        and no new photo selected.
-      */
 
       const {
         data:oldVehicle,
@@ -3733,11 +3610,7 @@ async function saveVehicle(){
     }
 
 
-    /*
-      ========================================
-      DATA
-      ========================================
-    */
+    /* DATA */
 
     const vehicleData = {
 
@@ -3786,11 +3659,7 @@ async function saveVehicle(){
     };
 
 
-    /*
-      ========================================
-      UPDATE
-      ========================================
-    */
+    /* UPDATE */
 
     if(editId){
 
@@ -3810,11 +3679,6 @@ async function saveVehicle(){
 
       if(error){
 
-        /*
-          If DB update fails,
-          remove newly uploaded photo.
-        */
-
         if(newPhotoPath){
 
           await deleteStorageFile(
@@ -3827,11 +3691,6 @@ async function saveVehicle(){
 
       }
 
-
-      /*
-        DB update succeeded.
-        Now delete old photo if replaced.
-      */
 
       if(
         newPhotoPath &&
@@ -3854,11 +3713,7 @@ async function saveVehicle(){
 
     }
 
-    /*
-      ========================================
-      INSERT
-      ========================================
-    */
+    /* INSERT */
 
     else{
 
@@ -3873,11 +3728,6 @@ async function saveVehicle(){
 
 
       if(error){
-
-        /*
-          Remove newly uploaded photo
-          if database insert fails.
-        */
 
         if(newPhotoPath){
 
@@ -3900,11 +3750,7 @@ async function saveVehicle(){
     }
 
 
-    /*
-      ========================================
-      GO DASHBOARD
-      ========================================
-    */
+    /* DASHBOARD */
 
     setTimeout(
       function(){
