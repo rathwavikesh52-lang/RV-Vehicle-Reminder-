@@ -331,6 +331,10 @@ button:disabled{
       LGV - Light Goods Vehicle
     </option>
 
+    <option value="MGV">
+      MGV - Medium Goods Vehicle
+    </option>
+
     <option value="LMV">
       LMV - Light Motor Vehicle
     </option>
@@ -498,6 +502,10 @@ const vehicleClassPhotos = {
   LGV:
     VEHICLE_CLASS_ASSET_BASE +
     "lgv.jpeg",
+
+  MGV:
+    VEHICLE_CLASS_ASSET_BASE +
+    "mgv.png",
 
   LMV:
     VEHICLE_CLASS_ASSET_BASE +
@@ -1864,6 +1872,35 @@ function findVehicleClass(
   }
 
 
+  /* =====================================================
+     MGV - MEDIUM GOODS VEHICLE
+  ===================================================== */
+
+  if(
+    /\bMGV\b/.test(
+      upper
+    )
+  ){
+
+    return "MGV";
+
+  }
+
+
+  /*
+    MGV description fallback.
+  */
+
+  if(
+    upper.includes("MEDIUM GOODS") ||
+    upper.includes("MEDIUM GOODS VEHICLE")
+  ){
+
+    return "MGV";
+
+  }
+
+
   if(
     /\bLMV\b/.test(
       upper
@@ -2921,7 +2958,7 @@ async function saveVehicle(){
 
     /* =====================================================
        PHOTO
-    ===================================================== */
+========================================================= */
 
     const file =
     photoInput.files[0];
@@ -2954,8 +2991,6 @@ async function saveVehicle(){
     if(existing){
 
       /*
-        IMPORTANT:
-
         Same Vehicle Number found.
 
         Old record will NOT remain duplicated.
