@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>RV Vehicle Reminder - Upload</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
+
+/* =========================================
+   GLOBAL
+========================================= */
 
 *{
   box-sizing:border-box;
@@ -20,184 +28,290 @@
 
 body{
   margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#dfe9f3,#ffffff);
-  color:#172033;
-}
-
-.header{
-  background:linear-gradient(135deg,#061a3a,#123b70);
-  color:white;
-  padding:18px;
-  text-align:center;
-}
-
-.logo{
-  font-size:28px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.subtitle{
-  margin-top:5px;
-  font-size:14px;
-  opacity:.9;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f7fb;
+  color:#1f2937;
 }
 
 .container{
-  max-width:700px;
-  margin:20px auto;
-  padding:0 14px;
+  width:100%;
+  max-width:900px;
+  margin:auto;
+  padding:15px;
 }
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header{
+  background:#0f4c81;
+  color:white;
+  padding:18px 15px;
+  text-align:center;
+  border-radius:0 0 15px 15px;
+  box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+.header h1{
+  margin:0;
+  font-size:24px;
+}
+
+.header p{
+  margin:7px 0 0;
+  font-size:14px;
+  opacity:.95;
+}
+
+/* =========================================
+   CARD
+========================================= */
 
 .card{
   background:white;
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 5px 25px rgba(0,0,0,.10);
-  margin-bottom:18px;
+  margin-top:15px;
+  padding:18px;
+  border-radius:15px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
-h2{
+.card h2{
   margin-top:0;
-  color:#092754;
+  color:#0f4c81;
+  font-size:20px;
 }
+
+/* =========================================
+   LABEL
+========================================= */
 
 label{
   display:block;
-  font-weight:700;
-  margin-top:14px;
+  font-weight:bold;
+  margin-top:13px;
   margin-bottom:6px;
 }
 
+/* =========================================
+   INPUT
+========================================= */
+
 input,
-textarea,
-select{
+select,
+textarea{
   width:100%;
   padding:12px;
-  border:1px solid #ccd3dd;
-  border-radius:10px;
-  font-size:16px;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  font-size:15px;
   outline:none;
   background:white;
 }
 
 input:focus,
-textarea:focus,
-select:focus{
-  border-color:#1d5fa7;
+select:focus,
+textarea:focus{
+  border-color:#0f4c81;
+  box-shadow:0 0 0 2px rgba(15,76,129,.08);
 }
 
 textarea{
-  min-height:180px;
+  min-height:130px;
   resize:vertical;
 }
 
-input[type="file"]{
-  padding:10px;
-  background:#f6f8fb;
+/* =========================================
+   UPLOAD AREA
+========================================= */
+
+.upload-box{
+  border:2px dashed #94a3b8;
+  border-radius:12px;
+  padding:18px;
+  text-align:center;
+  background:#f8fafc;
 }
 
-.preview{
+.upload-box input{
+  border:none;
+  padding:8px;
+  background:transparent;
+}
+
+/* =========================================
+   PHOTO PREVIEW
+========================================= */
+
+.photo-preview{
   width:100%;
-  max-height:400px;
+  max-height:420px;
   object-fit:contain;
-  border-radius:12px;
   margin-top:15px;
+  border-radius:12px;
+  border:1px solid #dbe3ec;
+  background:#f8fafc;
   display:none;
-  background:#f1f3f5;
+}
+
+/* =========================================
+   VEHICLE CLASS PREVIEW
+========================================= */
+
+.class-preview-box{
+  margin-top:12px;
+  text-align:center;
+  display:none;
 }
 
 .class-preview{
-  width:100%;
-  max-height:230px;
+  width:180px;
+  height:120px;
   object-fit:contain;
   border-radius:12px;
-  margin-top:12px;
-  display:none;
-  background:#f5f7fa;
+  border:1px solid #dbe3ec;
+  background:#f8fafc;
 }
 
-.buttons{
+/* =========================================
+   GRID
+========================================= */
+
+.grid{
   display:grid;
   grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+@media(max-width:650px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.buttons{
+  display:flex;
   gap:10px;
-  margin-top:20px;
+  margin-top:18px;
+  flex-wrap:wrap;
 }
 
 button{
-  border:0;
-  padding:14px;
-  border-radius:11px;
-  font-size:16px;
-  font-weight:700;
+  border:none;
+  border-radius:9px;
+  padding:13px 18px;
+  font-size:15px;
+  font-weight:bold;
   cursor:pointer;
 }
 
-.read-btn{
-  background:#f39c12;
+.btn-read{
+  background:#2563eb;
   color:white;
+  flex:1;
 }
 
-.save-btn{
-  background:#0b7a43;
+.btn-save{
+  background:#16a34a;
   color:white;
+  flex:1;
 }
 
-.dashboard-btn{
-  background:#123b70;
+.btn-dashboard{
+  background:#475569;
   color:white;
   width:100%;
   margin-top:10px;
 }
 
 button:disabled{
-  opacity:.55;
+  opacity:.6;
   cursor:not-allowed;
 }
+
+/* =========================================
+   STATUS
+========================================= */
 
 .status{
   margin-top:15px;
   padding:12px;
-  border-radius:10px;
-  background:#eef4ff;
-  color:#173d72;
+  border-radius:9px;
+  background:#eff6ff;
+  color:#1d4ed8;
   display:none;
-  white-space:pre-wrap;
+  line-height:1.5;
 }
 
-.small{
+.status.success{
+  background:#ecfdf5;
+  color:#15803d;
+}
+
+.status.error{
+  background:#fef2f2;
+  color:#dc2626;
+}
+
+.status.warning{
+  background:#fffbeb;
+  color:#b45309;
+}
+
+/* =========================================
+   NOTE
+========================================= */
+
+.manual-note{
+  margin-top:10px;
   font-size:13px;
-  color:#667085;
+  color:#64748b;
+  line-height:1.5;
+}
+
+/* =========================================
+   SMALL TEXT
+========================================= */
+
+.small{
+  font-size:12px;
+  color:#64748b;
   margin-top:5px;
 }
 
-.manual-note{
-  background:#fff7e6;
-  border:1px solid #f3d18b;
-  color:#7a5310;
-  padding:10px;
-  border-radius:10px;
-  font-size:13px;
-  margin-bottom:10px;
+/* =========================================
+   HORIZONTAL LINE
+========================================= */
+
+hr{
+  border:none;
+  border-top:1px solid #e2e8f0;
+  margin:22px 0;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
 
+<!-- =========================================
+     HEADER
+========================================= -->
+
 <div class="header">
 
-  <div class="logo">
-    RV VEHICLE REMINDER
-  </div>
+  <h1>RV VEHICLE REMINDER</h1>
 
-  <div class="subtitle">
-    Vehicle Document Reminder System
-  </div>
+  <p>Vehicle Document Reminder System</p>
 
 </div>
 
@@ -205,115 +319,111 @@ button:disabled{
 <div class="container">
 
 
-<!-- =====================================================
-     UPLOAD
-====================================================== -->
+<!-- =========================================
+     UPLOAD PHOTO
+========================================= -->
 
 <div class="card">
 
-  <h2>Upload Vehicle Photo</h2>
+  <h2>Upload VAHAN Photo</h2>
 
-  <input
-    type="file"
-    id="photoInput"
-    accept="image/*"
-  >
+  <div class="upload-box">
+
+    <input
+      type="file"
+      id="photoInput"
+      accept="image/*"
+    >
+
+    <div class="small">
+      Upload VAHAN / Vehicle details photo
+    </div>
+
+  </div>
 
   <img
-    id="preview"
-    class="preview"
-    alt="Vehicle Preview"
+    id="photoPreview"
+    class="photo-preview"
+    alt="Vehicle Photo Preview"
   >
 
   <div class="buttons">
 
     <button
+      class="btn-read"
       id="readBtn"
-      class="read-btn"
-      onclick="readPhoto()"
+      type="button"
     >
       READ PHOTO
     </button>
 
-    <button
-      id="saveBtn"
-      class="save-btn"
-      onclick="saveVehicle()"
-    >
-      SAVE VEHICLE
-    </button>
-
   </div>
-
-  <div
-    id="status"
-    class="status"
-  ></div>
 
 </div>
 
 
-<!-- =====================================================
-     CUSTOMER DETAILS - MANUAL ONLY
-====================================================== -->
+<!-- =========================================
+     CUSTOMER DETAILS
+========================================= -->
 
 <div class="card">
 
   <h2>Customer Details</h2>
 
-  <div class="manual-note">
-    Customer Name and Mobile Number are entered manually.
-    OCR will not change these fields.
-  </div>
-
-  <label>
-    Customer / Owner Name
+  <label for="customerName">
+    Customer Name
   </label>
 
   <input
-    id="customerName"
     type="text"
-    placeholder="Enter Customer / Owner Name"
-    autocomplete="name"
+    id="customerName"
+    placeholder="Enter customer name"
+    autocomplete="off"
   >
 
-  <label>
+  <label for="mobile">
     Mobile Number
   </label>
 
   <input
-    id="mobile"
     type="tel"
-    maxlength="10"
+    id="mobile"
+    placeholder="Enter mobile number"
     inputmode="numeric"
-    placeholder="Enter 10 digit mobile number"
-    autocomplete="tel"
+    maxlength="10"
+    autocomplete="off"
   >
+
+  <div class="manual-note">
+    Customer Name અને Mobile Number manually enter કરો.
+    OCR આ બંને fields ને બદલશે નહીં.
+  </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =========================================
      VEHICLE DETAILS
-====================================================== -->
+========================================= -->
 
 <div class="card">
 
   <h2>Vehicle Details</h2>
 
 
-  <label>
+  <label for="vehicleNumber">
     Vehicle Number
   </label>
 
   <input
-    id="vehicleNumber"
     type="text"
-    placeholder="Example: GJ06PC4883"
+    id="vehicleNumber"
+    placeholder="Example: GJ34AB1234"
+    autocomplete="off"
   >
 
 
-  <label>
+  <label for="vehicleClass">
     Vehicle Class
   </label>
 
@@ -358,150 +468,230 @@ button:disabled{
   </select>
 
 
-  <img
-    id="classPreview"
-    class="class-preview"
-    alt="Vehicle Class"
+  <!-- Vehicle class image -->
+
+  <div
+    id="classPreviewBox"
+    class="class-preview-box"
   >
 
+    <img
+      id="classPreview"
+      class="class-preview"
+      alt="Vehicle Class"
+    >
 
-  <label>
-    Registration Date
-  </label>
-
-  <input
-    id="registrationDate"
-    type="text"
-    placeholder="DD/MM/YYYY"
-  >
-
-
-  <label>
-    Fitness Expiry
-  </label>
-
-  <input
-    id="fitnessExpiry"
-    type="text"
-    placeholder="DD/MM/YYYY"
-  >
-
-
-  <label>
-    Insurance Expiry
-  </label>
-
-  <input
-    id="insuranceExpiry"
-    type="text"
-    placeholder="DD/MM/YYYY"
-  >
-
-
-  <label>
-    Tax Valid UpTo
-  </label>
-
-  <input
-    id="taxExpiry"
-    type="text"
-    placeholder="DD/MM/YYYY or LTT"
-  >
-
-
-  <label>
-    PUCC Expiry
-  </label>
-
-  <input
-    id="puccExpiry"
-    type="text"
-    placeholder="DD/MM/YYYY"
-  >
-
-
-  <label>
-    Permit Expiry
-  </label>
-
-  <input
-    id="permitExpiry"
-    type="text"
-    placeholder="DD/MM/YYYY"
-  >
-
-
-  <div class="small">
-    If a field is not available in the screenshot,
-    it will remain blank.
   </div>
 
-</div>
+
+  <div class="grid">
+
+    <!-- Registration -->
+
+    <div>
+
+      <label for="registrationDate">
+        Registration Date
+      </label>
+
+      <input
+        type="date"
+        id="registrationDate"
+      >
+
+    </div>
 
 
-<!-- =====================================================
-     RAW OCR
-====================================================== -->
+    <!-- Fitness -->
 
-<div class="card">
+    <div>
 
-  <h2>Raw OCR Text</h2>
+      <label for="fitnessExpiry">
+        Fitness Expiry
+      </label>
+
+      <input
+        type="date"
+        id="fitnessExpiry"
+      >
+
+    </div>
+
+
+    <!-- Insurance -->
+
+    <div>
+
+      <label for="insuranceExpiry">
+        Insurance Expiry
+      </label>
+
+      <input
+        type="date"
+        id="insuranceExpiry"
+      >
+
+    </div>
+
+
+    <!-- Tax -->
+
+    <div>
+
+      <label for="taxExpiry">
+        Tax Expiry
+      </label>
+
+      <input
+        type="text"
+        id="taxExpiry"
+        placeholder="Example: LTT or date"
+        autocomplete="off"
+      >
+
+    </div>
+
+
+    <!-- PUCC -->
+
+    <div>
+
+      <label for="puccExpiry">
+        PUCC Expiry
+      </label>
+
+      <input
+        type="date"
+        id="puccExpiry"
+      >
+
+    </div>
+
+
+    <!-- Permit -->
+
+    <div>
+
+      <label for="permitExpiry">
+        Permit Expiry
+      </label>
+
+      <input
+        type="date"
+        id="permitExpiry"
+      >
+
+    </div>
+
+  </div>
+
+
+  <hr>
+
+
+  <!-- =========================================
+       OCR TEXT
+  ========================================= -->
+
+  <label for="ocrText">
+    OCR Text
+  </label>
 
   <textarea
     id="ocrText"
-    placeholder="OCR result will appear here..."
+    placeholder="OCR text will appear here..."
   ></textarea>
 
+
+  <!-- =========================================
+       BUTTONS
+  ========================================= -->
+
+  <div class="buttons">
+
+    <button
+      class="btn-save"
+      id="saveBtn"
+      type="button"
+    >
+      SAVE VEHICLE
+    </button>
+
+  </div>
+
+
+  <button
+    class="btn-dashboard"
+    id="dashboardBtn"
+    type="button"
+  >
+    GO TO DASHBOARD
+  </button>
+
+
+  <!-- =========================================
+       STATUS
+  ========================================= -->
+
+  <div
+    id="status"
+    class="status"
+  ></div>
+
 </div>
-
-
-<button
-  class="dashboard-btn"
-  onclick="goDashboard()"
->
-  GO TO DASHBOARD
-</button>
-
 
 </div>
 
 
 <script>
 
-
-/* =========================================================
+/* =========================================
    SUPABASE
-========================================================= */
+========================================= */
 
 const SUPABASE_URL =
-"https://lqbhafspabtlqeubqxjg.supabase.co";
+  "https://lqbhafspabtlqeubqxjg.supabase.co";
 
-const SUPABASE_KEY =
-"sb_publishable_rIwkaBM5KZodAPSty-hXwg_8_2Rl1-J";
+const SUPABASE_ANON_KEY =
+  "YOUR_SUPABASE_ANON_KEY";
+
 
 const supabaseClient =
-supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
 
-/* =========================================================
-   GITHUB CLASS PHOTOS
-========================================================= */
+/* =========================================
+   STORAGE
+========================================= */
+
+const STORAGE_BUCKET =
+  "vehicle-photos";
+
+
+/* =========================================
+   VEHICLE CLASS IMAGE BASE
+========================================= */
 
 const VEHICLE_CLASS_ASSET_BASE =
-"https://raw.githubusercontent.com/rathwavikesh52-lang/RV-Vehicle-Reminder-/main/assets/vehicle-classes/";
+  "https://raw.githubusercontent.com/rathwavikesh52-lang/RV-Vehicle-Reminder-/main/assets/vehicle-classes/";
+
+
+/* =========================================
+   VEHICLE CLASS PHOTOS
+========================================= */
 
 const vehicleClassPhotos = {
 
   HGV:
     VEHICLE_CLASS_ASSET_BASE +
-    "hgv.webp",
+    "hgv.png",
 
   LGV:
     VEHICLE_CLASS_ASSET_BASE +
-    "lgv.jpeg",
+    "lgv.png",
 
   MGV:
     VEHICLE_CLASS_ASSET_BASE +
@@ -509,119 +699,173 @@ const vehicleClassPhotos = {
 
   LMV:
     VEHICLE_CLASS_ASSET_BASE +
-    "lmv.jpg",
+    "lmv.png",
 
   LPV:
     VEHICLE_CLASS_ASSET_BASE +
-    "lpv.jpg",
+    "lpv.png",
 
   HPV:
     VEHICLE_CLASS_ASSET_BASE +
-    "hpv.jpeg",
+    "hpv.png",
 
   "2WN":
     VEHICLE_CLASS_ASSET_BASE +
-    "2wn.jpeg",
+    "2wn.png",
 
   "3WT":
     VEHICLE_CLASS_ASSET_BASE +
-    "3wt.jpg"
+    "3wt.png"
 
 };
 
 
-/* =========================================================
+/* =========================================
    ELEMENTS
-========================================================= */
+========================================= */
 
 const photoInput =
-document.getElementById("photoInput");
+  document.getElementById("photoInput");
 
-const preview =
-document.getElementById("preview");
+const photoPreview =
+  document.getElementById("photoPreview");
 
 const readBtn =
-document.getElementById("readBtn");
+  document.getElementById("readBtn");
 
 const saveBtn =
-document.getElementById("saveBtn");
+  document.getElementById("saveBtn");
+
+const dashboardBtn =
+  document.getElementById("dashboardBtn");
 
 const statusBox =
-document.getElementById("status");
+  document.getElementById("status");
 
 const customerName =
-document.getElementById("customerName");
+  document.getElementById("customerName");
 
 const mobile =
-document.getElementById("mobile");
+  document.getElementById("mobile");
 
 const vehicleNumber =
-document.getElementById("vehicleNumber");
+  document.getElementById("vehicleNumber");
 
 const vehicleClass =
-document.getElementById("vehicleClass");
+  document.getElementById("vehicleClass");
+
+const classPreviewBox =
+  document.getElementById("classPreviewBox");
 
 const classPreview =
-document.getElementById("classPreview");
+  document.getElementById("classPreview");
 
 const registrationDate =
-document.getElementById("registrationDate");
+  document.getElementById("registrationDate");
 
 const fitnessExpiry =
-document.getElementById("fitnessExpiry");
+  document.getElementById("fitnessExpiry");
 
 const insuranceExpiry =
-document.getElementById("insuranceExpiry");
+  document.getElementById("insuranceExpiry");
 
 const taxExpiry =
-document.getElementById("taxExpiry");
+  document.getElementById("taxExpiry");
 
 const puccExpiry =
-document.getElementById("puccExpiry");
+  document.getElementById("puccExpiry");
 
 const permitExpiry =
-document.getElementById("permitExpiry");
+  document.getElementById("permitExpiry");
 
 const ocrText =
-document.getElementById("ocrText");
+  document.getElementById("ocrText");
 
 
-/* =========================================================
-   PHOTO PREVIEW
-========================================================= */
+/* =========================================
+   EDIT MODE
+========================================= */
+
+const urlParams =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const editId =
+  urlParams.get("id");
+
+let oldPhotoPath = "";
+
+let selectedFile = null;
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+function showStatus(
+  message,
+  type = ""
+){
+
+  statusBox.textContent =
+    message;
+
+  statusBox.className =
+    "status";
+
+  if(type){
+    statusBox.classList.add(type);
+  }
+
+  statusBox.style.display =
+    "block";
+}
+
+
+/* =========================================
+   HIDE STATUS
+========================================= */
+
+function hideStatus(){
+
+  statusBox.style.display =
+    "none";
+
+}
+
+
+/* =========================================
+   PHOTO SELECT
+========================================= */
 
 photoInput.addEventListener(
   "change",
   function(){
 
     const file =
-    this.files[0];
+      this.files[0];
 
     if(!file){
-
-      preview.style.display =
-      "none";
-
       return;
-
     }
 
+    selectedFile =
+      file;
 
     const reader =
-    new FileReader();
-
+      new FileReader();
 
     reader.onload =
-    function(e){
+      function(e){
 
-      preview.src =
-      e.target.result;
+        photoPreview.src =
+          e.target.result;
 
-      preview.style.display =
-      "block";
+        photoPreview.style.display =
+          "block";
 
-    };
-
+      };
 
     reader.readAsDataURL(file);
 
@@ -629,9 +873,9 @@ photoInput.addEventListener(
 );
 
 
-/* =========================================================
-   CLASS PHOTO
-========================================================= */
+/* =========================================
+   VEHICLE CLASS PHOTO
+========================================= */
 
 vehicleClass.addEventListener(
   "change",
@@ -645,59 +889,62 @@ vehicleClass.addEventListener(
 );
 
 
+/* =========================================
+   SHOW CLASS PHOTO
+========================================= */
+
 function showClassPhoto(cls){
 
   if(
-    cls &&
-    vehicleClassPhotos[cls]
+    !cls ||
+    !vehicleClassPhotos[cls]
   ){
 
-    classPreview.src =
-    vehicleClassPhotos[cls];
+    classPreviewBox.style.display =
+      "none";
 
-    classPreview.style.display =
-    "block";
+    classPreview.removeAttribute(
+      "src"
+    );
 
-  }else{
-
-    classPreview.style.display =
-    "none";
-
+    return;
   }
 
+
+  classPreview.src =
+    vehicleClassPhotos[cls];
+
+
+  classPreview.onload =
+    function(){
+
+      classPreviewBox.style.display =
+        "block";
+
+    };
+
+
+  classPreview.onerror =
+    function(){
+
+      classPreviewBox.style.display =
+        "none";
+
+      console.warn(
+        "Vehicle class image not found:",
+        vehicleClassPhotos[cls]
+      );
+
+    };
+
 }
 
 
-/* =========================================================
-   STATUS
-========================================================= */
-
-function showStatus(message){
-
-  statusBox.style.display =
-  "block";
-
-  statusBox.textContent =
-  message;
-
-}
-
-
-/* =========================================================
+/* =========================================
    CLEAR OCR FIELDS
-========================================================= */
+========================================= */
 
 function clearOCRFields(){
-
-  /*
-    IMPORTANT:
-
-    Customer Name and Mobile
-    are MANUAL fields.
-
-    Do NOT clear them here.
-  */
-
 
   vehicleNumber.value = "";
 
@@ -717,188 +964,150 @@ function clearOCRFields(){
 
   ocrText.value = "";
 
-  classPreview.style.display =
-  "none";
+  classPreviewBox.style.display =
+    "none";
+
+  classPreview.removeAttribute(
+    "src"
+  );
 
 }
 
 
-/* =========================================================
-   NORMALIZE TEXT
-========================================================= */
+/* =========================================
+   NORMALIZE OCR TEXT
+========================================= */
 
-function normalizeText(text){
-
-  if(!text){
-    return "";
-  }
-
+function normalizeOCRText(text){
 
   return text
-
-    .replace(/\r/g,"\n")
-
+    .replace(/\r/g,"")
+    .replace(/[|]/g,"I")
+    .replace(/[“”]/g,'"')
+    .replace(/[‘’]/g,"'")
     .replace(/[ \t]+/g," ")
-
-    .replace(/\n{2,}/g,"\n")
-
-    .split("\n")
-
-    .map(
-      x => x.trim()
-    )
-
-    .filter(Boolean)
-
-    .join("\n")
-
     .trim();
 
 }
 
 
-/* =========================================================
+/* =========================================
    DATE CONVERSION
-========================================================= */
+========================================= */
 
-function convertOCRDate(value){
+function toISODate(
+  day,
+  month,
+  year
+){
+
+  day =
+    String(day).padStart(
+      2,
+      "0"
+    );
+
+  month =
+    String(month).padStart(
+      2,
+      "0"
+    );
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+/* =========================================
+   PARSE DATE
+========================================= */
+
+function parseDateValue(
+  value
+){
 
   if(!value){
     return "";
   }
 
 
-  value =
-  value
-    .trim()
-    .replace(/[|]/g,"")
-    .replace(/\s+/g," ");
+  let m;
 
 
-  const months = {
-
-    JAN:"01",
-    FEB:"02",
-    MAR:"03",
-    APR:"04",
-    MAY:"05",
-    JUN:"06",
-    JUL:"07",
-    AUG:"08",
-    SEP:"09",
-    OCT:"10",
-    NOV:"11",
-    DEC:"12"
-
-  };
-
-
-  /* -------------------------------------------------------
-     DD-MMM-YYYY
-  ------------------------------------------------------- */
-
-  let m =
-  value.match(
-    /\b(\d{1,2})[-\/.\s]([A-Za-z]{3,9})[-\/.\s](\d{4})\b/i
-  );
-
-
-  if(m){
-
-    const day =
-    String(m[1]).padStart(2,"0");
-
-    const month =
-    m[2]
-      .substring(0,3)
-      .toUpperCase();
-
-    const year =
-    m[3];
-
-
-    if(months[month]){
-
-      return (
-        day +
-        "/" +
-        months[month] +
-        "/" +
-        year
-      );
-
-    }
-
-  }
-
-
-  /* -------------------------------------------------------
-     YYYY-MM-DD
-  ------------------------------------------------------- */
+  /* DD-MMM-YYYY */
 
   m =
-  value.match(
-    /\b(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})\b/
-  );
+    value.match(
+      /(\d{1,2})[-\/\s](JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)[A-Z]*[-\/\s](\d{4})/i
+    );
 
 
   if(m){
 
-    return (
+    const months = {
 
-      String(m[3]).padStart(2,"0") +
-      "/" +
-      String(m[2]).padStart(2,"0") +
-      "/" +
-      m[1]
+      JAN:1,
+      FEB:2,
+      MAR:3,
+      APR:4,
+      MAY:5,
+      JUN:6,
+      JUL:7,
+      AUG:8,
+      SEP:9,
+      OCT:10,
+      NOV:11,
+      DEC:12
 
+    };
+
+    return toISODate(
+      m[1],
+      months[
+        m[2]
+          .toUpperCase()
+          .substring(0,3)
+      ],
+      m[3]
     );
 
   }
 
 
-  /* -------------------------------------------------------
-     DD/MM/YYYY
-  ------------------------------------------------------- */
+  /* YYYY-MM-DD */
 
   m =
-  value.match(
-    /\b(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})\b/
-  );
+    value.match(
+      /(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/
+    );
 
 
   if(m){
 
-    const day =
-    Number(m[1]);
+    return toISODate(
+      m[3],
+      m[2],
+      m[1]
+    );
 
-    const month =
-    Number(m[2]);
-
-    const year =
-    Number(m[3]);
+  }
 
 
-    if(
-      day >= 1 &&
-      day <= 31 &&
-      month >= 1 &&
-      month <= 12 &&
-      year >= 1900 &&
-      year <= 2100
-    ){
+  /* DD/MM/YYYY */
 
-      return (
+  m =
+    value.match(
+      /(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
+    );
 
-        String(day).padStart(2,"0") +
-        "/" +
-        String(month).padStart(2,"0") +
-        "/" +
-        year
 
-      );
+  if(m){
 
-    }
+    return toISODate(
+      m[1],
+      m[2],
+      m[3]
+    );
 
   }
 
@@ -908,819 +1117,103 @@ function convertOCRDate(value){
 }
 
 
-/* =========================================================
-   FIND DATE IN ONE LINE
-========================================================= */
+/* =========================================
+   FIND DATE AFTER LABEL
+========================================= */
 
-function findDateInLine(line){
-
-  if(!line){
-    return "";
-  }
-
-
-  const patterns = [
-
-    /\b\d{1,2}[-\/.\s][A-Za-z]{3,9}[-\/.\s]\d{4}\b/i,
-
-    /\b\d{1,2}[-\/.]\d{1,2}[-\/.]\d{4}\b/,
-
-    /\b\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2}\b/
-
-  ];
-
-
-  for(
-    const pattern of patterns
-  ){
-
-    const match =
-    line.match(pattern);
-
-
-    if(match){
-
-      const date =
-      convertOCRDate(
-        match[0]
-      );
-
-
-      if(date){
-        return date;
-      }
-
-    }
-
-  }
-
-
-  return "";
-
-}
-
-
-/* =========================================================
-   FIELD LABELS
-========================================================= */
-
-const ALL_FIELD_LABELS = [
-
-  "REGISTRATION DATE",
-  "REGN DATE",
-  "REG DATE",
-
-  "FITNESS VALID UPTO",
-  "FITNESS VALID UP TO",
-  "FITNESS/REGN",
-  "FITNESS",
-
-  "TAX VALID UPTO",
-  "TAX VALID UP TO",
-  "MV TAX",
-  "TAX",
-
-  "INSURANCE VALID UPTO",
-  "INSURANCE VALID UP TO",
-  "INSURANCE",
-
-  "PUCC VALID UPTO",
-  "PUCC VALID UP TO",
-  "PUCC",
-
-  "PERMIT VALID UPTO",
-  "PERMIT VALID UP TO",
-  "PERMIT",
-
-  "VEHICLE NUMBER",
-  "VEHICLE NO",
-  "REGISTRATION NUMBER",
-  "REGISTRATION NO",
-
-  "VEHICLE CLASS"
-
-];
-
-
-function isAnotherFieldLabel(line){
-
-  if(!line){
-    return false;
-  }
-
-
-  const upper =
-  line
-    .toUpperCase()
-    .replace(/\s+/g," ")
-    .trim();
-
-
-  return ALL_FIELD_LABELS.some(
-    label =>
-    upper.includes(label)
-  );
-
-}
-
-
-/* =========================================================
-   STRICT FIELD DATE
-========================================================= */
-
-function findStrictFieldDate(
+function findDateAfterLabel(
   text,
   labels
 ){
 
-  const lines =
-  text
-    .split(/\n/)
-    .map(
-      x => x.trim()
-    )
-    .filter(Boolean);
-
-
   for(
-    let i=0;
-    i<lines.length;
-    i++
+    const label of labels
   ){
 
-    const line =
-    lines[i];
-
-    const upper =
-    line.toUpperCase();
-
-
-    const matchedLabel =
-    labels.find(
-      label =>
-      upper.includes(label)
-    );
-
-
-    if(!matchedLabel){
-      continue;
-    }
-
-
-    /* -----------------------------------------------------
-       SAME LINE
-    ----------------------------------------------------- */
-
-    const labelIndex =
-    upper.indexOf(
-      matchedLabel
-    );
-
-
-    const afterLabel =
-    line.substring(
-      labelIndex +
-      matchedLabel.length
-    );
-
-
-    const sameLineDate =
-    findDateInLine(
-      afterLabel
-    );
-
-
-    if(sameLineDate){
-
-      return sameLineDate;
-
-    }
-
-
-    /* -----------------------------------------------------
-       NEXT 2 LINES
-    ----------------------------------------------------- */
-
-    for(
-      let j=i+1;
-      j<=Math.min(
-        i+2,
-        lines.length-1
+    const regex =
+      new RegExp(
+        label +
+        "\\s*[:\\-]?\\s*" +
+        "([^\\n]{0,80})",
+        "i"
       );
-      j++
-    ){
 
-      const next =
-      lines[j];
+    const match =
+      text.match(regex);
 
-
-      /*
-        NEVER cross another field.
-      */
-
-      if(
-        isAnotherFieldLabel(
-          next
-        )
-      ){
-
-        break;
-
-      }
-
+    if(match){
 
       const date =
-      findDateInLine(
-        next
-      );
-
+        parseDateValue(
+          match[1]
+        );
 
       if(date){
-
         return date;
-
       }
 
     }
 
   }
-
 
   return "";
 
 }
 
 
-/* =========================================================
-   STRICT TAX
-========================================================= */
-
-function findStrictTax(text){
-
-  const lines =
-  text
-    .split(/\n/)
-    .map(
-      x => x.trim()
-    )
-    .filter(Boolean);
-
-
-  for(
-    let i=0;
-    i<lines.length;
-    i++
-  ){
-
-    const line =
-    lines[i];
-
-    const upper =
-    line.toUpperCase();
-
-
-    const hasTaxLabel =
-    (
-      upper.includes(
-        "TAX VALID UPTO"
-      ) ||
-
-      upper.includes(
-        "TAX VALID UP TO"
-      ) ||
-
-      upper.includes(
-        "MV TAX"
-      ) ||
-
-      upper.includes(
-        "TAX:"
-      )
-    );
-
-
-    if(!hasTaxLabel){
-      continue;
-    }
-
-
-    /* =====================================================
-       LTT HAS FIRST PRIORITY
-    ===================================================== */
-
-    if(
-      /\bLTT\b/.test(
-        upper
-      )
-    ){
-
-      return "LTT";
-
-    }
-
-
-    /*
-      Common OCR mistakes.
-
-      These are accepted ONLY on a TAX line
-      or immediately following TAX value line.
-    */
-
-    if(
-      /\b(L7T|LT7|LIT|LII)\b/.test(
-        upper
-      )
-    ){
-
-      return "LTT";
-
-    }
-
-
-    /* -----------------------------------------------------
-       SAME LINE DATE
-    ----------------------------------------------------- */
-
-    const sameLineDate =
-    findDateInLine(
-      line
-    );
-
-
-    if(sameLineDate){
-
-      return sameLineDate;
-
-    }
-
-
-    /* -----------------------------------------------------
-       NEXT LINES
-    ----------------------------------------------------- */
-
-    for(
-      let j=i+1;
-      j<=Math.min(
-        i+2,
-        lines.length-1
-      );
-      j++
-    ){
-
-      const next =
-      lines[j];
-
-      const nextUpper =
-      next.toUpperCase();
-
-
-      /*
-        Stop at another field.
-      */
-
-      if(
-        isAnotherFieldLabel(
-          next
-        )
-      ){
-
-        break;
-
-      }
-
-
-      if(
-        /\bLTT\b/.test(
-          nextUpper
-        )
-      ){
-
-        return "LTT";
-
-      }
-
-
-      if(
-        /\b(L7T|LT7|LIT|LII)\b/.test(
-          nextUpper
-        )
-      ){
-
-        return "LTT";
-
-      }
-
-
-      const date =
-      findDateInLine(
-        next
-      );
-
-
-      if(date){
-
-        return date;
-
-      }
-
-    }
-
-  }
-
-
-  /*
-    NEVER take a random date
-    when Tax label is absent.
-  */
-
-  return "";
-
-}
-
-
-/* =========================================================
-   VEHICLE NUMBER CLEANING
-========================================================= */
-
-function cleanVehicleNumber(
-  value
-){
-
-  if(!value){
-    return "";
-  }
-
-
-  let v =
-  value
-    .toUpperCase()
-    .replace(
-      /[^A-Z0-9]/g,
-      ""
-    );
-
-
-  /*
-    Fix common GJ OCR errors.
-  */
-
-  if(
-    v.startsWith("GIO")
-  ){
-
-    v =
-    "GJ0" +
-    v.substring(3);
-
-  }
-
-
-  if(
-    v.startsWith("GJO")
-  ){
-
-    v =
-    "GJ0" +
-    v.substring(3);
-
-  }
-
-
-  /*
-    Fix numeric RTO section only.
-  */
-
-  if(
-    v.startsWith("GJ") &&
-    v.length >= 4
-  ){
-
-    const chars =
-    v.split("");
-
-
-    const corrections = {
-
-      O:"0",
-      Q:"0",
-      D:"0",
-
-      I:"1",
-      L:"1",
-
-      S:"5",
-      B:"8",
-      Z:"2"
-
-    };
-
-
-    for(
-      let i=2;
-      i<4;
-      i++
-    ){
-
-      if(
-        corrections[
-          chars[i]
-        ]
-      ){
-
-        chars[i] =
-        corrections[
-          chars[i]
-        ];
-
-      }
-
-    }
-
-
-    v =
-    chars.join("");
-
-  }
-
-
-  /*
-    Separate prefix and number.
-  */
-
-  const match =
-  v.match(
-    /^(GJ\d{2}[A-Z]{1,3})([A-Z0-9]{3,5})$/
-  );
-
-
-  if(match){
-
-    const prefix =
-    match[1];
-
-    let numberPart =
-    match[2];
-
-
-    numberPart =
-    numberPart
-      .replace(/O/g,"0")
-      .replace(/Q/g,"0")
-      .replace(/D/g,"0")
-      .replace(/I/g,"1")
-      .replace(/L/g,"1")
-      .replace(/S/g,"5")
-      .replace(/B/g,"8")
-      .replace(/Z/g,"2");
-
-
-    v =
-    prefix +
-    numberPart;
-
-  }
-
-
-  return v;
-
-}
-
-
-/* =========================================================
-   VEHICLE NUMBER FORMAT
-========================================================= */
-
-function isVehicleNumberFormat(
-  value
-){
-
-  if(!value){
-    return false;
-  }
-
-
-  return /^GJ\d{2}[A-Z]{1,3}\d{3,5}$/
-    .test(value);
-
-}
-
-
-/* =========================================================
-   VEHICLE NUMBER EXTRACTION
-========================================================= */
-
-function extractVehicleCandidates(
-  text
-){
-
-  if(!text){
-    return [];
-  }
-
+/* =========================================
+   EXTRACT TAX
+========================================= */
+
+function extractTax(text){
 
   const upper =
-  text.toUpperCase();
+    text.toUpperCase();
 
 
-  const candidates = [];
-
-
-  const patterns = [
-
-    /\bGJ[\s\-]?\d{2}[\s\-]?[A-Z0-9]{1,3}[\s\-]?[A-Z0-9]{3,5}\b/g,
-
-    /\bGJ[A-Z0-9]{8,11}\b/g
-
-  ];
-
-
-  for(
-    const pattern of patterns
-  ){
-
-    const matches =
-    upper.match(pattern);
-
-
-    if(!matches){
-      continue;
-    }
-
-
-    matches.forEach(
-      item => {
-
-        const cleaned =
-        cleanVehicleNumber(
-          item
-        );
-
-
-        if(
-          isVehicleNumberFormat(
-            cleaned
-          )
-        ){
-
-          candidates.push(
-            cleaned
-          );
-
-        }
-
-      }
-    );
-
-  }
-
-
-  /*
-    Compact fallback.
-  */
-
-  const compact =
-  upper.replace(
-    /[^A-Z0-9]/g,
-    ""
-  );
-
-
-  const compactMatches =
-  compact.match(
-    /GJ[A-Z0-9]{8,11}/g
-  );
-
-
-  if(compactMatches){
-
-    compactMatches.forEach(
-      item => {
-
-        const cleaned =
-        cleanVehicleNumber(
-          item
-        );
-
-
-        if(
-          isVehicleNumberFormat(
-            cleaned
-          )
-        ){
-
-          candidates.push(
-            cleaned
-          );
-
-        }
-
-      }
-    );
-
-  }
-
-
-  return [
-    ...new Set(
-      candidates
-    )
-  ];
-
-}
-
-
-/* =========================================================
-   VEHICLE NUMBER FROM LABEL
-========================================================= */
-
-function findVehicleNumberFromLabel(
-  text
-){
-
-  const lines =
-  text
-    .split(/\n/)
-    .map(
-      x => x.trim()
-    )
-    .filter(Boolean);
-
-
-  const labels = [
-
-    "VEHICLE NUMBER",
-    "VEHICLE NO",
-    "REGISTRATION NUMBER",
-    "REGISTRATION NO"
-
-  ];
-
-
-  for(
-    let i=0;
-    i<lines.length;
-    i++
-  ){
-
-    const upper =
-    lines[i].toUpperCase();
-
-
-    const foundLabel =
-    labels.find(
-      label =>
-      upper.includes(label)
+  const taxIndex =
+    upper.search(
+      /TAX|TAX VALID|ROAD TAX/
     );
 
 
-    if(!foundLabel){
-      continue;
-    }
+  if(taxIndex >= 0){
 
-
-    /*
-      Same line
-    */
-
-    const same =
-    extractVehicleCandidates(
-      lines[i]
-    );
-
-
-    if(same.length){
-
-      return chooseBestVehicleNumber(
-        same
+    const part =
+      upper.substring(
+        taxIndex,
+        taxIndex + 150
       );
 
-    }
-
-
-    /*
-      Next line
-    */
 
     if(
-      i+1 <
-      lines.length
+      /\bLTT\b/.test(part) ||
+      /\bL7T\b/.test(part) ||
+      /\bLT7\b/.test(part) ||
+      /\bLIT\b/.test(part) ||
+      /\bLII\b/.test(part)
     ){
 
-      const next =
-      extractVehicleCandidates(
-        lines[i+1]
-      );
-
-
-      if(next.length){
-
-        return chooseBestVehicleNumber(
-          next
-        );
-
-      }
+      return "LTT";
 
     }
+
+
+    const date =
+      parseDateValue(part);
+
+    if(date){
+      return date;
+    }
+
+  }
+
+
+  if(
+    /\bLTT\b/.test(upper)
+  ){
+
+    return "LTT";
 
   }
 
@@ -1730,107 +1223,130 @@ function findVehicleNumberFromLabel(
 }
 
 
-/* =========================================================
-   CHOOSE VEHICLE NUMBER
-========================================================= */
+/* =========================================
+   EXTRACT VEHICLE NUMBER
+========================================= */
 
-function chooseBestVehicleNumber(
-  candidates
+function extractVehicleNumber(
+  text
 ){
 
+  let upper =
+    text
+      .toUpperCase()
+      .replace(/[^A-Z0-9\s]/g," ");
+
+
+  /* Common OCR corrections */
+
+  upper =
+    upper
+      .replace(/\bGJ\s*(\d{2})/g,"GJ$1")
+      .replace(/GJ\s*(\d{2})/g,"GJ$1");
+
+
+  const matches =
+    upper.match(
+      /\bGJ\d{2}[A-Z]{1,3}\d{3,5}\b/g
+    );
+
+
   if(
-    !candidates.length
+    matches &&
+    matches.length
   ){
 
-    return "";
+    return matches[0];
 
   }
 
 
-  const scored =
-  candidates.map(
-    value => {
-
-      let score = 0;
-
-
-      if(
-        isVehicleNumberFormat(
-          value
-        )
-      ){
-
-        score += 100;
-
-      }
-
-
-      if(
-        /^GJ\d{2}/.test(
-          value
-        )
-      ){
-
-        score += 50;
-
-      }
-
-
-      if(
-        /^GJ\d{2}[A-Z]{1,3}\d{4}$/
-          .test(value)
-      ){
-
-        score += 30;
-
-      }
-
-
-      return {
-        value:value,
-        score:score
-      };
-
-    }
-  );
-
-
-  scored.sort(
-    (a,b) =>
-    b.score -
-    a.score
-  );
-
-
-  return scored[0].value;
+  return "";
 
 }
 
 
-/* =========================================================
-   VEHICLE CLASS
-========================================================= */
+/* =========================================
+   FIND VEHICLE CLASS
+========================================= */
 
 function findVehicleClass(
   text
 ){
 
-  if(!text){
-    return "";
+  const upper =
+    text.toUpperCase();
+
+
+  /* Exact classes */
+
+  if(
+    /\b2WN\b/.test(upper)
+  ){
+    return "2WN";
   }
 
 
-  const upper =
-  text.toUpperCase();
+  if(
+    /\b3WT\b/.test(upper)
+  ){
+    return "3WT";
+  }
 
-
-  /*
-    Exact codes first.
-  */
 
   if(
-    /\b2WN\b/.test(
-      upper
+    /\bHGV\b/.test(upper)
+  ){
+    return "HGV";
+  }
+
+
+  if(
+    /\bLGV\b/.test(upper)
+  ){
+    return "LGV";
+  }
+
+
+  if(
+    /\bMGV\b/.test(upper)
+  ){
+    return "MGV";
+  }
+
+
+  if(
+    /\bLMV\b/.test(upper)
+  ){
+    return "LMV";
+  }
+
+
+  if(
+    /\bLPV\b/.test(upper)
+  ){
+    return "LPV";
+  }
+
+
+  if(
+    /\bHPV\b/.test(upper)
+  ){
+    return "HPV";
+  }
+
+
+  /* Description */
+
+  if(
+    upper.includes(
+      "MOTORCYCLE"
+    ) ||
+    upper.includes(
+      "SCOOTER"
+    ) ||
+    upper.includes(
+      "TWO WHEELER"
     )
   ){
 
@@ -1840,8 +1356,11 @@ function findVehicleClass(
 
 
   if(
-    /\b3WT\b/.test(
-      upper
+    upper.includes(
+      "AUTO RICKSHAW"
+    ) ||
+    upper.includes(
+      "THREE WHEELER"
     )
   ){
 
@@ -1851,81 +1370,8 @@ function findVehicleClass(
 
 
   if(
-    /\bHGV\b/.test(
-      upper
-    )
-  ){
-
-    return "HGV";
-
-  }
-
-
-  if(
-    /\bLGV\b/.test(
-      upper
-    )
-  ){
-
-    return "LGV";
-
-  }
-
-
-  /* =====================================================
-     MGV - MEDIUM GOODS VEHICLE
-  ===================================================== */
-
-  if(
-    /\bMGV\b/.test(
-      upper
-    )
-  ){
-
-    return "MGV";
-
-  }
-
-
-  /*
-    MGV description fallback.
-  */
-
-  if(
-    upper.includes("MEDIUM GOODS") ||
-    upper.includes("MEDIUM GOODS VEHICLE")
-  ){
-
-    return "MGV";
-
-  }
-
-
-  if(
-    /\bLMV\b/.test(
-      upper
-    )
-  ){
-
-    return "LMV";
-
-  }
-
-
-  if(
-    /\bLPV\b/.test(
-      upper
-    )
-  ){
-
-    return "LPV";
-
-  }
-
-
-  if(
-    /\bHPV\b/.test(
-      upper
+    upper.includes(
+      "BUS"
     )
   ){
 
@@ -1934,49 +1380,22 @@ function findVehicleClass(
   }
 
 
-  /*
-    Description fallback.
-  */
-
   if(
-    upper.includes("M-CYCLE") ||
-    upper.includes("M CYCLE") ||
-    upper.includes("MOTOR CYCLE") ||
-    upper.includes("MOTORCYCLE") ||
-    upper.includes("SCOOTER") ||
-    upper.includes("TWO WHEELER")
-  ){
-
-    return "2WN";
-
-  }
-
-
-  if(
-    upper.includes("AUTO RICKSHAW") ||
-    upper.includes("THREE WHEELER")
-  ){
-
-    return "3WT";
-
-  }
-
-
-  if(
-    upper.includes("BUS")
-  ){
-
-    return "LPV";
-
-  }
-
-
-  if(
-    upper.includes("TRACTOR") ||
-    upper.includes("PICK-UP") ||
-    upper.includes("PICK UP") ||
-    upper.includes("PICKUP") ||
-    upper.includes("GOODS VEHICLE")
+    upper.includes(
+      "TRACTOR"
+    ) ||
+    upper.includes(
+      "PICK-UP"
+    ) ||
+    upper.includes(
+      "PICK UP"
+    ) ||
+    upper.includes(
+      "PICKUP"
+    ) ||
+    upper.includes(
+      "GOODS VEHICLE"
+    )
   ){
 
     return "LGV";
@@ -1985,7 +1404,12 @@ function findVehicleClass(
 
 
   if(
-    upper.includes("CAR")
+    upper.includes(
+      "CAR"
+    ) ||
+    upper.includes(
+      "MOTOR CAR"
+    )
   ){
 
     return "LMV";
@@ -1998,180 +1422,303 @@ function findVehicleClass(
 }
 
 
-/* =========================================================
-   IMAGE PREPROCESSING
-========================================================= */
+/* =========================================
+   EXTRACT OCR DATA
+========================================= */
 
-function preprocessImage(
-  file,
-  mode
+function extractOCRData(
+  text
 ){
 
-  return new Promise(
-    (resolve,reject) => {
-
-      const img =
-      new Image();
-
-      const reader =
-      new FileReader();
+  const cleanText =
+    normalizeOCRText(
+      text
+    );
 
 
-      reader.onload =
-      function(e){
-
-        img.onload =
-        function(){
-
-          const scale =
-          2;
+  vehicleNumber.value =
+    extractVehicleNumber(
+      cleanText
+    );
 
 
-          const canvas =
-          document.createElement(
-            "canvas"
-          );
+  vehicleClass.value =
+    findVehicleClass(
+      cleanText
+    );
 
 
-          canvas.width =
-          img.width *
-          scale;
-
-          canvas.height =
-          img.height *
-          scale;
+  showClassPhoto(
+    vehicleClass.value
+  );
 
 
-          const ctx =
-          canvas.getContext(
-            "2d"
-          );
+  registrationDate.value =
+    findDateAfterLabel(
+      cleanText,
+      [
+        "REGISTRATION DATE",
+        "REGISTRATION",
+        "REGN DATE",
+        "REGN"
+      ]
+    );
 
 
-          ctx.drawImage(
-            img,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-          );
+  fitnessExpiry.value =
+    findDateAfterLabel(
+      cleanText,
+      [
+        "FITNESS VALID UPTO",
+        "FITNESS VALID",
+        "FITNESS EXPIRY",
+        "FITNESS"
+      ]
+    );
 
 
-          if(
-            mode ===
-            "enhanced"
-          ){
-
-            const imageData =
-            ctx.getImageData(
-              0,
-              0,
-              canvas.width,
-              canvas.height
-            );
+  insuranceExpiry.value =
+    findDateAfterLabel(
+      cleanText,
+      [
+        "INSURANCE VALID UPTO",
+        "INSURANCE VALID",
+        "INSURANCE EXPIRY",
+        "INSURANCE"
+      ]
+    );
 
 
-            const data =
-            imageData.data;
+  taxExpiry.value =
+    extractTax(
+      cleanText
+    );
 
 
-            for(
-              let i=0;
-              i<data.length;
-              i+=4
+  puccExpiry.value =
+    findDateAfterLabel(
+      cleanText,
+      [
+        "PUCC VALID UPTO",
+        "PUC VALID UPTO",
+        "PUCC EXPIRY",
+        "PUC EXPIRY",
+        "PUCC",
+        "PUC"
+      ]
+    );
+
+
+  permitExpiry.value =
+    findDateAfterLabel(
+      cleanText,
+      [
+        "PERMIT VALID UPTO",
+        "PERMIT VALID",
+        "PERMIT EXPIRY",
+        "PERMIT"
+      ]
+    );
+
+}
+
+
+/* =========================================
+   OCR IMAGE
+========================================= */
+
+async function runOCR(
+  file
+){
+
+  showStatus(
+    "Reading photo... Please wait.",
+    "warning"
+  );
+
+
+  const result =
+    await Tesseract.recognize(
+      file,
+      "eng",
+      {
+        logger:
+          function(info){
+
+            if(
+              info.status ===
+              "recognizing text"
             ){
 
-              let gray =
-              (
-                0.299 *
-                data[i]
-              ) +
-              (
-                0.587 *
-                data[i+1]
-              ) +
-              (
-                0.114 *
-                data[i+2]
+              const percent =
+                Math.round(
+                  (info.progress || 0) * 100
+                );
+
+              showStatus(
+                "Reading photo... " +
+                percent +
+                "%",
+                "warning"
               );
-
-
-              gray =
-              (
-                gray -
-                128
-              ) *
-              1.35 +
-              128;
-
-
-              gray =
-              Math.max(
-                0,
-                Math.min(
-                  255,
-                  gray
-                )
-              );
-
-
-              data[i] =
-              gray;
-
-              data[i+1] =
-              gray;
-
-              data[i+2] =
-              gray;
 
             }
 
-
-            ctx.putImageData(
-              imageData,
-              0,
-              0
-            );
-
           }
+      }
+    );
 
 
-          canvas.toBlob(
-            blob => {
+  return result.data.text || "";
 
-              if(blob){
+}
 
-                resolve(blob);
 
-              }else{
+/* =========================================
+   ENHANCED IMAGE
+========================================= */
 
-                reject(
-                  new Error(
-                    "Image processing failed."
-                  )
+function createEnhancedImage(
+  file
+){
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      const img =
+        new Image();
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(e){
+
+          img.onload =
+            function(){
+
+              const canvas =
+                document.createElement(
+                  "canvas"
                 );
+
+              const scale =
+                Math.max(
+                  1,
+                  1800 / img.width
+                );
+
+
+              canvas.width =
+                img.width * scale;
+
+              canvas.height =
+                img.height * scale;
+
+
+              const ctx =
+                canvas.getContext(
+                  "2d"
+                );
+
+
+              ctx.drawImage(
+                img,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
+
+
+              const imageData =
+                ctx.getImageData(
+                  0,
+                  0,
+                  canvas.width,
+                  canvas.height
+                );
+
+
+              const data =
+                imageData.data;
+
+
+              for(
+                let i = 0;
+                i < data.length;
+                i += 4
+              ){
+
+                const gray =
+                  (
+                    data[i] * 0.299 +
+                    data[i + 1] * 0.587 +
+                    data[i + 2] * 0.114
+                  );
+
+
+                let value =
+                  (gray - 128) * 1.5 + 128;
+
+
+                value =
+                  Math.max(
+                    0,
+                    Math.min(
+                      255,
+                      value
+                    )
+                  );
+
+
+                data[i] =
+                  value;
+
+                data[i + 1] =
+                  value;
+
+                data[i + 2] =
+                  value;
 
               }
 
-            },
-            "image/jpeg",
-            .95
-          );
+
+              ctx.putImageData(
+                imageData,
+                0,
+                0
+              );
+
+
+              canvas.toBlob(
+                function(blob){
+
+                  resolve(blob);
+
+                },
+                "image/jpeg",
+                0.95
+              );
+
+            };
+
+
+          img.onerror =
+            reject;
+
+          img.src =
+            e.target.result;
 
         };
 
 
-        img.onerror =
-        reject;
-
-        img.src =
-        e.target.result;
-
-      };
-
-
       reader.onerror =
-      reject;
+        reject;
 
       reader.readAsDataURL(
         file
@@ -2183,468 +1730,189 @@ function preprocessImage(
 }
 
 
-/* =========================================================
-   OCR
-========================================================= */
+/* =========================================
+   READ PHOTO
+========================================= */
 
-async function runOCR(
-  image,
-  label
-){
+readBtn.addEventListener(
+  "click",
+  async function(){
 
-  showStatus(
-    label +
-    "\nPlease wait..."
-  );
+    hideStatus();
 
 
-  const result =
-  await Tesseract.recognize(
-    image,
-    "eng",
-    {
+    if(!selectedFile){
 
-      logger:function(info){
+      showStatus(
+        "Please select a photo first.",
+        "error"
+      );
 
-        if(
-          info.status ===
-          "recognizing text"
-        ){
-
-          const progress =
-          Math.round(
-            (
-              info.progress ||
-              0
-            ) * 100
-          );
-
-
-          showStatus(
-            label +
-            "\n" +
-            progress +
-            "%"
-          );
-
-        }
-
-      }
+      return;
 
     }
-  );
 
 
-  return normalizeText(
-    result.data.text ||
-    ""
-  );
-
-}
+    readBtn.disabled =
+      true;
 
 
-/* =========================================================
-   MERGE OCR
-========================================================= */
-
-function mergeOCRText(
-  texts
-){
-
-  const result = [];
+    saveBtn.disabled =
+      true;
 
 
-  texts.forEach(
-    text => {
+    try{
 
-      if(!text){
-        return;
-      }
+      clearOCRFields();
 
 
-      text
-        .split(/\n/)
-        .map(
-          x => x.trim()
-        )
-        .filter(Boolean)
-        .forEach(
-          line => {
+      /* OCR 1 */
 
-            if(
-              !result.includes(
-                line
-              )
-            ){
-
-              result.push(
-                line
-              );
-
-            }
-
-          }
+      const text1 =
+        await runOCR(
+          selectedFile
         );
 
-    }
-  );
+
+      let allText =
+        text1 || "";
 
 
-  return result.join(
-    "\n"
-  );
+      /* OCR 2 */
 
-}
+      try{
 
-
-/* =========================================================
-   READ PHOTO
-========================================================= */
-
-async function readPhoto(){
-
-  const file =
-  photoInput.files[0];
+        showStatus(
+          "Improving photo and reading again...",
+          "warning"
+        );
 
 
-  if(!file){
-
-    alert(
-      "Please select a vehicle photo first."
-    );
-
-    return;
-
-  }
+        const enhanced =
+          await createEnhancedImage(
+            selectedFile
+          );
 
 
-  /*
-    IMPORTANT:
-
-    Manual Customer Name
-    and Mobile are NOT cleared.
-  */
-
-  clearOCRFields();
+        const text2Result =
+          await Tesseract.recognize(
+            enhanced,
+            "eng"
+          );
 
 
-  readBtn.disabled =
-  true;
-
-  saveBtn.disabled =
-  true;
+        const text2 =
+          text2Result.data.text || "";
 
 
-  try{
+        allText +=
+          "\n" +
+          text2;
 
-    /* -----------------------------------------------------
-       OCR PASS 1
-    ----------------------------------------------------- */
+      }catch(e){
 
-    const text1 =
-    await runOCR(
-      file,
-      "OCR Pass 1/3 - Original"
-    );
+        console.warn(
+          "Enhanced OCR failed:",
+          e
+        );
 
-
-    /* -----------------------------------------------------
-       OCR PASS 2
-    ----------------------------------------------------- */
-
-    const enhanced =
-    await preprocessImage(
-      file,
-      "enhanced"
-    );
+      }
 
 
-    const text2 =
-    await runOCR(
-      enhanced,
-      "OCR Pass 2/3 - Enhanced"
-    );
+      /* OCR 3 - high resolution */
+
+      try{
+
+        showStatus(
+          "Final OCR check...",
+          "warning"
+        );
 
 
-    /* -----------------------------------------------------
-       OCR PASS 3
-    ----------------------------------------------------- */
-
-    const enlarged =
-    await preprocessImage(
-      file,
-      "normal"
-    );
+        const highRes =
+          await createEnhancedImage(
+            selectedFile
+          );
 
 
-    const text3 =
-    await runOCR(
-      enlarged,
-      "OCR Pass 3/3 - High Resolution"
-    );
+        const text3Result =
+          await Tesseract.recognize(
+            highRes,
+            "eng"
+          );
 
 
-    /* -----------------------------------------------------
-       MERGE
-    ----------------------------------------------------- */
-
-    const rawText =
-    mergeOCRText(
-      [
-        text1,
-        text2,
-        text3
-      ]
-    );
+        const text3 =
+          text3Result.data.text || "";
 
 
-    ocrText.value =
-    rawText;
+        allText +=
+          "\n" +
+          text3;
+
+      }catch(e){
+
+        console.warn(
+          "High resolution OCR failed:",
+          e
+        );
+
+      }
 
 
-    /* =====================================================
-       VEHICLE NUMBER
-    ===================================================== */
-
-    let number =
-    findVehicleNumberFromLabel(
-      rawText
-    );
+      ocrText.value =
+        normalizeOCRText(
+          allText
+        );
 
 
-    if(!number){
-
-      const candidates =
-      extractVehicleCandidates(
-        rawText
+      extractOCRData(
+        allText
       );
 
 
-      number =
-      chooseBestVehicleNumber(
-        candidates
+      showStatus(
+        "Photo read successfully. Please check the fields before saving.",
+        "success"
       );
 
-    }
 
+    }catch(error){
 
-    if(number){
-
-      vehicleNumber.value =
-      number;
-
-    }
-
-
-    /* =====================================================
-       VEHICLE CLASS
-    ===================================================== */
-
-    const cls =
-    findVehicleClass(
-      rawText
-    );
-
-
-    if(cls){
-
-      vehicleClass.value =
-      cls;
-
-      showClassPhoto(
-        cls
-      );
-
-    }
-
-
-    /* =====================================================
-       REGISTRATION
-    ===================================================== */
-
-    const registration =
-    findStrictFieldDate(
-      rawText,
-      [
-        "REGISTRATION DATE",
-        "REGN DATE",
-        "REG DATE"
-      ]
-    );
-
-
-    if(registration){
-
-      registrationDate.value =
-      registration;
-
-    }
-
-
-    /* =====================================================
-       FITNESS
-    ===================================================== */
-
-    const fitness =
-    findStrictFieldDate(
-      rawText,
-      [
-        "FITNESS VALID UPTO",
-        "FITNESS VALID UP TO",
-        "FITNESS/REGN",
-        "FITNESS"
-      ]
-    );
-
-
-    if(fitness){
-
-      fitnessExpiry.value =
-      fitness;
-
-    }
-
-
-    /* =====================================================
-       TAX
-    ===================================================== */
-
-    const tax =
-    findStrictTax(
-      rawText
-    );
-
-
-    if(tax){
-
-      taxExpiry.value =
-      tax;
-
-    }
-
-
-    /* =====================================================
-       INSURANCE
-    ===================================================== */
-
-    const insurance =
-    findStrictFieldDate(
-      rawText,
-      [
-        "INSURANCE VALID UPTO",
-        "INSURANCE VALID UP TO",
-        "INSURANCE"
-      ]
-    );
-
-
-    if(insurance){
-
-      insuranceExpiry.value =
-      insurance;
-
-    }
-
-
-    /* =====================================================
-       PUCC
-    ===================================================== */
-
-    const pucc =
-    findStrictFieldDate(
-      rawText,
-      [
-        "PUCC VALID UPTO",
-        "PUCC VALID UP TO",
-        "PUCC"
-      ]
-    );
-
-
-    if(pucc){
-
-      puccExpiry.value =
-      pucc;
-
-    }
-
-
-    /* =====================================================
-       PERMIT
-    ===================================================== */
-
-    const permit =
-    findStrictFieldDate(
-      rawText,
-      [
-        "PERMIT VALID UPTO",
-        "PERMIT VALID UP TO",
-        "PERMIT"
-      ]
-    );
-
-
-    if(permit){
-
-      permitExpiry.value =
-      permit;
-
-    }
-
-
-    showStatus(
-      "OCR completed successfully.\n\n" +
-      "Vehicle document details extracted.\n" +
-      "Customer Name and Mobile remain manual.\n\n" +
-      "Please check the details before saving."
-    );
-
-
-  }catch(error){
-
-    console.error(
-      "OCR Error:",
-      error
-    );
-
-
-    showStatus(
-      "OCR Error:\n" +
-      (
-        error.message ||
+      console.error(
         error
-      )
-    );
+      );
+
+
+      showStatus(
+        "OCR failed. Please enter the vehicle details manually.",
+        "error"
+      );
+
+    }
+
+
+    readBtn.disabled =
+      false;
+
+    saveBtn.disabled =
+      false;
 
   }
+);
 
 
-  readBtn.disabled =
-  false;
-
-  saveBtn.disabled =
-  false;
-
-}
-
-
-/* =========================================================
+/* =========================================
    DATABASE DATE
-========================================================= */
+========================================= */
 
 function convertToDatabaseDate(
   value
 ){
 
   if(!value){
-
     return null;
-
   }
-
-
-  value =
-  value.trim();
 
 
   if(
@@ -2657,81 +1925,101 @@ function convertToDatabaseDate(
   }
 
 
-  const m =
-  value.match(
-    /^(\d{2})\/(\d{2})\/(\d{4})$/
-  );
+  const date =
+    parseDateValue(
+      value
+    );
 
 
-  if(!m){
-
-    return null;
-
-  }
-
-
-  return (
-    m[3] +
-    "-" +
-    m[2] +
-    "-" +
-    m[1]
-  );
+  return date || value;
 
 }
 
 
-/* =========================================================
-   UPLOAD PHOTO
-========================================================= */
+/* =========================================
+   CLEAN VEHICLE NUMBER
+========================================= */
+
+function cleanVehicleNumber(
+  value
+){
+
+  return (
+    value || ""
+  )
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9]/g,
+      ""
+    )
+    .trim();
+
+}
+
+
+/* =========================================
+   UPLOAD PHOTO TO STORAGE
+========================================= */
 
 async function uploadPhoto(
-  file,
-  vehicleNo
+  vehicleNo,
+  file
 ){
 
   if(!file){
-
     return null;
-
   }
 
 
-  const safeVehicle =
-  vehicleNo.replace(
-    /[^A-Z0-9]/gi,
-    ""
-  );
-
-
-  const fileName =
-  safeVehicle +
-  "_" +
-  Date.now() +
-  ".jpg";
-
-
-  const {
-    error:uploadError
-  } =
-  await supabaseClient
-    .storage
-    .from("vehicle-photos")
-    .upload(
-      fileName,
-      file,
-      {
-        upsert:false,
-        contentType:
-          file.type ||
-          "image/jpeg"
-      }
+  const safeNumber =
+    cleanVehicleNumber(
+      vehicleNo
     );
 
 
-  if(uploadError){
+  const fileName =
+    safeNumber +
+    "_" +
+    Date.now() +
+    ".jpg";
 
-    throw uploadError;
+
+  const filePath =
+    fileName;
+
+
+  const uploadFile =
+    file.type ===
+    "image/jpeg"
+      ? file
+      : await convertImageToJPG(
+          file
+        );
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        STORAGE_BUCKET
+      )
+      .upload(
+        filePath,
+        uploadFile,
+        {
+          contentType:
+            "image/jpeg",
+          upsert:
+            false
+        }
+      );
+
+
+  if(error){
+
+    throw error;
 
   }
 
@@ -2739,55 +2027,172 @@ async function uploadPhoto(
   const {
     data
   } =
-  supabaseClient
-    .storage
-    .from("vehicle-photos")
-    .getPublicUrl(
-      fileName
-    );
+    supabaseClient
+      .storage
+      .from(
+        STORAGE_BUCKET
+      )
+      .getPublicUrl(
+        filePath
+      );
 
 
   return {
 
-    url:
-      data.publicUrl,
-
     path:
-      fileName
+      filePath,
+
+    url:
+      data.publicUrl
 
   };
 
 }
 
 
-/* =========================================================
-   DELETE PHOTO
-========================================================= */
+/* =========================================
+   CONVERT IMAGE TO JPG
+========================================= */
+
+function convertImageToJPG(
+  file
+){
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      const img =
+        new Image();
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(e){
+
+          img.onload =
+            function(){
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+
+              const maxWidth =
+                2000;
+
+
+              const scale =
+                Math.min(
+                  1,
+                  maxWidth /
+                  img.width
+                );
+
+
+              canvas.width =
+                img.width * scale;
+
+              canvas.height =
+                img.height * scale;
+
+
+              const ctx =
+                canvas.getContext(
+                  "2d"
+                );
+
+
+              ctx.drawImage(
+                img,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
+
+
+              canvas.toBlob(
+                function(blob){
+
+                  resolve(blob);
+
+                },
+                "image/jpeg",
+                0.9
+              );
+
+            };
+
+
+          img.onerror =
+            reject;
+
+          img.src =
+            e.target.result;
+
+        };
+
+
+      reader.onerror =
+        reject;
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   DELETE OLD PHOTO
+========================================= */
 
 async function deleteOldPhoto(
   path
 ){
 
   if(!path){
-
     return;
-
   }
 
 
   try{
 
-    await supabaseClient
-      .storage
-      .from("vehicle-photos")
-      .remove([
-        path
-      ]);
+    const {
+      error
+    } =
+      await supabaseClient
+        .storage
+        .from(
+          STORAGE_BUCKET
+        )
+        .remove(
+          [path]
+        );
+
+
+    if(error){
+
+      console.warn(
+        "Old photo delete failed:",
+        error
+      );
+
+    }
 
   }catch(error){
 
     console.warn(
-      "Photo delete error:",
+      "Old photo delete error:",
       error
     );
 
@@ -2796,409 +2201,546 @@ async function deleteOldPhoto(
 }
 
 
-/* =========================================================
-   VALIDATE MOBILE
-========================================================= */
-
-function validateMobile(
-  value
-){
-
-  if(!value){
-
-    return true;
-
-  }
-
-
-  return /^[6-9]\d{9}$/.test(
-    value
-  );
-
-}
-
-
-/* =========================================================
+/* =========================================
    SAVE VEHICLE
-========================================================= */
+========================================= */
 
-async function saveVehicle(){
+saveBtn.addEventListener(
+  "click",
+  async function(){
 
-  const vNumber =
-  vehicleNumber.value
-    .trim()
-    .toUpperCase();
-
-
-  const customer =
-  customerName.value
-    .trim();
+    hideStatus();
 
 
-  const phone =
-  mobile.value
-    .trim();
+    const number =
+      cleanVehicleNumber(
+        vehicleNumber.value
+      );
 
 
-  if(!vNumber){
+    if(!number){
 
-    alert(
-      "Vehicle Number is required."
-    );
+      showStatus(
+        "Vehicle Number is required.",
+        "error"
+      );
 
-    return;
+      return;
+
+    }
+
+
+    saveBtn.disabled =
+      true;
+
+    readBtn.disabled =
+      true;
+
+
+    try{
+
+      showStatus(
+        "Saving vehicle...",
+        "warning"
+      );
+
+
+      /* =====================================
+         CHECK EXISTING VEHICLE
+      ===================================== */
+
+      const {
+        data:
+          existing,
+        error:
+          existingError
+      } =
+        await supabaseClient
+          .from(
+            "vehicles"
+          )
+          .select(
+            "*"
+          )
+          .eq(
+            "vehicle_number",
+            number
+          )
+          .maybeSingle();
+
+
+      if(existingError){
+
+        throw existingError;
+
+      }
+
+
+      /* =====================================
+         PHOTO
+      ===================================== */
+
+      let photoUrl =
+        existing
+          ? existing.photo_url
+          : null;
+
+
+      let photoPath =
+        existing
+          ? existing.photo_path
+          : null;
+
+
+      let newPhotoUploaded =
+        false;
+
+
+      if(selectedFile){
+
+        const uploaded =
+          await uploadPhoto(
+            number,
+            selectedFile
+          );
+
+
+        if(uploaded){
+
+          photoUrl =
+            uploaded.url;
+
+          photoPath =
+            uploaded.path;
+
+          newPhotoUploaded =
+            true;
+
+        }
+
+      }
+
+
+      /* =====================================
+         DATA
+      ===================================== */
+
+      const vehicleData = {
+
+        vehicle_number:
+          number,
+
+        customer_name:
+          customerName.value.trim(),
+
+        mobile:
+          mobile.value.trim(),
+
+        vehicle_class:
+          vehicleClass.value || null,
+
+        registration_date:
+          convertToDatabaseDate(
+            registrationDate.value
+          ),
+
+        fitness_expiry:
+          convertToDatabaseDate(
+            fitnessExpiry.value
+          ),
+
+        insurance_expiry:
+          convertToDatabaseDate(
+            insuranceExpiry.value
+          ),
+
+        tax_expiry:
+          convertToDatabaseDate(
+            taxExpiry.value
+          ),
+
+        pucc_expiry:
+          convertToDatabaseDate(
+            puccExpiry.value
+          ),
+
+        permit_expiry:
+          convertToDatabaseDate(
+            permitExpiry.value
+          ),
+
+        photo_url:
+          photoUrl,
+
+        photo_path:
+          photoPath,
+
+        ocr_text:
+          ocrText.value
+
+      };
+
+
+      /* =====================================
+         UPDATE EXISTING
+      ===================================== */
+
+      if(existing){
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from(
+              "vehicles"
+            )
+            .update(
+              vehicleData
+            )
+            .eq(
+              "id",
+              existing.id
+            );
+
+
+        if(error){
+
+          /* If new photo was uploaded but
+             database update failed, remove it */
+
+          if(
+            newPhotoUploaded &&
+            photoPath &&
+            photoPath !==
+            existing.photo_path
+          ){
+
+            await deleteOldPhoto(
+              photoPath
+            );
+
+          }
+
+
+          throw error;
+
+        }
+
+
+        /* Delete previous photo only after
+           successful database update */
+
+        if(
+          newPhotoUploaded &&
+          existing.photo_path &&
+          existing.photo_path !==
+          photoPath
+        ){
+
+          await deleteOldPhoto(
+            existing.photo_path
+          );
+
+        }
+
+
+        showStatus(
+          "Vehicle updated successfully. Old photo replaced.",
+          "success"
+        );
+
+
+      }else{
+
+        /* ===================================
+           INSERT NEW
+        =================================== */
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from(
+              "vehicles"
+            )
+            .insert(
+              vehicleData
+            );
+
+
+        if(error){
+
+          /* Remove uploaded photo if
+             database insert failed */
+
+          if(
+            newPhotoUploaded &&
+            photoPath
+          ){
+
+            await deleteOldPhoto(
+              photoPath
+            );
+
+          }
+
+
+          throw error;
+
+        }
+
+
+        showStatus(
+          "Vehicle saved successfully.",
+          "success"
+        );
+
+      }
+
+
+      /* =====================================
+         CLEAR PHOTO SELECTION
+      ===================================== */
+
+      selectedFile =
+        null;
+
+      photoInput.value =
+        "";
+
+      oldPhotoPath =
+        photoPath || "";
+
+
+    }catch(error){
+
+      console.error(
+        "SAVE ERROR:",
+        error
+      );
+
+
+      showStatus(
+        "Save failed: " +
+        (
+          error.message ||
+          "Unknown error"
+        ),
+        "error"
+      );
+
+    }
+
+
+    saveBtn.disabled =
+      false;
+
+    readBtn.disabled =
+      false;
 
   }
+);
 
 
-  if(
-    phone &&
-    !validateMobile(phone)
-  ){
+/* =========================================
+   DASHBOARD
+========================================= */
 
-    alert(
-      "Please enter a valid 10 digit mobile number."
-    );
+dashboardBtn.addEventListener(
+  "click",
+  function(){
 
-    return;
+    window.location.href =
+      "index.html";
 
   }
+);
 
 
-  saveBtn.disabled =
-  true;
+/* =========================================
+   LOAD EDIT VEHICLE
+========================================= */
+
+async function loadEditVehicle(){
+
+  if(!editId){
+    return;
+  }
 
 
   try{
 
     showStatus(
-      "Checking vehicle number..."
+      "Loading vehicle...",
+      "warning"
     );
 
 
-    /* =====================================================
-       CHECK EXISTING VEHICLE
-    ===================================================== */
-
     const {
-      data:existing,
-      error:findError
+      data,
+      error
     } =
-    await supabaseClient
-      .from("vehicles")
-      .select("*")
-      .eq(
-        "vehicle_number",
-        vNumber
-      )
-      .maybeSingle();
-
-
-    if(findError){
-
-      throw findError;
-
-    }
-
-
-    /* =====================================================
-       VEHICLE DATA
-    ===================================================== */
-
-    const vehicleData = {
-
-      vehicle_number:
-        vNumber,
-
-      customer_name:
-        customer,
-
-      mobile:
-        phone,
-
-      vehicle_class:
-        vehicleClass.value
-          .trim(),
-
-      registration_date:
-        convertToDatabaseDate(
-          registrationDate.value
-        ),
-
-      fitness_expiry:
-        convertToDatabaseDate(
-          fitnessExpiry.value
-        ),
-
-      insurance_expiry:
-        convertToDatabaseDate(
-          insuranceExpiry.value
-        ),
-
-      tax_expiry:
-        convertToDatabaseDate(
-          taxExpiry.value
-        ),
-
-      pucc_expiry:
-        convertToDatabaseDate(
-          puccExpiry.value
-        ),
-
-      permit_expiry:
-        convertToDatabaseDate(
-          permitExpiry.value
-        ),
-
-      ocr_text:
-        ocrText.value
-
-    };
-
-
-    /* =====================================================
-       PHOTO
-========================================================= */
-
-    const file =
-    photoInput.files[0];
-
-
-    let uploadedPhoto =
-    null;
-
-
-    if(file){
-
-      showStatus(
-        "Uploading new vehicle photo..."
-      );
-
-
-      uploadedPhoto =
-      await uploadPhoto(
-        file,
-        vNumber
-      );
-
-    }
-
-
-    /* =====================================================
-       DUPLICATE VEHICLE
-    ===================================================== */
-
-    if(existing){
-
-      /*
-        Same Vehicle Number found.
-
-        Old record will NOT remain duplicated.
-
-        We update the existing record with
-        the new information.
-      */
-
-
-      showStatus(
-        "Same vehicle found.\n" +
-        "Replacing old vehicle details..."
-      );
-
-
-      /*
-        If new photo exists,
-        remove old photo after successful
-        new photo upload.
-      */
-
-      if(uploadedPhoto){
-
-        vehicleData.photo_url =
-        uploadedPhoto.url;
-
-        vehicleData.photo_path =
-        uploadedPhoto.path;
-
-      }
-
-
-      const {
-        error:updateError
-      } =
       await supabaseClient
-        .from("vehicles")
-        .update(
-          vehicleData
+        .from(
+          "vehicles"
+        )
+        .select(
+          "*"
         )
         .eq(
           "id",
-          existing.id
-        );
+          editId
+        )
+        .single();
 
 
-      if(updateError){
+    if(error){
 
-        /*
-          Database update failed.
+      throw error;
 
-          Remove newly uploaded photo
-          so an unused file is not left.
-        */
-
-        if(uploadedPhoto){
-
-          await deleteOldPhoto(
-            uploadedPhoto.path
-          );
-
-        }
+    }
 
 
-        throw updateError;
+    if(!data){
 
-      }
-
-
-      /*
-        Database update successful.
-
-        Now delete OLD photo.
-      */
-
-      if(
-        uploadedPhoto &&
-        existing.photo_path &&
-        existing.photo_path !==
-        uploadedPhoto.path
-      ){
-
-        await deleteOldPhoto(
-          existing.photo_path
-        );
-
-      }
-
-
-      showStatus(
-        "Vehicle updated successfully.\n\n" +
-        "Existing vehicle number found.\n" +
-        "Old record replaced with new details."
-      );
-
-
-      alert(
-        "Vehicle already existed.\n\n" +
-        "Old record has been automatically updated with the new details."
-      );
-
-
-    }else{
-
-      /* =================================================
-         NEW VEHICLE
-      ================================================= */
-
-      if(uploadedPhoto){
-
-        vehicleData.photo_url =
-        uploadedPhoto.url;
-
-        vehicleData.photo_path =
-        uploadedPhoto.path;
-
-      }
-
-
-      showStatus(
-        "Saving new vehicle..."
-      );
-
-
-      const {
-        error:insertError
-      } =
-      await supabaseClient
-        .from("vehicles")
-        .insert([
-          vehicleData
-        ]);
-
-
-      if(insertError){
-
-        if(uploadedPhoto){
-
-          await deleteOldPhoto(
-            uploadedPhoto.path
-          );
-
-        }
-
-
-        throw insertError;
-
-      }
-
-
-      showStatus(
-        "Vehicle saved successfully."
-      );
-
-
-      alert(
-        "New vehicle saved successfully."
+      throw new Error(
+        "Vehicle not found."
       );
 
     }
+
+
+    /* Customer */
+
+    customerName.value =
+      data.customer_name ||
+      "";
+
+
+    mobile.value =
+      data.mobile ||
+      data.customer_mobile ||
+      "";
+
+
+    /* Vehicle */
+
+    vehicleNumber.value =
+      data.vehicle_number ||
+      "";
+
+
+    vehicleClass.value =
+      data.vehicle_class ||
+      "";
+
+
+    showClassPhoto(
+      vehicleClass.value
+    );
+
+
+    registrationDate.value =
+      data.registration_date &&
+      data.registration_date !==
+      "LTT"
+        ? data.registration_date
+        : "";
+
+
+    fitnessExpiry.value =
+      data.fitness_expiry &&
+      data.fitness_expiry !==
+      "LTT"
+        ? data.fitness_expiry
+        : "";
+
+
+    insuranceExpiry.value =
+      data.insurance_expiry &&
+      data.insurance_expiry !==
+      "LTT"
+        ? data.insurance_expiry
+        : "";
+
+
+    taxExpiry.value =
+      data.tax_expiry ||
+      "";
+
+
+    puccExpiry.value =
+      data.pucc_expiry &&
+      data.pucc_expiry !==
+      "LTT"
+        ? data.pucc_expiry
+        : "";
+
+
+    permitExpiry.value =
+      data.permit_expiry &&
+      data.permit_expiry !==
+      "LTT"
+        ? data.permit_expiry
+        : "";
+
+
+    ocrText.value =
+      data.ocr_text ||
+      "";
+
+
+    oldPhotoPath =
+      data.photo_path ||
+      "";
+
+
+    if(data.photo_url){
+
+      photoPreview.src =
+        data.photo_url;
+
+      photoPreview.style.display =
+        "block";
+
+    }
+
+
+    showStatus(
+      "Vehicle loaded for editing.",
+      "success"
+    );
 
 
   }catch(error){
 
     console.error(
-      "Save Error:",
       error
     );
 
 
     showStatus(
-      "Save Error:\n" +
+      "Vehicle load failed: " +
       (
         error.message ||
-        error
-      )
-    );
-
-
-    alert(
-      "Error saving vehicle:\n" +
-      (
-        error.message ||
-        error
-      )
+        "Unknown error"
+      ),
+      "error"
     );
 
   }
 
-
-  saveBtn.disabled =
-  false;
-
 }
 
 
-/* =========================================================
-   DASHBOARD
-========================================================= */
+/* =========================================
+   PAGE LOAD
+========================================= */
 
-function goDashboard(){
-
-  window.location.href =
-  "index.html";
-
-}
+loadEditVehicle();
 
 </script>
 
 </body>
+
 </html>
