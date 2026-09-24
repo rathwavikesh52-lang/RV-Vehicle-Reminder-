@@ -24,7 +24,7 @@
 
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   background:#f4f6f8;
   color:#222;
 }
@@ -96,11 +96,6 @@ button{
 
 .btn-success{
   background:#16a34a;
-  color:white;
-}
-
-.btn-danger{
-  background:#dc2626;
   color:white;
 }
 
@@ -229,12 +224,6 @@ button:disabled{
   margin-top:18px;
 }
 
-.small-note{
-  font-size:13px;
-  color:#666;
-  margin-top:5px;
-}
-
 @media(max-width:600px){
 
   .date-grid{
@@ -361,7 +350,6 @@ Mobile Number
   placeholder="Enter mobile number"
 >
 
-
 </div>
 
 
@@ -389,9 +377,7 @@ Vehicle Class
 <div
   class="class-grid"
   id="classGrid"
->
-
-</div>
+></div>
 
 <input
   type="hidden"
@@ -553,7 +539,7 @@ supabase.createClient(
 
 
 /* =====================================================
-   GLOBAL VARIABLES
+   GLOBAL
 ===================================================== */
 
 let selectedFile = null;
@@ -641,39 +627,47 @@ const ASSET_BASE =
 function createClassGrid(){
 
   const grid =
-    document.getElementById("classGrid");
+    document.getElementById(
+      "classGrid"
+    );
 
   grid.innerHTML = "";
 
-  VEHICLE_CLASSES.forEach(function(item){
+  VEHICLE_CLASSES.forEach(
+    function(item){
 
-    const div =
-      document.createElement("div");
+      const div =
+        document.createElement(
+          "div"
+        );
 
-    div.className =
-      "class-item";
+      div.className =
+        "class-item";
 
-    div.dataset.code =
-      item.code;
+      div.dataset.code =
+        item.code;
 
-    div.innerHTML = `
-      <img
-        src="${ASSET_BASE}${item.image}"
-        alt="${item.code}"
-      >
-      <span>${item.name}</span>
-    `;
+      div.innerHTML = `
+        <img
+          src="${ASSET_BASE}${item.image}"
+          alt="${item.code}"
+        >
+        <span>${item.name}</span>
+      `;
 
-    div.onclick =
-      function(){
+      div.onclick =
+        function(){
 
-        selectVehicleClass(item.code);
+          selectVehicleClass(
+            item.code
+          );
 
-      };
+        };
 
-    grid.appendChild(div);
+      grid.appendChild(div);
 
-  });
+    }
+  );
 
 }
 
@@ -681,25 +675,32 @@ function createClassGrid(){
 function selectVehicleClass(code){
 
   document
-    .getElementById("vehicleClass")
+    .getElementById(
+      "vehicleClass"
+    )
     .value = code;
 
+
   document
-    .querySelectorAll(".class-item")
-    .forEach(function(item){
+    .querySelectorAll(
+      ".class-item"
+    )
+    .forEach(
+      function(item){
 
-      item.classList.toggle(
-        "selected",
-        item.dataset.code === code
-      );
+        item.classList.toggle(
+          "selected",
+          item.dataset.code === code
+        );
 
-    });
+      }
+    );
 
 }
 
 
 /* =====================================================
-   FILE UPLOAD
+   PHOTO
 ===================================================== */
 
 document
@@ -713,16 +714,21 @@ document
 
       if(!file) return;
 
-      selectedFile = file;
+      selectedFile =
+        file;
+
 
       const reader =
         new FileReader();
+
 
       reader.onload =
         function(event){
 
           const preview =
-            document.getElementById("preview");
+            document.getElementById(
+              "preview"
+            );
 
           preview.src =
             event.target.result;
@@ -732,7 +738,10 @@ document
 
         };
 
-      reader.readAsDataURL(file);
+
+      reader.readAsDataURL(
+        file
+      );
 
     }
   );
@@ -742,10 +751,15 @@ document
    MESSAGE
 ===================================================== */
 
-function showMessage(text,type){
+function showMessage(
+  text,
+  type
+){
 
   const box =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
 
   box.textContent =
     text;
@@ -761,10 +775,11 @@ function showMessage(text,type){
 
 function hideMessage(){
 
-  const box =
-    document.getElementById("message");
-
-  box.style.display =
+  document
+    .getElementById(
+      "message"
+    )
+    .style.display =
     "none";
 
 }
@@ -792,18 +807,22 @@ function getOCRLines(text){
 
   return normalizeOCRText(text)
     .split("\n")
-    .map(function(line){
+    .map(
+      function(line){
 
-      return line
-        .replace(/\s+/g," ")
-        .trim();
+        return line
+          .replace(/\s+/g," ")
+          .trim();
 
-    })
-    .filter(function(line){
+      }
+    )
+    .filter(
+      function(line){
 
-      return line.length > 0;
+        return line.length > 0;
 
-    });
+      }
+    );
 
 }
 
@@ -834,25 +853,50 @@ const MONTHS = {
    DATE VALIDATION
 ===================================================== */
 
-function validDateParts(day,month,year){
+function validDateParts(
+  day,
+  month,
+  year
+){
 
-  day = parseInt(day,10);
+  day =
+    parseInt(
+      day,
+      10
+    );
 
-  month = parseInt(month,10);
+  month =
+    parseInt(
+      month,
+      10
+    );
 
-  year = parseInt(year,10);
+  year =
+    parseInt(
+      year,
+      10
+    );
 
-  if(!Number.isInteger(day)) return false;
 
-  if(!Number.isInteger(month)) return false;
+  if(!Number.isInteger(day))
+    return false;
 
-  if(!Number.isInteger(year)) return false;
+  if(!Number.isInteger(month))
+    return false;
 
-  if(day < 1 || day > 31) return false;
+  if(!Number.isInteger(year))
+    return false;
 
-  if(month < 1 || month > 12) return false;
 
-  if(year < 1900 || year > 2100) return false;
+  if(day < 1 || day > 31)
+    return false;
+
+  if(month < 1 || month > 12)
+    return false;
+
+  if(year < 1900 || year > 2100)
+    return false;
+
 
   return true;
 
@@ -884,14 +928,18 @@ function normalizeDateString(value){
       /^(\d{1,2})[\-\/\s]([A-Za-z]{3})[\-\/\s](\d{4})$/i
     );
 
+
   if(m){
 
-    let day = m[1];
+    const day =
+      m[1];
 
-    let mon =
+    const mon =
       m[2].toUpperCase();
 
-    let year = m[3];
+    const year =
+      m[3];
+
 
     if(
       MONTHS[mon] &&
@@ -923,13 +971,18 @@ function normalizeDateString(value){
       /^(\d{1,2})[\-\/\s](\d{1,2})[\-\/\s](\d{4})$/
     );
 
+
   if(m){
 
-    let day = m[1];
+    const day =
+      m[1];
 
-    let month = m[2];
+    const month =
+      m[2];
 
-    let year = m[3];
+    const year =
+      m[3];
+
 
     if(
       validDateParts(
@@ -939,14 +992,19 @@ function normalizeDateString(value){
       )
     ){
 
-      let monthName =
+      const monthName =
         Object.keys(MONTHS)
-          .find(function(key){
+          .find(
+            function(key){
 
-            return MONTHS[key] ===
-              String(month).padStart(2,"0");
+              return (
+                MONTHS[key] ===
+                String(month).padStart(2,"0")
+              );
 
-          });
+            }
+          );
+
 
       if(monthName){
 
@@ -973,13 +1031,18 @@ function normalizeDateString(value){
       /^(\d{4})[\-\/](\d{1,2})[\-\/](\d{1,2})$/
     );
 
+
   if(m){
 
-    let year = m[1];
+    const year =
+      m[1];
 
-    let month = m[2];
+    const month =
+      m[2];
 
-    let day = m[3];
+    const day =
+      m[3];
+
 
     if(
       validDateParts(
@@ -989,14 +1052,19 @@ function normalizeDateString(value){
       )
     ){
 
-      let monthName =
+      const monthName =
         Object.keys(MONTHS)
-          .find(function(key){
+          .find(
+            function(key){
 
-            return MONTHS[key] ===
-              String(month).padStart(2,"0");
+              return (
+                MONTHS[key] ===
+                String(month).padStart(2,"0")
+              );
 
-          });
+            }
+          );
+
 
       if(monthName){
 
@@ -1022,7 +1090,7 @@ function normalizeDateString(value){
 
 
 /* =====================================================
-   EXTRACT DATE
+   DATE FROM TEXT
 ===================================================== */
 
 function extractDateFromText(text){
@@ -1038,11 +1106,18 @@ function extractDateFromText(text){
   ];
 
 
-  for(let i=0;i<patterns.length;i++){
+  for(
+    let i=0;
+    i<patterns.length;
+    i++
+  ){
 
     const match =
       String(text || "")
-        .match(patterns[i]);
+        .match(
+          patterns[i]
+        );
+
 
     if(match){
 
@@ -1050,6 +1125,7 @@ function extractDateFromText(text){
         normalizeDateString(
           match[0]
         );
+
 
       if(normalized){
 
@@ -1068,7 +1144,7 @@ function extractDateFromText(text){
 
 
 /* =====================================================
-   FIND VALUE AFTER LABEL
+   LABEL DATE
 ===================================================== */
 
 function findValueAfterLabels(
@@ -1080,21 +1156,29 @@ function findValueAfterLabels(
   const lines =
     getOCRLines(text);
 
+
   const normalizedLabels =
-    labels.map(function(label){
+    labels.map(
+      function(label){
 
-      return label
-        .toUpperCase()
-        .replace(/\s+/g," ")
-        .trim();
+        return label
+          .toUpperCase()
+          .replace(/\s+/g," ")
+          .trim();
 
-    });
+      }
+    );
 
 
-  for(let i=0;i<lines.length;i++){
+  for(
+    let i=0;
+    i<lines.length;
+    i++
+  ){
 
     const line =
       lines[i];
+
 
     const upper =
       line
@@ -1103,25 +1187,38 @@ function findValueAfterLabels(
         .trim();
 
 
-    let matched = false;
+    let matched =
+      false;
 
-    let matchedLabel = "";
+    let matchedLabel =
+      "";
 
 
-    for(let j=0;j<normalizedLabels.length;j++){
+    for(
+      let j=0;
+      j<normalizedLabels.length;
+      j++
+    ){
 
       const label =
         normalizedLabels[j];
 
+
       if(
         upper === label ||
-        upper.startsWith(label + ":") ||
-        upper.startsWith(label + " ")
+        upper.startsWith(
+          label + ":"
+        ) ||
+        upper.startsWith(
+          label + " "
+        )
       ){
 
-        matched = true;
+        matched =
+          true;
 
-        matchedLabel = label;
+        matchedLabel =
+          label;
 
         break;
 
@@ -1130,24 +1227,23 @@ function findValueAfterLabels(
     }
 
 
-    if(!matched) continue;
+    if(!matched)
+      continue;
 
-
-    /* Same line */
 
     let sameLine =
-      line
-        .replace(
-          new RegExp(
-            "^" +
-            matchedLabel
-              .replace(/[.*+?^${}()|[\]\\]/g,"\\$&") +
-            "\\s*:?",
-            "i"
-          ),
-          ""
-        )
-        .trim();
+      line.replace(
+        new RegExp(
+          "^" +
+          matchedLabel.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&"
+          ) +
+          "\\s*:?",
+          "i"
+        ),
+        ""
+      ).trim();
 
 
     if(sameLine){
@@ -1156,6 +1252,7 @@ function findValueAfterLabels(
         extractDateFromText(
           sameLine
         );
+
 
       if(date){
 
@@ -1166,20 +1263,21 @@ function findValueAfterLabels(
     }
 
 
-    /* Next lines */
-
     for(
       let j=1;
       j<=maxLines;
       j++
     ){
 
-      if(!lines[i+j]) continue;
+      if(!lines[i+j])
+        continue;
+
 
       const date =
         extractDateFromText(
           lines[i+j]
         );
+
 
       if(date){
 
@@ -1207,7 +1305,11 @@ function findInsuranceBlockDate(text){
     getOCRLines(text);
 
 
-  for(let i=0;i<lines.length;i++){
+  for(
+    let i=0;
+    i<lines.length;
+    i++
+  ){
 
     if(
       /INSURANCE\s+DETAILS/i.test(
@@ -1246,6 +1348,7 @@ function findInsuranceBlockDate(text){
                 same
               );
 
+
             if(date){
 
               return date;
@@ -1261,12 +1364,15 @@ function findInsuranceBlockDate(text){
             k++
           ){
 
-            if(!lines[j+k]) continue;
+            if(!lines[j+k])
+              continue;
+
 
             const date =
               extractDateFromText(
                 lines[j+k]
               );
+
 
             if(date){
 
@@ -1317,7 +1423,11 @@ function findTaxValue(text){
   ];
 
 
-  for(let i=0;i<lines.length;i++){
+  for(
+    let i=0;
+    i<lines.length;
+    i++
+  ){
 
     const upper =
       lines[i]
@@ -1326,18 +1436,28 @@ function findTaxValue(text){
         .trim();
 
 
-    let matched = false;
+    let matched =
+      false;
 
 
-    for(let j=0;j<labels.length;j++){
+    for(
+      let j=0;
+      j<labels.length;
+      j++
+    ){
 
       if(
         upper === labels[j] ||
-        upper.startsWith(labels[j] + ":") ||
-        upper.startsWith(labels[j] + " ")
+        upper.startsWith(
+          labels[j] + ":"
+        ) ||
+        upper.startsWith(
+          labels[j] + " "
+        )
       ){
 
-        matched = true;
+        matched =
+          true;
 
         break;
 
@@ -1346,10 +1466,11 @@ function findTaxValue(text){
     }
 
 
-    if(!matched) continue;
+    if(!matched)
+      continue;
 
 
-    let localText =
+    const localText =
       lines
         .slice(
           i,
@@ -1395,20 +1516,25 @@ function findTaxValue(text){
 
 
 /* =====================================================
-   VEHICLE NUMBER
+   VEHICLE NUMBER CLEAN
 ===================================================== */
 
 function cleanVehicleCandidate(raw){
 
-  if(!raw) return "";
+  if(!raw)
+    return "";
+
 
   let s =
     String(raw)
       .toUpperCase()
-      .replace(/[^A-Z0-9]/g,"");
+      .replace(
+        /[^A-Z0-9]/g,
+        ""
+      );
 
 
-  /* Repair only GJ beginning */
+  /* Only repair GJ */
 
   if(
     s.startsWith("G7")
@@ -1441,20 +1567,30 @@ function cleanVehicleCandidate(raw){
   }
 
 
-  s =
+  /*
+    GJ + 2 RTO digits
+    + 1-3 series letters
+    + 1-4 number digits
+
+    Example:
+
+    GJ34S1419
+    = 9 characters
+
+    GJ34Q6950
+    = 9 characters
+
+    GJ34AB1234
+    = 10 characters
+  */
+
+  const body =
     s.slice(2);
 
 
-  /*
-    Gujarat format:
-    GJ + 2 digit RTO +
-    1-3 letter series +
-    3-5 digit number
-  */
-
   if(
-    s.length < 6 ||
-    s.length > 10
+    body.length < 4 ||
+    body.length > 9
   ){
 
     return "";
@@ -1462,14 +1598,11 @@ function cleanVehicleCandidate(raw){
   }
 
 
+  /* RTO */
+
   let rto =
-    s.slice(0,2);
+    body.slice(0,2);
 
-
-  /*
-    OCR correction ONLY
-    for RTO digits
-  */
 
   rto =
     rto
@@ -1494,43 +1627,57 @@ function cleanVehicleCandidate(raw){
   }
 
 
-  let rest =
-    s.slice(2);
+  const rest =
+    body.slice(2);
 
 
   /*
-    Series MUST remain letters.
-    Never convert series letters
-    to numbers.
+    First try:
+    series letters + number digits
   */
 
   let match =
     rest.match(
-      /^([A-Z]{1,3})([A-Z0-9]{3,5})$/
+      /^([A-Z]{1,3})(\d{1,4})$/
     );
 
 
-  if(!match){
+  if(match){
+
+    return (
+      "GJ" +
+      rto +
+      match[1] +
+      match[2]
+    );
+
+  }
+
+
+  /*
+    OCR may confuse digits
+    in final number section.
+  */
+
+  let possible =
+    rest.match(
+      /^([A-Z]{1,3})([A-Z0-9]{1,4})$/
+    );
+
+
+  if(!possible){
 
     return "";
 
   }
 
 
-  let series =
-    match[1];
+  const series =
+    possible[1];
+
 
   let numberPart =
-    match[2];
-
-
-  /*
-    Only number section gets
-    OCR correction.
-  */
-
-  numberPart =
-    numberPart
+    possible[2]
       .replace(/O/g,"0")
       .replace(/Q/g,"0")
       .replace(/D/g,"0")
@@ -1544,7 +1691,7 @@ function cleanVehicleCandidate(raw){
 
 
   if(
-    !/^\d{3,5}$/.test(
+    !/^\d{1,4}$/.test(
       numberPart
     )
   ){
@@ -1565,13 +1712,14 @@ function cleanVehicleCandidate(raw){
 
 
 /* =====================================================
-   EXTRACT VEHICLE NUMBER
+   VEHICLE NUMBER EXTRACT
 ===================================================== */
 
 function extractVehicleNumber(text){
 
   const lines =
     getOCRLines(text);
+
 
   let candidates = [];
 
@@ -1581,10 +1729,11 @@ function extractVehicleNumber(text){
     score
   ){
 
-    if(!raw) return;
+    if(!raw)
+      return;
 
 
-    let cleaned =
+    const cleaned =
       cleanVehicleCandidate(
         raw
       );
@@ -1594,9 +1743,11 @@ function extractVehicleNumber(text){
 
       candidates.push({
 
-        value:cleaned,
+        value:
+          cleaned,
 
-        score:score
+        score:
+          score
 
       });
 
@@ -1605,10 +1756,10 @@ function extractVehicleNumber(text){
   }
 
 
-  /* =====================================================
+  /* =================================================
      STEP 1
-     ONLY look immediately after Vehicle Number
-  ===================================================== */
+     AFTER VEHICLE NUMBER
+  ================================================= */
 
   for(
     let i=0;
@@ -1616,20 +1767,16 @@ function extractVehicleNumber(text){
     i++
   ){
 
-    let line =
-      lines[i];
-
-
     if(
       /vehicle\s*(number|no|num|#)/i.test(
-        line
+        lines[i]
       )
     ){
 
-      /* Same line */
+      /* SAME LINE */
 
-      let same =
-        line
+      const same =
+        lines[i]
           .replace(
             /.*?vehicle\s*(number|no|num|#)\s*:?\s*/i,
             ""
@@ -1637,23 +1784,23 @@ function extractVehicleNumber(text){
           .trim();
 
 
-      let m =
+      const sameMatch =
         same.match(
-          /(?:GJ|G7|6J)[A-Z0-9\s]{5,14}/i
+          /(?:GJ|G7|6J)[A-Z0-9\s]{5,12}/i
         );
 
 
-      if(m){
+      if(sameMatch){
 
         addCandidate(
-          m[0],
-          120
+          sameMatch[0],
+          150
         );
 
       }
 
 
-      /* Next 3 lines */
+      /* NEXT 3 LINES */
 
       for(
         let j=1;
@@ -1661,52 +1808,58 @@ function extractVehicleNumber(text){
         j++
       ){
 
-        if(!lines[i+j]) continue;
+        if(!lines[i+j])
+          continue;
 
 
-        let nextLine =
+        const line =
           lines[i+j];
 
 
-        let nm =
-          nextLine.match(
-            /(?:GJ|G7|6J)[A-Z0-9\s]{5,14}/i
+        const match =
+          line.match(
+            /(?:GJ|G7|6J)[A-Z0-9\s]{5,12}/i
           );
 
 
-        if(nm){
+        if(match){
 
           addCandidate(
-            nm[0],
-            115-j
+            match[0],
+            145-j
           );
 
         }
 
 
         /*
-          Sometimes OCR inserts spaces:
-          GJ34 S1419
+          Spaces remove:
+
+          GJ34S1419
+
           GJ 34 S1419
+
+          GJ34 S 1419
         */
 
-        let compact =
-          nextLine
+        const compact =
+          line
             .replace(
               /[^A-Z0-9]/gi,
               ""
-            );
+            )
+            .toUpperCase();
 
 
         if(
-          /^(?:GJ|G7|6J)[A-Z0-9]{5,12}$/i.test(
+          /^(?:GJ|G7|6J)[A-Z0-9]{5,10}$/.test(
             compact
           )
         ){
 
           addCandidate(
             compact,
-            112-j
+            140-j
           );
 
         }
@@ -1718,10 +1871,10 @@ function extractVehicleNumber(text){
   }
 
 
-  /* =====================================================
+  /* =================================================
      STEP 2
-     TOKEN SEARCH NEAR VEHICLE NUMBER
-  ===================================================== */
+     NEAR VEHICLE NUMBER
+  ================================================= */
 
   for(
     let i=0;
@@ -1736,7 +1889,10 @@ function extractVehicleNumber(text){
     ){
 
       for(
-        let j=Math.max(0,i-3);
+        let j=Math.max(
+          0,
+          i-3
+        );
         j<=Math.min(
           lines.length-1,
           i+3
@@ -1744,7 +1900,7 @@ function extractVehicleNumber(text){
         j++
       ){
 
-        let tokens =
+        const tokens =
           lines[j]
             .split(/\s+/);
 
@@ -1755,7 +1911,7 @@ function extractVehicleNumber(text){
           k++
         ){
 
-          let token =
+          const token =
             tokens[k]
               .replace(
                 /[^A-Z0-9]/gi,
@@ -1765,14 +1921,14 @@ function extractVehicleNumber(text){
 
 
           if(
-            /^(?:GJ|G7|6J)[A-Z0-9]{5,12}$/.test(
+            /^(?:GJ|G7|6J)[A-Z0-9]{5,10}$/.test(
               token
             )
           ){
 
             addCandidate(
               token,
-              105 -
+              120 -
               Math.abs(j-i)
             );
 
@@ -1787,10 +1943,10 @@ function extractVehicleNumber(text){
   }
 
 
-  /* =====================================================
+  /* =================================================
      STEP 3
-     GLOBAL OCR SCAN
-  ===================================================== */
+     GLOBAL
+  ================================================= */
 
   for(
     let i=0;
@@ -1798,49 +1954,36 @@ function extractVehicleNumber(text){
     i++
   ){
 
-    let tokens =
+    const compact =
       lines[i]
-        .split(/\s+/);
+        .replace(
+          /[^A-Z0-9]/gi,
+          ""
+        )
+        .toUpperCase();
 
 
-    for(
-      let k=0;
-      k<tokens.length;
-      k++
+    if(
+      /^(?:GJ|G7|6J)[A-Z0-9]{5,10}$/.test(
+        compact
+      )
     ){
 
-      let token =
-        tokens[k]
-          .replace(
-            /[^A-Z0-9]/gi,
-            ""
-          )
-          .toUpperCase();
-
-
-      if(
-        /^(?:GJ|G7|6J)[A-Z0-9]{5,12}$/.test(
-          token
-        )
-      ){
-
-        addCandidate(
-          token,
-          30
-        );
-
-      }
+      addCandidate(
+        compact,
+        50
+      );
 
     }
 
   }
 
 
-  /* =====================================================
-     GROUP REPEATED OCR RESULTS
-  ===================================================== */
+  /* =================================================
+     GROUP RESULTS
+  ================================================= */
 
-  let grouped = {};
+  const grouped = {};
 
 
   candidates.forEach(
@@ -1878,22 +2021,45 @@ function extractVehicleNumber(text){
   );
 
 
-  let best = "";
+  let best =
+    "";
 
-  let bestFinalScore = -1;
+  let bestFinalScore =
+    -1;
 
 
   Object.keys(grouped)
     .forEach(
       function(value){
 
-        let data =
+        const data =
           grouped[value];
 
 
         let finalScore =
-          (data.count * 1000) +
+          (
+            data.count *
+            1000
+          ) +
           data.bestScore;
+
+
+        /*
+          Prefer valid 9-character
+          numbers such as:
+
+          GJ34S1419
+          GJ34Q6950
+        */
+
+        if(
+          value.length === 9
+        ){
+
+          finalScore +=
+            200;
+
+        }
 
 
         if(
@@ -1919,7 +2085,7 @@ function extractVehicleNumber(text){
 
 
 /* =====================================================
-   VEHICLE CLASS DETECTION
+   VEHICLE CLASS
 ===================================================== */
 
 function detectVehicleClass(text){
@@ -1972,8 +2138,6 @@ function detectVehicleClass(text){
 
   }
 
-
-  /* Description fallbacks */
 
   if(
     /CONSTRUCTION\s+EQUIPMENT\s+VEHICLE/i.test(
@@ -2047,18 +2211,21 @@ function detectVehicleClass(text){
 
 
 /* =====================================================
-   EXTRACT ALL OCR DATA
+   EXTRACT OCR DATA
 ===================================================== */
 
 function extractOCRData(){
 
   const text =
     document
-      .getElementById("ocrText")
+      .getElementById(
+        "ocrText"
+      )
       .value;
 
 
-  if(!text) return;
+  if(!text)
+    return;
 
 
   const vehicleNumber =
@@ -2168,7 +2335,9 @@ function extractOCRData(){
   if(vehicleNumber){
 
     document
-      .getElementById("vehicleNumber")
+      .getElementById(
+        "vehicleNumber"
+      )
       .value =
       vehicleNumber;
 
@@ -2178,7 +2347,9 @@ function extractOCRData(){
   if(registrationDate){
 
     document
-      .getElementById("registrationDate")
+      .getElementById(
+        "registrationDate"
+      )
       .value =
       registrationDate;
 
@@ -2188,7 +2359,9 @@ function extractOCRData(){
   if(fitnessExpiry){
 
     document
-      .getElementById("fitnessExpiry")
+      .getElementById(
+        "fitnessExpiry"
+      )
       .value =
       fitnessExpiry;
 
@@ -2198,7 +2371,9 @@ function extractOCRData(){
   if(insuranceExpiry){
 
     document
-      .getElementById("insuranceExpiry")
+      .getElementById(
+        "insuranceExpiry"
+      )
       .value =
       insuranceExpiry;
 
@@ -2208,7 +2383,9 @@ function extractOCRData(){
   if(taxExpiry){
 
     document
-      .getElementById("taxExpiry")
+      .getElementById(
+        "taxExpiry"
+      )
       .value =
       taxExpiry;
 
@@ -2218,7 +2395,9 @@ function extractOCRData(){
   if(puccExpiry){
 
     document
-      .getElementById("puccExpiry")
+      .getElementById(
+        "puccExpiry"
+      )
       .value =
       puccExpiry;
 
@@ -2228,7 +2407,9 @@ function extractOCRData(){
   if(permitExpiry){
 
     document
-      .getElementById("permitExpiry")
+      .getElementById(
+        "permitExpiry"
+      )
       .value =
       permitExpiry;
 
@@ -2247,7 +2428,7 @@ function extractOCRData(){
 
 
 /* =====================================================
-   ENHANCED IMAGE
+   ENHANCE IMAGE
 ===================================================== */
 
 function createEnhancedImage(file){
@@ -2275,7 +2456,9 @@ function createEnhancedImage(file){
                 );
 
 
-              const minWidth = 1800;
+              const minWidth =
+                1800;
+
 
               const scale =
                 img.width <
@@ -2350,7 +2533,8 @@ function createEnhancedImage(file){
 
                 const contrast =
                   (
-                    gray - 128
+                    gray -
+                    128
                   ) *
                   1.5 +
                   128;
@@ -2413,6 +2597,7 @@ function createEnhancedImage(file){
           img.onerror =
             reject;
 
+
           img.src =
             e.target.result;
 
@@ -2421,6 +2606,7 @@ function createEnhancedImage(file){
 
       reader.onerror =
         reject;
+
 
       reader.readAsDataURL(
         file
@@ -2447,6 +2633,7 @@ async function recognizeOCR(
       image,
       "eng",
       {
+
         logger:function(info){
 
           if(
@@ -2456,7 +2643,10 @@ async function recognizeOCR(
 
             const passProgress =
               Math.round(
-                (info.progress || 0) *
+                (
+                  info.progress ||
+                  0
+                ) *
                 100
               );
 
@@ -2465,7 +2655,8 @@ async function recognizeOCR(
               Math.round(
                 (
                   (
-                    passNumber - 1
+                    passNumber -
+                    1
                   ) *
                   100 +
                   passProgress
@@ -2485,6 +2676,7 @@ async function recognizeOCR(
               totalProgress +
               "%";
 
+
             bar.textContent =
               totalProgress +
               "%";
@@ -2503,7 +2695,7 @@ async function recognizeOCR(
 
 
 /* =====================================================
-   3 STEP OCR
+   START OCR - 3 PASS
 ===================================================== */
 
 async function startOCR(){
@@ -2548,7 +2740,7 @@ async function startOCR(){
 
   try{
 
-    /* STEP 1 - ORIGINAL */
+    /* PASS 1 */
 
     const text1 =
       await recognizeOCR(
@@ -2558,7 +2750,7 @@ async function startOCR(){
       );
 
 
-    /* STEP 2 - ENHANCED */
+    /* PASS 2 */
 
     const enhanced =
       await createEnhancedImage(
@@ -2574,7 +2766,7 @@ async function startOCR(){
       );
 
 
-    /* STEP 3 - HIGH QUALITY */
+    /* PASS 3 */
 
     const enhanced2 =
       await createEnhancedImage(
@@ -2660,7 +2852,7 @@ async function uploadVehiclePhoto(
       .split(".")
       .pop()
       .toLowerCase() ||
-    "jpg";
+      "jpg";
 
 
   const safeNumber =
@@ -2679,7 +2871,7 @@ async function uploadVehiclePhoto(
     extension;
 
 
-  const uploadResult =
+  const result =
     await supabaseClient
       .storage
       .from("vehicle-photos")
@@ -2695,14 +2887,14 @@ async function uploadVehiclePhoto(
       );
 
 
-  if(uploadResult.error){
+  if(result.error){
 
-    throw uploadResult.error;
+    throw result.error;
 
   }
 
 
-  const publicResult =
+  const publicUrl =
     supabaseClient
       .storage
       .from("vehicle-photos")
@@ -2713,10 +2905,11 @@ async function uploadVehiclePhoto(
 
   return {
 
-    path:filePath,
+    path:
+      filePath,
 
     url:
-      publicResult.data.publicUrl
+      publicUrl.data.publicUrl
 
   };
 
@@ -2724,14 +2917,15 @@ async function uploadVehiclePhoto(
 
 
 /* =====================================================
-   DELETE OLD PHOTO
+   DELETE PHOTO
 ===================================================== */
 
 async function deleteOldPhoto(
   photoPath
 ){
 
-  if(!photoPath) return;
+  if(!photoPath)
+    return;
 
 
   const result =
@@ -2891,12 +3085,13 @@ async function saveVehicle(){
       currentPhotoUrl ||
       "";
 
+
     let photoPath =
       oldPhotoPath ||
       "";
 
 
-    /* New photo */
+    /* NEW PHOTO */
 
     if(selectedFile){
 
@@ -2909,6 +3104,7 @@ async function saveVehicle(){
 
       photoUrl =
         uploaded.url;
+
 
       photoPath =
         uploaded.path;
@@ -2931,42 +3127,51 @@ async function saveVehicle(){
         vehicleClass,
 
       registration_date:
-        registrationDate || null,
+        registrationDate ||
+        null,
 
       fitness_expiry:
-        fitnessExpiry || null,
+        fitnessExpiry ||
+        null,
 
       insurance_expiry:
-        insuranceExpiry || null,
+        insuranceExpiry ||
+        null,
 
       tax_expiry:
-        taxExpiry || null,
+        taxExpiry ||
+        null,
 
       pucc_expiry:
-        puccExpiry || null,
+        puccExpiry ||
+        null,
 
       permit_expiry:
-        permitExpiry || null,
+        permitExpiry ||
+        null,
 
       photo_url:
-        photoUrl || null,
+        photoUrl ||
+        null,
 
       photo_path:
-        photoPath || null,
+        photoPath ||
+        null,
 
       ocr_text:
-        ocrText || null
+        ocrText ||
+        null
 
     };
 
 
     /* =================================================
-       EDIT EXISTING VEHICLE
+       EDIT
     ================================================= */
 
     if(editingId){
 
-      const updateResult =
+      const result =
         await supabaseClient
           .from("vehicles")
           .update(
@@ -2978,10 +3183,7 @@ async function saveVehicle(){
           );
 
 
-      if(updateResult.error){
-
-        /* Delete newly uploaded photo
-           if database update failed */
+      if(result.error){
 
         if(
           selectedFile &&
@@ -2996,13 +3198,10 @@ async function saveVehicle(){
         }
 
 
-        throw updateResult.error;
+        throw result.error;
 
       }
 
-
-      /* Delete old photo after
-         successful DB update */
 
       if(
         selectedFile &&
@@ -3023,16 +3222,6 @@ async function saveVehicle(){
       );
 
 
-      oldPhotoPath =
-        photoPath;
-
-      currentPhotoUrl =
-        photoUrl;
-
-      selectedFile =
-        null;
-
-
       setTimeout(
         function(){
 
@@ -3049,7 +3238,7 @@ async function saveVehicle(){
 
 
     /* =================================================
-       CHECK SAME VEHICLE NUMBER
+       CHECK SAME VEHICLE
     ================================================= */
 
     const existingResult =
@@ -3065,17 +3254,13 @@ async function saveVehicle(){
 
     if(existingResult.error){
 
-      /* If multiple records are found,
-         let database error be visible */
-
       throw existingResult.error;
 
     }
 
 
     /* =================================================
-       SAME VEHICLE EXISTS
-       UPDATE IT
+       UPDATE SAME VEHICLE
     ================================================= */
 
     if(existingResult.data){
@@ -3084,7 +3269,7 @@ async function saveVehicle(){
         existingResult.data;
 
 
-      const updateResult =
+      const result =
         await supabaseClient
           .from("vehicles")
           .update(
@@ -3096,7 +3281,7 @@ async function saveVehicle(){
           );
 
 
-      if(updateResult.error){
+      if(result.error){
 
         if(
           selectedFile &&
@@ -3109,12 +3294,11 @@ async function saveVehicle(){
 
         }
 
-        throw updateResult.error;
+
+        throw result.error;
 
       }
 
-
-      /* Delete old photo */
 
       if(
         selectedFile &&
@@ -3151,7 +3335,7 @@ async function saveVehicle(){
 
 
     /* =================================================
-       NEW VEHICLE
+       INSERT NEW
     ================================================= */
 
     const insertResult =
@@ -3174,6 +3358,7 @@ async function saveVehicle(){
         );
 
       }
+
 
       throw insertResult.error;
 
@@ -3220,7 +3405,7 @@ async function saveVehicle(){
 
 
 /* =====================================================
-   EDIT MODE
+   LOAD EDIT VEHICLE
 ===================================================== */
 
 async function loadVehicle(){
@@ -3235,11 +3420,8 @@ async function loadVehicle(){
     params.get("id");
 
 
-  if(!editingId){
-
+  if(!editingId)
     return;
-
-  }
 
 
   try{
@@ -3363,7 +3545,9 @@ async function loadVehicle(){
       "";
 
 
-    if(vehicle.vehicle_class){
+    if(
+      vehicle.vehicle_class
+    ){
 
       selectVehicleClass(
         vehicle.vehicle_class
@@ -3382,7 +3566,9 @@ async function loadVehicle(){
       "";
 
 
-    if(vehicle.photo_url){
+    if(
+      vehicle.photo_url
+    ){
 
       const preview =
         document.getElementById(
@@ -3438,7 +3624,7 @@ function goDashboard(){
 
 
 /* =====================================================
-   INITIALIZE
+   START
 ===================================================== */
 
 createClassGrid();
