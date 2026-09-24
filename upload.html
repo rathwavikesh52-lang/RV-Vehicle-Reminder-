@@ -502,8 +502,6 @@ button{
       </div>
 
 
-      <!-- MPV -->
-
       <div
         class="class-item"
         data-class="MPV"
@@ -979,8 +977,6 @@ function selectVehicleClass(className){
 
 /* =========================================================
    OCR NORMALIZE
-   IMPORTANT:
-   Keep line breaks.
 ========================================================= */
 
 function normalizeOCRText(text){
@@ -1101,10 +1097,6 @@ function normalizeDateString(value){
       .replace(/[.,]/g," ")
       .replace(/\s+/g," ");
 
-  /* ---------------------------------------
-     DD-MMM-YYYY / DD MMM YYYY
-  --------------------------------------- */
-
   let m =
     s.match(
       /\b(\d{1,2})[\s\-\/]+([A-Z]{3})[\s\-\/]+(\d{4})\b/
@@ -1143,11 +1135,6 @@ function normalizeDateString(value){
 
   }
 
-
-  /* ---------------------------------------
-     DD/MM/YYYY
-     DD-MM-YYYY
-  --------------------------------------- */
 
   m =
     s.match(
@@ -1197,10 +1184,6 @@ function normalizeDateString(value){
 
   }
 
-
-  /* ---------------------------------------
-     YYYY-MM-DD
-  --------------------------------------- */
 
   m =
     s.match(
@@ -1589,10 +1572,6 @@ function findTaxValue(text){
     const localText =
       windowLines.join(" ");
 
-    /* -------------------------------------
-       LTT OCR variations
-    ------------------------------------- */
-
     if(
       /\bL\s*T\s*T\b/i.test(localText) ||
       /\bLTT\b/i.test(localText) ||
@@ -1626,11 +1605,12 @@ function findTaxValue(text){
 
 /* =========================================================
    VEHICLE NUMBER NORMALIZATION
+   IMPORTANT:
+   DO NOT CHANGE SERIES LETTERS.
+   ONLY RTO 2 DIGITS MAY BE OCR-CORRECTED.
 ========================================================= */
 
-function cleanVehicleCandidate(
-  raw
-){
+function cleanVehicleCandidate(raw){
 
   if(!raw){
 
@@ -1643,16 +1623,17 @@ function cleanVehicleCandidate(
       .toUpperCase()
       .replace(/[^A-Z0-9]/g,"");
 
+  if(!s){
+
+    return "";
+
+  }
+
   /*
-     OCR can read GJ as:
-     GJ
-     G7
-     6J
+     Only repair the beginning GJ.
   */
 
-  if(
-    /^G7/.test(s)
-  ){
+  if(/^G7/.test(s)){
 
     s =
       "GJ" +
@@ -1660,9 +1641,7 @@ function cleanVehicleCandidate(
 
   }
 
-  if(
-    /^6J/.test(s)
-  ){
+  else if(/^6J/.test(s)){
 
     s =
       "GJ" +
@@ -1670,29 +1649,53 @@ function cleanVehicleCandidate(
 
   }
 
-  if(
-    !s.startsWith("GJ")
-  ){
+  else if(/^GJ/.test(s)){
+
+    /* correct */
+
+  }
+
+  else{
 
     return "";
 
   }
 
-  let rest =
-    s.substring(2);
 
   /*
-     RTO code = exactly 2 characters.
+     Expected Gujarat format:
+
+     GJ + 2 RTO digits
+     + 1 to 3 series letters
+     + 3 to 5 number digits
   */
 
-  if(rest.length < 6){
+  const match =
+    s.match(
+      /^GJ(.{2})([A-Z]{1,3})([A-Z0-9]{3,5})$/
+    );
+
+  if(!match){
 
     return "";
 
   }
+
 
   let rto =
-    rest.substring(0,2);
+    match[1];
+
+  let series =
+    match[2];
+
+  let numberPart =
+    match[3];
+
+
+  /*
+     RTO CODE ONLY:
+     OCR corrections are allowed here.
+  */
 
   rto =
     rto
@@ -1707,6 +1710,7 @@ function cleanVehicleCandidate(
       .replace(/G/g,"6")
       .replace(/T/g,"7");
 
+
   if(
     !/^\d{2}$/.test(rto)
   ){
@@ -1715,61 +1719,31 @@ function cleanVehicleCandidate(
 
   }
 
-  rest =
-    rest.substring(2);
 
   /*
-     Series letters.
+     SERIES:
+     Keep letters exactly as OCR reads them.
+
+     IMPORTANT:
+     S must remain S.
+     Q must remain Q.
+     I must remain I.
   */
 
-  let series = "";
-
-  while(
-    rest.length &&
-    /[A-Z0-9]/.test(rest.charAt(0)) &&
-    series.length < 3
+  if(
+    !/^[A-Z]{1,3}$/.test(series)
   ){
 
-    const ch =
-      rest.charAt(0);
-
-    if(
-      /[A-Z]/.test(ch)
-    ){
-
-      series += ch;
-
-    }
-    else if(ch === "5"){
-
-      series += "S";
-
-    }
-    else if(
-      ch === "1" ||
-      ch === "I"
-    ){
-
-      series += "I";
-
-    }
-    else{
-
-      break;
-
-    }
-
-    rest =
-      rest.substring(1);
+    return "";
 
   }
 
-  /*
-     Last part must be 3-5 digits.
-  */
 
-  let numberPart =
-    rest;
+  /*
+     NUMBER PART:
+     Only OCR letter-to-number corrections.
+     We DO NOT convert numbers into letters.
+  */
 
   numberPart =
     numberPart
@@ -1784,6 +1758,7 @@ function cleanVehicleCandidate(
       .replace(/G/g,"6")
       .replace(/T/g,"7");
 
+
   if(
     !/^\d{3,5}$/.test(numberPart)
   ){
@@ -1792,14 +1767,6 @@ function cleanVehicleCandidate(
 
   }
 
-  if(
-    series.length < 1 ||
-    series.length > 3
-  ){
-
-    return "";
-
-  }
 
   return (
     "GJ" +
@@ -1813,42 +1780,52 @@ function cleanVehicleCandidate(
 
 /* =========================================================
    VEHICLE NUMBER EXTRACTION
+   NEW SAFE VERSION
 ========================================================= */
 
-function extractVehicleNumber(
-  text
-){
+function extractVehicleNumber(text){
 
   const lines =
     getOCRLines(text);
 
   const candidates = [];
 
+
   function addCandidate(
     raw,
-    score
+    score,
+    source
   ){
 
     const cleaned =
-      cleanVehicleCandidate(
-        raw
-      );
+      cleanVehicleCandidate(raw);
 
-    if(
-      cleaned
-    ){
+    if(!cleaned){
 
-      candidates.push({
-        value:cleaned,
-        score:score
-      });
+      return;
 
     }
+
+    candidates.push({
+
+      value:cleaned,
+
+      score:score,
+
+      source:source || ""
+
+    });
 
   }
 
 
-  /* STEP 1 */
+  /*
+     -------------------------------------------------------
+     STEP 1
+     ONLY use text immediately after VEHICLE NUMBER.
+     This is the most reliable source.
+     -------------------------------------------------------
+  */
 
   for(
     let i=0;
@@ -1856,45 +1833,91 @@ function extractVehicleNumber(
     i++
   ){
 
-    const upper =
-      lines[i]
+    const originalLine =
+      lines[i].trim();
+
+    const upperLine =
+      originalLine
         .toUpperCase()
         .replace(/\s+/g," ")
         .trim();
 
-    if(
-      upper.includes(
-        "VEHICLE NUMBER"
-      )
+
+    const labelMatch =
+      upperLine.match(
+        /VEHICLE\s+NUMBER/
+      );
+
+
+    if(!labelMatch){
+
+      continue;
+
+    }
+
+
+    /*
+       Same line:
+       Vehicle Number GJ34S1419
+    */
+
+    let sameLine =
+      originalLine
+        .replace(
+          /^.*?VEHICLE\s+NUMBER\s*:?\s*/i,
+          ""
+        )
+        .trim();
+
+
+    /*
+       Extract ONLY a vehicle-shaped token.
+    */
+
+    const sameMatch =
+      sameLine.match(
+        /(?:GJ|G7|6J)[A-Z0-9\s]{5,14}/i
+      );
+
+
+    if(sameMatch){
+
+      addCandidate(
+        sameMatch[0],
+        120,
+        "vehicle-number-same-line"
+      );
+
+    }
+
+
+    /*
+       Next 2 lines only.
+    */
+
+    for(
+      let j=1;
+      j<=2 &&
+      i+j<lines.length;
+      j++
     ){
 
-      let same =
-        lines[i]
-          .replace(
-            /.*VEHICLE NUMBER\s*:?\s*/i,
-            ""
-          )
-          .trim();
+      const nextLine =
+        lines[i+j].trim();
 
-      if(same){
 
-        addCandidate(
-          same,
-          100
+      const match =
+        nextLine.match(
+          /(?:GJ|G7|6J)[A-Z0-9\s]{5,14}/i
         );
 
-      }
 
-      for(
-        let j=1;
-        j<=2 &&
-        i+j<lines.length;
-        j++
-      ){
+      if(match){
 
         addCandidate(
-          lines[i+j],
-          95-j
+          match[0],
+          115-j,
+          "vehicle-number-next-line"
         );
 
       }
@@ -1904,101 +1927,111 @@ function extractVehicleNumber(
   }
 
 
-  /* STEP 2 */
+  /*
+     -------------------------------------------------------
+     STEP 2
+     Scan individual tokens ONLY inside the local area
+     around "Vehicle Number".
+     -------------------------------------------------------
+  */
+
+  for(
+    let i=0;
+    i<lines.length;
+    i++
+  ){
+
+    if(
+      !/VEHICLE\s+NUMBER/i.test(
+        lines[i]
+      )
+    ){
+
+      continue;
+
+    }
+
+
+    for(
+      let j=0;
+      j<=3 &&
+      i+j<lines.length;
+      j++
+    ){
+
+      const localLine =
+        lines[i+j];
+
+
+      const tokens =
+        localLine
+          .toUpperCase()
+          .split(/[\s:,\-]+/)
+          .filter(Boolean);
+
+
+      for(
+        const token of tokens
+      ){
+
+        if(
+          /^(?:GJ|G7|6J)[A-Z0-9]{5,12}$/.test(
+            token
+          )
+        ){
+
+          addCandidate(
+            token,
+            105-j,
+            "local-token"
+          );
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  /*
+     -------------------------------------------------------
+     STEP 3
+     Global scan.
+     This has LOW priority.
+     -------------------------------------------------------
+  */
 
   const normalized =
     normalizeOCRText(text)
       .toUpperCase();
 
-  const labelIndex =
-    normalized.indexOf(
-      "VEHICLE NUMBER"
-    );
 
-  if(labelIndex >= 0){
-
-    const afterLabel =
-      normalized.substring(
-        labelIndex,
-        labelIndex + 250
-      );
-
-    const compact =
-      afterLabel
-        .replace(
-          /[^A-Z0-9]/g,
-          " "
-        );
-
-    const pieces =
-      compact
-        .split(/\s+/)
-        .filter(Boolean);
-
-    for(
-      const piece of pieces
-    ){
-
-      addCandidate(
-        piece,
-        90
-      );
-
-    }
-
-  }
-
-
-  /* STEP 3 */
-
-  const global =
+  const globalTokens =
     normalized
       .replace(
         /[^A-Z0-9\s]/g,
         " "
       )
-      .replace(
-        /\s+/g,
-        " "
-      );
-
-  const globalTokens =
-    global
-      .split(" ")
+      .split(/\s+/)
       .filter(Boolean);
 
+
   for(
-    let i=0;
-    i<globalTokens.length;
-    i++
+    const token of globalTokens
   ){
 
-    addCandidate(
-      globalTokens[i],
-      50
-    );
-
     if(
-      i+1<globalTokens.length
+      /^(?:GJ|G7|6J)[A-Z0-9]{5,12}$/.test(
+        token
+      )
     ){
 
       addCandidate(
-        globalTokens[i] +
-        globalTokens[i+1],
-        45
-      );
-
-    }
-
-    if(
-      i+2<globalTokens.length
-    ){
-
-      addCandidate(
-        globalTokens[i] +
-        globalTokens[i+1] +
-        globalTokens[i+2],
-        40
+        token,
+        30,
+        "global"
       );
 
     }
@@ -2006,26 +2039,45 @@ function extractVehicleNumber(
   }
 
 
-  if(
-    candidates.length === 0
-  ){
+  /*
+     -------------------------------------------------------
+     STEP 4
+     COUNT SAME VALID VEHICLE NUMBERS.
 
-    return "";
+     If 3 OCR passes give the same number,
+     that number gets priority.
+     -------------------------------------------------------
+  */
 
-  }
+  const grouped = {};
 
-
-  const unique = {};
 
   candidates.forEach(function(item){
 
+    if(!grouped[item.value]){
+
+      grouped[item.value] = {
+
+        count:0,
+
+        bestScore:0,
+
+        value:item.value
+
+      };
+
+    }
+
+
+    grouped[item.value].count++;
+
+
     if(
-      !unique[item.value] ||
       item.score >
-      unique[item.value]
+      grouped[item.value].bestScore
     ){
 
-      unique[item.value] =
+      grouped[item.value].bestScore =
         item.score;
 
     }
@@ -2034,37 +2086,42 @@ function extractVehicleNumber(
 
 
   const finalCandidates =
-    Object.keys(unique)
-      .map(function(value){
-
-        return {
-          value:value,
-          score:unique[value]
-        };
-
-      });
+    Object.values(grouped);
 
 
   finalCandidates.sort(
     function(a,b){
 
-      const aFour =
-        /\d{4}$/.test(a.value)
-          ? 8
-          : 0;
+      /*
+         First priority:
+         repeated OCR result.
 
-      const bFour =
-        /\d{4}$/.test(b.value)
-          ? 8
-          : 0;
+         Second:
+         location score.
 
-      return (
-        (b.score+bFour) -
-        (a.score+aFour)
-      );
+         This prevents one bad OCR pass from
+         automatically winning.
+      */
+
+      const aScore =
+        (
+          a.count * 1000
+        ) +
+        a.bestScore;
+
+
+      const bScore =
+        (
+          b.count * 1000
+        ) +
+        b.bestScore;
+
+
+      return bScore - aScore;
 
     }
   );
+
 
   return (
     finalCandidates[0]?.value ||
@@ -2078,9 +2135,7 @@ function extractVehicleNumber(
    VEHICLE CLASS DETECTION
 ========================================================= */
 
-function detectVehicleClass(
-  text
-){
+function detectVehicleClass(text){
 
   const upper =
     normalizeOCRText(text)
@@ -2537,9 +2592,7 @@ function clearOCRFields(){
    ENHANCED IMAGE
 ========================================================= */
 
-function createEnhancedImage(
-  file
-){
+function createEnhancedImage(file){
 
   return new Promise(
     function(resolve,reject){
