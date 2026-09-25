@@ -1572,7 +1572,7 @@ function cleanVehicleCandidate(raw){
     + 1-3 series letters
     + 1-4 number digits
 
-    Examples:
+    Valid examples:
 
     GJ34S1419
     GJ34Q6950
@@ -1585,7 +1585,7 @@ function cleanVehicleCandidate(raw){
 
   if(
     body.length < 4 ||
-    body.length > 9
+    body.length > 8
   ){
 
     return "";
@@ -1627,13 +1627,26 @@ function cleanVehicleCandidate(raw){
 
 
   /*
-    First try:
-    series letters + number digits
+    IMPORTANT:
+
+    First check the normal format:
+
+    1-3 LETTER series
+    +
+    4 DIGIT number
+
+    This prevents:
+
+    GJ34S1419O
+    GJ34SS1419
+
+    from being accepted as
+    an incorrect 10-character number.
   */
 
   let match =
     rest.match(
-      /^([A-Z]{1,3})(\d{1,4})$/
+      /^([A-Z]{1,3})(\d{4})$/
     );
 
 
@@ -1650,8 +1663,34 @@ function cleanVehicleCandidate(raw){
 
 
   /*
-    OCR may confuse digits
-    in final number section.
+    Allow 3-digit number
+    for older vehicle formats.
+  */
+
+  match =
+    rest.match(
+      /^([A-Z]{1,3})(\d{3})$/
+    );
+
+
+  if(match){
+
+    return (
+      "GJ" +
+      rto +
+      match[1] +
+      match[2]
+    );
+
+  }
+
+
+  /*
+    OCR may confuse letters
+    with digits in the final
+    number section.
+
+    Maximum = 4 digits.
   */
 
   let possible =
@@ -1753,7 +1792,7 @@ function extractVehicleNumber(text){
 
   /* =================================================
      STEP 1
-     AFTER VEHICLE NUMBER
+     VEHICLE NUMBER LABEL
   ================================================= */
 
   for(
@@ -1768,7 +1807,9 @@ function extractVehicleNumber(text){
       )
     ){
 
-      /* SAME LINE */
+      /*
+        SAME LINE
+      */
 
       const same =
         lines[i]
@@ -1781,7 +1822,7 @@ function extractVehicleNumber(text){
 
       const sameMatch =
         same.match(
-          /(?:GJ|G7|6J)[A-Z0-9\s]{5,12}/i
+          /(?:GJ|G7|6J)[A-Z0-9\s]{5,10}/i
         );
 
 
@@ -1789,13 +1830,15 @@ function extractVehicleNumber(text){
 
         addCandidate(
           sameMatch[0],
-          150
+          180
         );
 
       }
 
 
-      /* NEXT 3 LINES */
+      /*
+        NEXT 3 LINES
+      */
 
       for(
         let j=1;
@@ -1811,29 +1854,13 @@ function extractVehicleNumber(text){
           lines[i+j];
 
 
-        const match =
-          line.match(
-            /(?:GJ|G7|6J)[A-Z0-9\s]{5,12}/i
-          );
-
-
-        if(match){
-
-          addCandidate(
-            match[0],
-            145-j
-          );
-
-        }
-
-
         /*
-          Spaces remove:
+          First remove spaces.
+
+          Examples:
 
           GJ34S1419
-
           GJ 34 S1419
-
           GJ34 S 1419
         */
 
@@ -1846,14 +1873,91 @@ function extractVehicleNumber(text){
             .toUpperCase();
 
 
-        if(
-          /^(?:GJ|G7|6J)[A-Z0-9]{5,10}$/.test(
-            compact
-          )
-        ){
+        /*
+          VERY IMPORTANT:
+
+          If the line contains a
+          valid 9-character number,
+          take that exact number first.
+
+          This prevents OCR from adding
+          one extra letter to the series.
+        */
+
+        const exact9 =
+          compact.match(
+            /(?:GJ|G7|6J)\d{2}[A-Z]{1,3}\d{4}/
+          );
+
+
+        if(exact9){
 
           addCandidate(
-            compact,
+            exact9[0],
+            175-j
+          );
+
+        }
+
+
+        /*
+          Normal valid 10-character format:
+
+          GJ34AB1234
+        */
+
+        const exact10 =
+          compact.match(
+            /(?:GJ|G7|6J)\d{2}[A-Z]{2,3}\d{4}/
+          );
+
+
+        if(exact10){
+
+          addCandidate(
+            exact10[0],
+            165-j
+          );
+
+        }
+
+
+        /*
+          8-character format:
+
+          GJ34S123
+        */
+
+        const exact8 =
+          compact.match(
+            /(?:GJ|G7|6J)\d{2}[A-Z]{1,3}\d{3}/
+          );
+
+
+        if(exact8){
+
+          addCandidate(
+            exact8[0],
+            160-j
+          );
+
+        }
+
+
+        /*
+          OCR corrected RTO format.
+        */
+
+        const match =
+          line.match(
+            /(?:GJ|G7|6J)[A-Z0-9\s]{5,10}/i
+          );
+
+
+        if(match){
+
+          addCandidate(
+            match[0],
             140-j
           );
 
@@ -1895,6 +1999,58 @@ function extractVehicleNumber(text){
         j++
       ){
 
+        const compact =
+          lines[j]
+            .replace(
+              /[^A-Z0-9]/gi,
+              ""
+            )
+            .toUpperCase();
+
+
+        /*
+          Exact 9 character number
+          gets priority.
+        */
+
+        const exact9 =
+          compact.match(
+            /(?:GJ|G7|6J)\d{2}[A-Z]{1,3}\d{4}/
+          );
+
+
+        if(exact9){
+
+          addCandidate(
+            exact9[0],
+            155 -
+            Math.abs(j-i)
+          );
+
+        }
+
+
+        /*
+          Exact 10 character format.
+        */
+
+        const exact10 =
+          compact.match(
+            /(?:GJ|G7|6J)\d{2}[A-Z]{2,3}\d{4}/
+          );
+
+
+        if(exact10){
+
+          addCandidate(
+            exact10[0],
+            145 -
+            Math.abs(j-i)
+          );
+
+        }
+
+
         const tokens =
           lines[j]
             .split(/\s+/);
@@ -1916,7 +2072,7 @@ function extractVehicleNumber(text){
 
 
           if(
-            /^(?:GJ|G7|6J)[A-Z0-9]{5,10}$/.test(
+            /^(?:GJ|G7|6J)[A-Z0-9]{5,8}$/.test(
               token
             )
           ){
@@ -1958,15 +2114,62 @@ function extractVehicleNumber(text){
         .toUpperCase();
 
 
-    if(
-      /^(?:GJ|G7|6J)[A-Z0-9]{5,10}$/.test(
-        compact
-      )
-    ){
+    /*
+      First search exact 9-character
+      standard format.
+    */
+
+    const exact9 =
+      compact.match(
+        /(?:GJ|G7|6J)\d{2}[A-Z]{1,3}\d{4}/
+      );
+
+
+    if(exact9){
 
       addCandidate(
-        compact,
-        50
+        exact9[0],
+        80
+      );
+
+    }
+
+
+    /*
+      Then exact 10-character format.
+    */
+
+    const exact10 =
+      compact.match(
+        /(?:GJ|G7|6J)\d{2}[A-Z]{2,3}\d{4}/
+      );
+
+
+    if(exact10){
+
+      addCandidate(
+        exact10[0],
+        60
+      );
+
+    }
+
+
+    /*
+      Older 8-character format.
+    */
+
+    const exact8 =
+      compact.match(
+        /(?:GJ|G7|6J)\d{2}[A-Z]{1,3}\d{3}/
+      );
+
+
+    if(exact8){
+
+      addCandidate(
+        exact8[0],
+        55
       );
 
     }
@@ -2040,8 +2243,11 @@ function extractVehicleNumber(text){
 
 
         /*
-          Prefer valid 9-character
-          numbers such as:
+          Strong priority for
+          standard 9-character
+          Gujarat vehicle number.
+
+          Example:
 
           GJ34S1419
           GJ34Q6950
@@ -2052,7 +2258,27 @@ function extractVehicleNumber(text){
         ){
 
           finalScore +=
-            200;
+            5000;
+
+        }
+
+
+        /*
+          10-character numbers are
+          still allowed when they are
+          genuinely valid.
+
+          Example:
+
+          GJ34AB1234
+        */
+
+        if(
+          value.length === 10
+        ){
+
+          finalScore +=
+            100;
 
         }
 
@@ -2653,7 +2879,7 @@ async function recognizeOCR(
                     passNumber -
                     1
                   ) *
-                  100 +
+                    100 +
                   passProgress
                 ) /
                 totalPasses
